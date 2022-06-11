@@ -1,4 +1,7 @@
+using AutoMapper;
 using Data_Access.Data;
+using Data_Access.Models;
+using Data_Access.Repositories;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,7 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
- builder.Services.AddControllers();
+// builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -16,8 +19,14 @@ sqlConBuilder.ConnectionString = builder.Configuration.GetConnectionString("SqlC
 sqlConBuilder.UserID = builder.Configuration["UserId"];
 sqlConBuilder.Password = builder.Configuration["Password"];
 
-
+// registering the db context to be presented as context in repositories 
 builder.Services.AddDbContext<Context>(o => o.UseSqlServer(sqlConBuilder.ConnectionString));
+
+
+// => DI Container 
+builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+// register automapper for DI 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var app = builder.Build();
 
@@ -30,8 +39,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
+// app.UseAuthorization();
 
-app.MapControllers();
+app.Map("api/v1/characters", async (ICharacterRepository repository, IMapper mapper) =>
+{
+    var characters = await repository.GetAsync();
+    return Results.Ok(mapper.Map<List<Character>>(characters));
+});
 
 app.Run();
