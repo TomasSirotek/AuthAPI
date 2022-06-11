@@ -4,6 +4,7 @@ namespace Data_Access.Models {
     public class Character {
         
         [Key]
+        [MaxLength(255)]
         public string Id { get; set; } 
     
         public string FullName { get; set; } 
