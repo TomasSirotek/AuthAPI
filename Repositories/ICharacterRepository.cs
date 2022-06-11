@@ -9,9 +9,9 @@ public interface ICharacterRepository {
     
     Task<Character> GetByIdAsync(string id);
 
-    Task<Character> CreateAsync(Character character);
+    Task CreateAsync(Character character);
         
     Task<Character> UpdateAsync(Character character);
-        
-    Task<bool> DeleteAsync(string id);
+
+    void DeleteAsync(Character character);
 }

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Data_Access.BindingModels {
+namespace Data_Access.Dtos {
     public class PutCharacterModel {
         [Required]
         [Key]

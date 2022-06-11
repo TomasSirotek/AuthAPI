@@ -1,7 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Data_Access.BindingModels {
+namespace Data_Access.Dtos {
     public class PostCharacterModel {
+        [Key]
+        public string Id { get; set; } 
         [Required]
         public string FullName { get; set; } 
         [Required]

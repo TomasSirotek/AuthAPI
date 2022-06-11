@@ -1,5 +1,5 @@
 using AutoMapper;
-using Data_Access.BindingModels;
+using Data_Access.Dtos;
 using Data_Access.Models;
 
 namespace Data_Access.Profiles {

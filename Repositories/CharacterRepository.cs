@@ -23,13 +23,13 @@ public class CharacterRepository : ICharacterRepository{
     }
 
     public async Task<Character> GetByIdAsync(string id)
-    {
-        throw new NotImplementedException();
+    { 
+        return await _context.Characters.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<Character> CreateAsync(Character character)
+    public async Task CreateAsync(Character character)
     {
-        throw new NotImplementedException();
+        await _context.AddAsync(character);
     }
 
     public async Task<Character> UpdateAsync(Character character)
@@ -37,8 +37,8 @@ public class CharacterRepository : ICharacterRepository{
         throw new NotImplementedException();
     }
 
-    public async Task<bool> DeleteAsync(string id)
+    public void DeleteAsync(Character character)
     {
-        throw new NotImplementedException();
+        _context.Characters.Remove(character);
     }
 }
