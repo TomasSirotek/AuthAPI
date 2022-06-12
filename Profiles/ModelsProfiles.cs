@@ -6,7 +6,7 @@ namespace Data_Access.Profiles {
     public class ModelsProfiles : Profile {
         public ModelsProfiles()
         {
-         // Source => targer
+         // Source => target
          CreateMap<Character, Character>();
          CreateMap<PostCharacterModel, Character>();
          CreateMap<PutCharacterModel, Character>();
