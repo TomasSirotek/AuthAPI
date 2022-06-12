@@ -4,6 +4,7 @@ using Data_Access.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data_Access.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20220611202542_newly")]
+    partial class newly
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -57,8 +59,8 @@ namespace Data_Access.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "4",
-                            DoB = new DateTime(2022, 6, 11, 22, 28, 42, 197, DateTimeKind.Local).AddTicks(9920),
+                            Id = "1",
+                            DoB = new DateTime(2022, 6, 11, 22, 25, 42, 33, DateTimeKind.Local).AddTicks(4850),
                             FullName = "Tony Stark",
                             Gender = "Female",
                             KnownFor = "Iron man",
@@ -67,8 +69,8 @@ namespace Data_Access.Migrations
                         },
                         new
                         {
-                            Id = "5",
-                            DoB = new DateTime(2022, 6, 11, 22, 28, 42, 197, DateTimeKind.Local).AddTicks(9990),
+                            Id = "2",
+                            DoB = new DateTime(2022, 6, 11, 22, 25, 42, 33, DateTimeKind.Local).AddTicks(4900),
                             FullName = "Tony Dark",
                             Gender = "Trans",
                             KnownFor = "Spider man",
