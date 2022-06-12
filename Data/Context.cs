@@ -8,7 +8,6 @@ namespace Data_Access.Data {
             base(options)
         {
         }
-
         public DbSet<Character> Characters => Set<Character>();
     }
 }
