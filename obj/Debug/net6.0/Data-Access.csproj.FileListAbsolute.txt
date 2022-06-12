@@ -62,3 +62,7 @@
 /Users/Tomas/Projects/Data-Access/Data-Access/obj/Debug/net6.0/Data-Access.pdb
 /Users/Tomas/Projects/Data-Access/Data-Access/obj/Debug/net6.0/Data-Access.genruntimeconfig.cache
 /Users/Tomas/Projects/Data-Access/Data-Access/obj/Debug/net6.0/ref/Data-Access.dll
+/Users/Tomas/Projects/Data-Access/Data-Access/bin/Debug/net6.0/Azure.Core.dll
+/Users/Tomas/Projects/Data-Access/Data-Access/bin/Debug/net6.0/Azure.Identity.dll
+/Users/Tomas/Projects/Data-Access/Data-Access/bin/Debug/net6.0/Microsoft.Bcl.AsyncInterfaces.dll
+/Users/Tomas/Projects/Data-Access/Data-Access/bin/Debug/net6.0/Microsoft.Identity.Client.Extensions.Msal.dll

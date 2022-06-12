@@ -17,9 +17,8 @@ namespace Data_Access.Models {
     
         public DateTime DoB { get; set; } 
     
-        public string Nationality { get; set; } 
-        
-        
+        public string Nationality { get; set; }
+
         public Character(string id, string fullName,bool status,string knownFor,string gender, DateTime dob,string nationality) {
             Id = id;
             FullName = fullName;

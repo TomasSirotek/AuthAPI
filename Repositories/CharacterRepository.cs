@@ -16,6 +16,12 @@ public class CharacterRepository : ICharacterRepository{
     {
         await _context.SaveChangesAsync();
     }
+    
+    public async Task<List<Character>> GetAsyncItemById()
+    {
+        // TODO: Work on implementing sql queries for all of them 
+        return null;
+    }
 
     public async Task<List<Character>> GetAsync()
     {

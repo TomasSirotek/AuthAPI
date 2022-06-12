@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Data_Access.Migrations
 {
-    public partial class migrationsTest : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace Data_Access.Migrations
                 name: "Characters",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     KnownFor = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -25,7 +25,6 @@ namespace Data_Access.Migrations
                 {
                     table.PrimaryKey("PK_Characters", x => x.Id);
                 });
-       
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

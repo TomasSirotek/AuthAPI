@@ -21,14 +21,26 @@ sqlConBuilder.Password = builder.Configuration["Password"];
 
 // registering the db context to be presented as context in repositories 
 builder.Services.AddDbContext<Context>(o => o.UseSqlServer(sqlConBuilder.ConnectionString));
-
-
-// => DI Container 
-builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 // register automapper for DI 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-var app = builder.Build();
+// => DI Container 
+builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
+// builder.Services.AddScoped<DataSeeder>();
+//
+ var app = builder.Build();
+// if (args.Length == 1 && args[0].ToLower() == "InitialSeed")
+//     SeedData(app);
+//
+// void SeedData(IHost app)
+// {
+//     var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+//     using (var scope = scopedFactory?.CreateScope())
+//     {
+//         var service = scope?.ServiceProvider.GetService<DataSeeder>();
+//         service?.Seed();
+//     }
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
