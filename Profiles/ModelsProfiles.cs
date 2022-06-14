@@ -7,9 +7,9 @@ namespace Data_Access.Profiles {
         public ModelsProfiles()
         {
          // Source => target
-         CreateMap<Character, Character>();
-         CreateMap<PostCharacterModel, Character>();
-         CreateMap<PutCharacterModel, Character>();
+         CreateMap<Product, Product>();
+         CreateMap<PostCharacterModel, Product>();
+         CreateMap<PutCharacterModel, Product>();
         }
     }
 }

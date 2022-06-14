@@ -43,7 +43,7 @@ app.UseHttpsRedirection();
 app.Map("api/v1/characters", async (ICharacterRepository repository, IMapper mapper) =>
 {
     var characters = await repository.GetAsync();
-    return Results.Ok(mapper.Map<List<Character>>(characters));
+    return Results.Ok(mapper.Map<List<Product>>(characters));
 });
 
 app.Run();

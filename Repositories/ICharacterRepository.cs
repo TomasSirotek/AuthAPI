@@ -5,13 +5,13 @@ namespace Data_Access.Repositories;
 public interface ICharacterRepository {
     Task SaveAsync();
     
-    Task<List<Character>> GetAsync();
+    Task<List<Product>> GetAsync();
     
-    Task<Character> GetByIdAsync(string id);
+    Task<Product> GetByIdAsync(string id);
 
-    Task<Character> CreateAsync(Character character);
+    Task<Product> CreateAsync(Product character);
         
-    Task<Character> UpdateAsync(Character character);
+    Task<Product> UpdateAsync(Product character);
         
     Task<bool> DeleteAsync(string id);
 }

@@ -8,6 +8,7 @@ namespace Data_Access.Data {
             base(options)
         {
         }
-        public DbSet<Character> Characters => Set<Character>();
+        public DbSet<Product> Characters => Set<Product>();
+        public DbSet<Category> Category => Set<Category>();
     }
 }

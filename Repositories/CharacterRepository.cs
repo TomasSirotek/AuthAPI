@@ -17,22 +17,22 @@ public class CharacterRepository : ICharacterRepository{
         await _context.SaveChangesAsync();
     }
 
-    public async Task<List<Character>> GetAsync()
+    public async Task<List<Product>> GetAsync()
     {
         return await _context.Characters.ToListAsync();
     }
 
-    public async Task<Character> GetByIdAsync(string id)
+    public async Task<Product> GetByIdAsync(string id)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Character> CreateAsync(Character character)
+    public async Task<Product> CreateAsync(Product character)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<Character> UpdateAsync(Character character)
+    public async Task<Product> UpdateAsync(Product character)
     {
         throw new NotImplementedException();
     }
