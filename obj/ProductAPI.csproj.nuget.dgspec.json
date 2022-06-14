@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/Tomas/Projects/Data-Access/Data-Access/Data-Access.csproj": {}
+    "/Users/Tomas/Projects/Data-Access/ProductAPI/ProductAPI.csproj": {}
   },
   "projects": {
-    "/Users/Tomas/Projects/Data-Access/Data-Access/Data-Access.csproj": {
+    "/Users/Tomas/Projects/Data-Access/ProductAPI/ProductAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/Tomas/Projects/Data-Access/Data-Access/Data-Access.csproj",
-        "projectName": "Data-Access",
-        "projectPath": "/Users/Tomas/Projects/Data-Access/Data-Access/Data-Access.csproj",
+        "projectUniqueName": "/Users/Tomas/Projects/Data-Access/ProductAPI/ProductAPI.csproj",
+        "projectName": "ProductAPI",
+        "projectPath": "/Users/Tomas/Projects/Data-Access/ProductAPI/ProductAPI.csproj",
         "packagesPath": "/Users/Tomas/.nuget/packages/",
-        "outputPath": "/Users/Tomas/Projects/Data-Access/Data-Access/obj/",
+        "outputPath": "/Users/Tomas/Projects/Data-Access/ProductAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/Tomas/.nuget/NuGet/NuGet.Config"
