@@ -22,7 +22,7 @@ sqlConBuilder.Password = builder.Configuration["Password"];
 builder.Services.AddDbContext<Context>(o => o.UseSqlServer(sqlConBuilder.ConnectionString));
 
 
-// => DI Container 
+// => DI Container needs to be move to seperate file later on !
 builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 // register automapper for DI 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
