@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace Data_Access.Controllers {
+namespace ProductAPI.Controllers {
     // missing versioning add later 
     [Route("[controller]")]
     [ApiController]

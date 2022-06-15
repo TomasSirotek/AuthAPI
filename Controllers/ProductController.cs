@@ -1,8 +1,8 @@
-using Data_Access.BindingModels;
-using Data_Access.Models;
+using ProductAPI.Controllers;
+using ProductAPI.BindingModels;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Data_Access.Controllers; 
+namespace ProductAPI.Controllers; 
 
 public class ProductController : DefaultController {
     

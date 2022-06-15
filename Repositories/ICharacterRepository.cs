@@ -1,6 +1,6 @@
-using Data_Access.Models;
+using ProductAPI.Models;
 
-namespace Data_Access.Repositories; 
+namespace ProductAPI.Repositories; 
 
 public interface ICharacterRepository {
     Task SaveAsync();

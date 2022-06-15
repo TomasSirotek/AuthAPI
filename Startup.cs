@@ -1,13 +1,15 @@
 using System.Text;
-using Data_Access.Repositories;
+using ProductAPI.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using ProductAPI.Data;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace Data_Access
+namespace ProductAPI
 {
     public class Startup
     {
@@ -21,13 +23,19 @@ namespace Data_Access
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-        
-            var sqlConBuilder = new SqlConnectionStringBuilder();
-            sqlConBuilder.ConnectionString = Configuration.GetConnectionString("SqlConnector");
-            sqlConBuilder.UserID = Configuration["UserId"];
-            sqlConBuilder.Password = Configuration["Password"];
-            // TODO: Put proper connection settings 
-            
+
+            var server = Configuration["SqlServer"] ?? "localhost";
+            var port = Configuration["SqlPort"] ?? "1443";
+            var user = Configuration["SqlUser"] ?? "SA";
+            var password = Configuration["SqlPassword"] ?? "secret3pasword";
+            var database = Configuration["Database"] ?? "DefaultDb";
+
+            services.AddDbContext<Context>(o =>
+                o.UseSqlServer(
+                    $"Server={server},{port};Initial Catalog={database};User ID ={user};Password={password}"));
+
+            // // TODO: Put proper connection settings 
+            //
             // Enable CORS
             services.AddCors(c =>
             {
@@ -40,7 +48,6 @@ namespace Data_Access
                 // Cookie settings
                 options.Cookie.HttpOnly = true;
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
-
                 options.LoginPath = "/Authenticate";
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
@@ -52,10 +59,8 @@ namespace Data_Access
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             
-         
-            
             // dependency injection container 
-            services.AddScoped<ICharacterRepository, CharacterRepository>();
+            services.AddTransient<ICharacterRepository, CharacterRepository>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             // DI end
             

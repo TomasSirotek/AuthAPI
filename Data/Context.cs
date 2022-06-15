@@ -1,7 +1,7 @@
-using Data_Access.Models;
+using ProductAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data_Access.Data {
+namespace ProductAPI.Data {
     public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options) : 

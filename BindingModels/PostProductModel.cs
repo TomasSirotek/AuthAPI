@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Data_Access.BindingModels {
+namespace ProductAPI.BindingModels {
     public class PostProductModel {
         [Required]
         public string Title { get; set; } 

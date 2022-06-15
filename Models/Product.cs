@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Data_Access.Models {
+namespace ProductAPI.Models {
     public class Product {
         
         [Key]
