@@ -1,15 +1,16 @@
 using AutoMapper;
-using Data_Access.BindingModels;
-using Data_Access.Models;
+using ProductAPI.BindingModels;
+using ProductAPI.Models;
 
-namespace Data_Access.Profiles {
+namespace ProductAPI.Profiles {
     public class ModelsProfiles : Profile {
         public ModelsProfiles()
         {
          // Source => target
          CreateMap<Product, Product>();
-         CreateMap<PostCharacterModel, Product>();
-         CreateMap<PutCharacterModel, Product>();
+         CreateMap<PostProductModel,Product>();
+         CreateMap<PutCharacterModel,Product>();
+         CreateMap<Category,Category>();
         }
     }
 }

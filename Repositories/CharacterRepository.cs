@@ -1,8 +1,8 @@
-using Data_Access.Data;
-using Data_Access.Models;
+using ProductAPI.Data;
+using ProductAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Data_Access.Repositories; 
+namespace ProductAPI.Repositories; 
 
 public class CharacterRepository : ICharacterRepository{
     

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Data_Access.Models {
+namespace ProductAPI.Models {
     public class Product {
         
         [Key]
@@ -20,20 +20,17 @@ namespace Data_Access.Models {
         public string AgeLimit { get; set; } 
         
         
-        public Product(string id, string title,int price,string description, DateTime dob,string ageLimit, List<Category> category) {
+        public Product(string id, string title,int price,string description, DateTime dob,string ageLimit) {
             Id = id;
             Title = title;
             Price = price;
             Description = description;
             DoB = dob;
             AgeLimit = ageLimit;
-            Category = category;
         }
         
-    public Product(List<Category> category)
+    public Product()
     {
-        Category = category;
     }
-    
     }
 }
