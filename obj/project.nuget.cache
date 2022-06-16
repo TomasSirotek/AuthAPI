@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "AvzRDixIc9O705ZQB9+VNhq8KFW8QaNBCP3rCoprE/YQfRBBsSGpyJ1LROAZUcIet6dgFPa30H8ylabhpOMx+w==",
+  "dgSpecHash": "3wxQuJbabkjxyI/ilqDkMDQfCvOmcCWSaOZ+He+8VhVVOVqSYwyfbLdpJxfkKdXy5yzT1tNpVYMSreaM4Td3tg==",
   "success": true,
-  "projectFilePath": "/Users/Tomas/Projects/ProductAPI/ProductAPI/ProductAPI.csproj",
+  "projectFilePath": "/Users/Tomas/Projects/ProductAPI/ProductAPI.csproj",
   "expectedPackageFiles": [
     "/Users/Tomas/.nuget/packages/automapper/11.0.0/automapper.11.0.0.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/11.0.0/automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

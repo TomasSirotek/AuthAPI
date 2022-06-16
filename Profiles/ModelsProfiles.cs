@@ -8,8 +8,9 @@ namespace ProductAPI.Profiles {
         {
          // Source => target
          CreateMap<Product, Product>();
-         CreateMap<PostProductModel, Product>();
-         CreateMap<PutCharacterModel, Product>();
+         CreateMap<PostProductModel,Product>();
+         CreateMap<PutCharacterModel,Product>();
+         CreateMap<Category,Category>();
         }
     }
 }

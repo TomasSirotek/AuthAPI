@@ -23,16 +23,8 @@ namespace ProductAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            var server = Configuration["SqlServer"] ?? "localhost";
-            var port = Configuration["SqlPort"] ?? "1443";
-            var user = Configuration["SqlUser"] ?? "SA";
-            var password = Configuration["SqlPassword"] ?? "secret3pasword";
-            var database = Configuration["Database"] ?? "DefaultDb";
-
             services.AddDbContext<Context>(o =>
-                o.UseSqlServer(
-                    $"Server={server},{port};Initial Catalog={database};User ID ={user};Password={password}"));
+                o.UseSqlServer(Configuration.GetConnectionString("SqlConnector")));
 
             // // TODO: Put proper connection settings 
             //

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/Tomas/Projects/ProductAPI/ProductAPI/ProductAPI.csproj": {}
+    "/Users/Tomas/Projects/ProductAPI/ProductAPI.csproj": {}
   },
   "projects": {
-    "/Users/Tomas/Projects/ProductAPI/ProductAPI/ProductAPI.csproj": {
+    "/Users/Tomas/Projects/ProductAPI/ProductAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/Tomas/Projects/ProductAPI/ProductAPI/ProductAPI.csproj",
+        "projectUniqueName": "/Users/Tomas/Projects/ProductAPI/ProductAPI.csproj",
         "projectName": "ProductAPI",
-        "projectPath": "/Users/Tomas/Projects/ProductAPI/ProductAPI/ProductAPI.csproj",
+        "projectPath": "/Users/Tomas/Projects/ProductAPI/ProductAPI.csproj",
         "packagesPath": "/Users/Tomas/.nuget/packages/",
-        "outputPath": "/Users/Tomas/Projects/ProductAPI/ProductAPI/obj/",
+        "outputPath": "/Users/Tomas/Projects/ProductAPI/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/Tomas/.nuget/NuGet/NuGet.Config"

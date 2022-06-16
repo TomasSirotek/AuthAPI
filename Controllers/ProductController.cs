@@ -1,11 +1,14 @@
 using ProductAPI.Controllers;
 using ProductAPI.BindingModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using ProductAPI.Models;
+using ProductAPI.Repositories;
 
 namespace ProductAPI.Controllers; 
 
 public class ProductController : DefaultController {
-    
+    private readonly ICharacterRepository _productRepository;
     
     #region GET
     [HttpGet()]
@@ -13,11 +16,10 @@ public class ProductController : DefaultController {
     //[AllowAnonymous]
     public async Task<IActionResult> GetAllAsync ()
     {
-        // List<Product> productList = await _productService.GetAsync();
-        // if (productList.IsNullOrEmpty())
-        //     return BadRequest($"Could not find any products");
-        // return Ok(productList);
-        return null;
+        List<Product> productList = await _productRepository.GetAsync();
+        if (productList.IsNullOrEmpty())
+            return BadRequest($"Could not find any products");
+        return Ok(productList);
     }
     
     
