@@ -1,4 +1,3 @@
-using ProductAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.BindingModels;

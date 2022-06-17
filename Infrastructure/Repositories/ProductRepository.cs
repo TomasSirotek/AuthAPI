@@ -98,8 +98,6 @@ public class ProductRepository : IProductRepository{
                 return product;
             }
         }
-
-
         return null;
     }
 
@@ -110,6 +108,19 @@ public class ProductRepository : IProductRepository{
 
     public async Task<bool> DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        using (var cnn = _connection.CreateConnection())
+        {
+            var sql =
+                $@"DELETE 
+                   FROM product p
+                   WHERE p.id = @id";
+
+            var deletePExecuteAsync = await cnn.ExecuteAsync(sql);
+            if (deletePExecuteAsync > 0)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
