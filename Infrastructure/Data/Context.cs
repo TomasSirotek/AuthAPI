@@ -1,14 +1,14 @@
-using ProductAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using ProductAPI.Domain.Models;
 
-namespace ProductAPI.Data {
+namespace ProductAPI.Infrastructure.Data {
     public class Context : DbContext
     {
         public Context(DbContextOptions<Context> options) : 
             base(options)
         {
         }
-        public DbSet<Product> Characters => Set<Product>();
-        public DbSet<Category> Category => Set<Category>();
+        public DbSet<Product> Characters { get; set; }
+        public DbSet<Category> Category { get; set; }
     }
 }

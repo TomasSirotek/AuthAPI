@@ -1,10 +1,9 @@
-using ProductAPI.Models;
+using ProductAPI.Domain.Models;
 
-namespace ProductAPI.Repositories; 
+namespace ProductAPI.Infrastructure.Repositories; 
 
-public interface ICharacterRepository {
-    Task SaveAsync();
-    
+public interface IProductRepository {
+
     Task<List<Product>> GetAsync();
     
     Task<Product> GetByIdAsync(string id);

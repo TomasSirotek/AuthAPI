@@ -6,7 +6,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4a51348-6890-434e-b1f9-8137222ba8d7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Infrastructure/Data/SqlServerConnection.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.ProductAPI.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProductAPI.dir/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BindingModels/PostProductModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/BindingModels/PostProductModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BindingModels/PutCharacterModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/BindingModels/PutCharacterModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Controllers/ProductController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ProductController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Data/Context.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/Data/Context.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220616145216_initialMig.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/Migrations/20220616145216_initialMig.Designer.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/20220616145216_initialMig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/Migrations/20220616145216_initialMig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Migrations/ContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/Migrations/ContextModelSnapshot.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Category.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Models/Category.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Models/Product.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProductAPI.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/ProductAPI.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Profiles/ModelsProfiles.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Profiles/ModelsProfiles.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/CharacterRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/Repositories/ProductRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Repositories/ICharacterRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/Repositories/IProductRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Startup.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Startup.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/ProductAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/ProductAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net6.0/ProductAPI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Debug/net6.0/ProductAPI.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ProductAPI.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ProductAPI.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ProductAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ProductAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ProductAPI.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ProductAPI.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/ref/ProductAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/ref/ProductAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net6.0/refint/ProductAPI.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Debug/net6.0/refint/ProductAPI.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" beforeDir="false" afterPath="$PROJECT_DIR$/obj/staticwebassets.pack.sentinel" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -14,6 +39,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/bcae882191178c8bf44c9add4cdeffa874a7afe629e3e56e9280f5896e953425/Monitor.CoreCLR.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/938451c5b6533f9735e3b49a511f654a35443bc73eecd2d434f10d8c2ba1a/Encoding.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/9d4f4ac7db6d2c5d183ab2d92602280ed4349fd6e6a1b6313546b3d01fdab5/ServiceProvider.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -33,6 +59,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="XThreadsFramesViewSplitterKey" value="0.4698795" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
@@ -101,5 +128,37 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Infrastructure/Repositories/ProductRepository.cs</url>
+          <line>42</line>
+          <properties documentPath="$PROJECT_DIR$/Infrastructure/Repositories/ProductRepository.cs" initialLine="41" containingFunctionPresentation="lambda expression inside method 'GetAsync'">
+            <startOffsets>
+              <option value="1559" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1591" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Infrastructure/Repositories/ProductRepository.cs</url>
+          <line>46</line>
+          <properties documentPath="$PROJECT_DIR$/Infrastructure/Repositories/ProductRepository.cs" initialLine="45" containingFunctionPresentation="method 'GetAsync'">
+            <startOffsets>
+              <option value="1748" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1773" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

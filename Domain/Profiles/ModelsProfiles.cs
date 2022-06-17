@@ -1,8 +1,8 @@
 using AutoMapper;
-using ProductAPI.BindingModels;
-using ProductAPI.Models;
+using ProductAPI.Domain.BindingModels;
+using ProductAPI.Domain.Models;
 
-namespace ProductAPI.Profiles {
+namespace ProductAPI.Domain.Profiles {
     public class ModelsProfiles : Profile {
         public ModelsProfiles()
         {

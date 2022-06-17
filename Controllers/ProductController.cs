@@ -1,15 +1,20 @@
 using ProductAPI.Controllers;
-using ProductAPI.BindingModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Models;
-using ProductAPI.Repositories;
+using ProductAPI.Domain.BindingModels;
+using ProductAPI.Domain.Models;
+using ProductAPI.Infrastructure.Repositories;
 
 namespace ProductAPI.Controllers; 
 
 public class ProductController : DefaultController {
-    private readonly ICharacterRepository _productRepository;
-    
+    private readonly IProductRepository _productRepository;
+
+    public ProductController(IProductRepository productRepository)
+    {
+        _productRepository = productRepository;
+    }
+
     #region GET
     [HttpGet()]
     // [AllowAuthorized(AccessRoles.Admin)]

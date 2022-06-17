@@ -1,9 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductAPI.BindingModels {
+namespace ProductAPI.Domain.BindingModels {
     public class PutCharacterModel {
         [Required]
-        [Key]
         public string Id { get; set; } 
 
         public string FullName { get; set; } 
@@ -14,7 +13,7 @@ namespace ProductAPI.BindingModels {
     
         public string Gender { get; set; } 
     
-        public DateTime DoB { get; set; } 
+        public bool IsAvailable { get; set; } 
     
         public string Nationality { get; set; } 
     }

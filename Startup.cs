@@ -1,12 +1,11 @@
 using System.Text;
-using ProductAPI.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using ProductAPI.Data;
+using ProductAPI.Domain.Profiles;
+using ProductAPI.Infrastructure.Data;
+using ProductAPI.Infrastructure.Repositories;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace ProductAPI
@@ -23,8 +22,8 @@ namespace ProductAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<Context>(o =>
-                o.UseSqlServer(Configuration.GetConnectionString("SqlConnector")));
+        //     services.AddDbContext<Context>(o =>
+        //         o.UseSqlServer(Configuration.GetConnectionString("SqlConnector")));
 
             // // TODO: Put proper connection settings 
             //
@@ -52,8 +51,9 @@ namespace ProductAPI
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             
             // dependency injection container 
-            services.AddTransient<ICharacterRepository, CharacterRepository>();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<SqlServerConnection>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddAutoMapper((typeof(ModelsProfiles)));
             // DI end
             
             services.AddMvc ();
@@ -62,7 +62,7 @@ namespace ProductAPI
             services.AddControllers().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
             
             services.AddSwaggerGen(c => {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "E-Commerce", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductsAPI", Version = "v1" });
                 c.AddSecurityDefinition("Bearer",new OpenApiSecurityScheme
                 {
                     In=ParameterLocation.Header,
@@ -102,7 +102,7 @@ namespace ProductAPI
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "E-Commerce v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductsAPI v1"));
             }
 
             app.UseCors((options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()));
