@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
-using ProductAPI.Domain.Services;
 using ProductAPI.Infrastructure.Repositories;
+using ProductAPI.Services;
 
 namespace ProductAPI.Controllers; 
 
