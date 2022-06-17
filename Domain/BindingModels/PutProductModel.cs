@@ -6,8 +6,6 @@ namespace ProductAPI.Domain.BindingModels {
         public string Id { get; set; }
       
         public string Title { get; set; } 
-     
-        public int Price { get; set; }
         
         public string Description { get; set; } 
         
@@ -18,5 +16,9 @@ namespace ProductAPI.Domain.BindingModels {
         public bool IsAvailable { get; set; } 
     
         public string AgeLimit { get; set; } 
+        
+        public decimal UnitPrice { get; set; }
+        
+        public int? UnitsInStock { get; set; }
     }
 }

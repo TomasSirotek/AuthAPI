@@ -50,11 +50,13 @@ namespace ProductAPI
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ContractResolver = new DefaultContractResolver());
             
-            // dependency injection container 
+            // dependency add infrastructure
             services.AddScoped<SqlServerConnection>();
             services.AddTransient<IProductRepository, ProductRepository>();
+            
+            // dependency add domain
             services.AddAutoMapper((typeof(ModelsProfiles)));
-            // DI end
+            
             
             services.AddMvc ();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>(); 

@@ -2,16 +2,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
+using ProductAPI.Domain.Services;
 using ProductAPI.Infrastructure.Repositories;
 
 namespace ProductAPI.Controllers; 
 
 public class ProductController : DefaultController {
-    private readonly IProductRepository _productRepository;
+    private readonly IProductService _productService;
 
-    public ProductController(IProductRepository productRepository)
+    public ProductController(IProductService productService)
     {
-        _productRepository = productRepository;
+        _productService = productService;
     }
 
     #region GET
@@ -20,7 +21,7 @@ public class ProductController : DefaultController {
     //[AllowAnonymous]
     public async Task<IActionResult> GetAllAsync ()
     {
-        List<Product> productList = await _productRepository.GetAsync();
+        List<Product> productList = await _productService.GetAsync();
         if (productList.IsNullOrEmpty())
             return BadRequest($"Could not find any products");
         return Ok(productList);
@@ -31,11 +32,10 @@ public class ProductController : DefaultController {
     //[AllowAuthorizedAttribute(AccessRoles.Admin)]
     public async Task<IActionResult> GetAsyncById(string id)
     {
-        Product product = await _productRepository.GetByIdAsync(id);
+        Product product = await _productService.GetByIdAsync(id);
         if (product != null) 
             return Ok (product);
         return BadRequest($"Could not find product with Id : {id}");
-        return null;
     }
 
     #endregion
@@ -45,25 +45,24 @@ public class ProductController : DefaultController {
     //[AllowAuthorizedAttribute(AccessRoles.Admin)]
     public async Task<IActionResult> CreateAsync([FromBody]PostProductModel request)
     {
-        // move to services 
+        // move to services ?
         Product product = new Product()
        {
            Id = Guid.NewGuid().ToString(),
            Title = request.Title,
-           Price = request.Price,
            Description = request.Description,
            Image = request.Image,
-           IsAvailable = request.IsAvailable,
-           AgeLimit = request.AgeLimit
+           AgeLimit = request.AgeLimit,
+           UnitPrice = request.UnitPrice,
+           UnitsInStock = request.UnitsInStock
        };
-        Product resultProduct = await _productRepository.CreateAsync(product);
+        Product resultProduct = await _productService.CreateAsync(product,request.Category);
         
         // TODO: Needs to have categories before fetching by Id (for N:N)
         //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
         if(resultProduct == null) 
             return BadRequest($"Could not create product");
         return Ok(resultProduct);
-       return null;
     }
  
     
@@ -72,9 +71,27 @@ public class ProductController : DefaultController {
     #region PUT
     [HttpPut()]
     //[Authorize(Roles ="Admin")]
-    public async Task<IActionResult> UpdateAsync([FromBody]PostProductModel request)
+    public async Task<IActionResult> UpdateAsync([FromBody]PutProductModel request)
     {
-            // implement update 
+        Product fetchedProduct = await _productService.GetByIdAsync(request.Id);
+        if (fetchedProduct != null)
+        {
+            Product updatedProduct = new Product()
+            {
+                Title = request.Title,
+                Description = request.Description,
+                Image = request.Image,
+                AgeLimit = request.AgeLimit,
+                UnitPrice = request.UnitPrice,
+                UnitsInStock = request.UnitsInStock
+            };
+            Product resultProduct = await _productService.UpdateAsync(updatedProduct);
+            // TODO: Needs to have categories before fetching by Id (for N:N)
+            //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
+            if(resultProduct == null) 
+                return BadRequest($"Could not create product");
+            return Ok(resultProduct);
+        }
         return null;
     }
     
@@ -87,9 +104,9 @@ public class ProductController : DefaultController {
     //[Authorize(Roles ="Admin")]
     public async Task<IActionResult> DeleteAsync(string id)
     {
-        Product fetchedProduct = await _productRepository.GetByIdAsync(id);
+        Product fetchedProduct = await _productService.GetByIdAsync(id);
         if(fetchedProduct == null) BadRequest($"Could not find product with {id}");
-        bool result = await _productRepository.DeleteAsync(fetchedProduct.Id); 
+        bool result = await _productService.DeleteAsync(fetchedProduct.Id); 
         if(result == null) BadRequest($"Could not delete product with {id}");
         return Ok($"Product with Id : {id} has been deleted !");
     }

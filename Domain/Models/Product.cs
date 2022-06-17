@@ -17,18 +17,16 @@ namespace ProductAPI.Domain.Models {
         
         public int? UnitsInStock { get; set; }
         
-        // TODO : REPAIR TO MATCH EVERYWHERE 
-        public Product(string id, string title,string description,string image,bool isAvailable,string ageLimit) {
+        public Product(string id, string title,string description,string image,string ageLimit,decimal unitPrice,int? unitsInStock) {
             Id = id;
             Title = title;
             Description = description;
             Image = image;
-            IsAvailable = isAvailable;
             AgeLimit = ageLimit;
+            UnitPrice = unitPrice;
+            UnitsInStock = unitsInStock;
         }
         
-    public Product()
-    {
-    }
+    public Product() {}
     }
 }
