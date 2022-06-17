@@ -1,12 +1,14 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace ProductAPI.Domain.BindingModels {
-    public class PostProductModel {
+    public class PutProductModel {
         [Required]
+        public string Id { get; set; }
+      
         public string Title { get; set; } 
-        [Required]
-        public string Price { get; set; } 
-        [Required]
+     
+        public string Price { get; set; }
+        
         public string Description { get; set; } 
     
         public List<string> Category { get; set; } 
@@ -14,6 +16,5 @@ namespace ProductAPI.Domain.BindingModels {
         public bool IsAvailable { get; set; } 
     
         public string AgeLimit { get; set; } 
-
     }
 }

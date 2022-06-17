@@ -9,7 +9,7 @@ namespace ProductAPI.Domain.Profiles {
          // Source => target
          CreateMap<Product, Product>();
          CreateMap<PostProductModel,Product>();
-         CreateMap<PutCharacterModel,Product>();
+         CreateMap<PutProductModel,Product>();
          CreateMap<Category,Category>();
         }
     }
