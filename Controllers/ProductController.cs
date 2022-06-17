@@ -52,6 +52,7 @@ public class ProductController : DefaultController {
            Title = request.Title,
            Price = request.Price,
            Description = request.Description,
+           Image = request.Image,
            IsAvailable = request.IsAvailable,
            AgeLimit = request.AgeLimit
        };

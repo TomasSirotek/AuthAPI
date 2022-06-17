@@ -5,10 +5,12 @@ namespace ProductAPI.Domain.BindingModels {
         [Required]
         public string Title { get; set; } 
         [Required]
-        public string Price { get; set; } 
+        public int Price { get; set; } 
         [Required]
         public string Description { get; set; } 
     
+        public string Image { get; set; } 
+
         public List<string> Category { get; set; } 
     
         public bool IsAvailable { get; set; } 

@@ -6,8 +6,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4a51348-6890-434e-b1f9-8137222ba8d7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.ProductAPI.dir/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.ProductAPI.dir/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Controllers/ProductController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Controllers/ProductController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Infrastructure/Repositories/ProductRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Infrastructure/Repositories/ProductRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/BindingModels/PostProductModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/BindingModels/PostProductModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/BindingModels/PutProductModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/BindingModels/PutProductModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Domain/Models/Product.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Domain/Models/Product.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
