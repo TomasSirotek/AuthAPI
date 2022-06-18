@@ -11,9 +11,8 @@ namespace ProductAPI.Domain.BindingModels {
 
         public List<string> Category { get; set; } 
         [Required]
-        public bool IsAvailable { get; set; } 
-        [Required]
-        public string AgeLimit { get; set; } 
+        public bool IsActive { get; set; } 
+ 
         [Required]
         public decimal UnitPrice { get; set; }
         [Required]

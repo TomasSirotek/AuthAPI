@@ -1,18 +1,36 @@
+using Microsoft.AspNetCore.Builder;
+using ProductAPI.Configuration;
+using Serilog;
 
-namespace ProductAPI
-{
-    public static class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.AddSerilog(new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger());
 
-}
+#region Configure Services
+
+builder.Services.AddApiConfiguration(builder.Configuration);
+
+builder.Services.AddJwtConfiguration(builder.Configuration);
+
+builder.Services.AddSwaggerConfiguration();
+
+builder.Services.RegisterServices();
+
+var app = builder.Build();
+#endregion
+
+#region Configure Pipeline
+
+// seed data 
+
+app.UseSwaggerConfiguration();
+
+app.UseApiConfiguration(app.Environment);
+
+app.UseAuthConfiguration();
+
+app.Run();
+
+#endregion
