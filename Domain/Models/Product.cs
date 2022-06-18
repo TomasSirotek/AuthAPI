@@ -1,32 +1,38 @@
 namespace ProductAPI.Domain.Models {
     public class Product {
-        
-        public string Id { get; set; } 
-    
-        public string Title { get; set; } 
-    
-        public string Price { get; set; } 
-    
-        public string Description { get; set; } 
-    
-        public List<Category> Category { get; set; } 
-    
-        public bool IsAvailable { get; set; } 
-    
-        public string AgeLimit { get; set; } 
-        
-        
-        public Product(string id, string title,string price,string description,bool isAvailable,string ageLimit) {
+
+        public string Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Description { get; set; }
+
+        public string Image { get; set; }
+
+        public List<Category> Category { get; set; }
+
+        public bool IsActive { get; set; }
+
+        public decimal UnitPrice { get; set; }
+
+        public int? UnitsInStock { get; set; }
+
+        public Product(string id, string title, string description, string image, bool isActive, decimal unitPrice,
+            int? unitsInStock)
+        {
             Id = id;
             Title = title;
-            Price = price;
             Description = description;
-            IsAvailable = isAvailable;
-            AgeLimit = ageLimit;
+            Image = image;
+            IsActive = isActive;
+            UnitPrice = unitPrice;
+            UnitsInStock = unitsInStock;
+            
         }
-        
-    public Product()
-    {
-    }
+        public bool IsAvailable(int quantity)
+        {
+            return IsActive && UnitsInStock >= quantity;
+        }
+        public Product() {}
     }
 }

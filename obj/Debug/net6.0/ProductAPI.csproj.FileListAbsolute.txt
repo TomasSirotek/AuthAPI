@@ -146,3 +146,16 @@
 /Users/Tomas/Projects/ProductAPI/ProductAPI/obj/Debug/net6.0/ProductAPI.pdb
 /Users/Tomas/Projects/ProductAPI/ProductAPI/obj/Debug/net6.0/ProductAPI.genruntimeconfig.cache
 /Users/Tomas/Projects/ProductAPI/ProductAPI/obj/Debug/net6.0/ref/ProductAPI.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.AspNetCore.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Extensions.Hosting.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Extensions.Logging.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Formatting.Compact.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Settings.Configuration.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.Console.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.Debug.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.File.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.PeriodicBatching.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.Seq.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/MediatR.dll
+/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/MediatR.Contracts.dll

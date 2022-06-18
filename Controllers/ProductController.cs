@@ -1,96 +1,115 @@
-using ProductAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Repositories;
+using ProductAPI.Services;
 
-namespace ProductAPI.Controllers; 
+namespace ProductAPI.Controllers {
+    public class ProductController : DefaultController {
+        private readonly IProductService _productService;
 
-public class ProductController : DefaultController {
-    private readonly IProductRepository _productRepository;
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
 
-    public ProductController(IProductRepository productRepository)
-    {
-        _productRepository = productRepository;
-    }
-
-    #region GET
-    [HttpGet()]
-    // [AllowAuthorized(AccessRoles.Admin)]
-    //[AllowAnonymous]
-    public async Task<IActionResult> GetAllAsync ()
-    {
-        List<Product> productList = await _productRepository.GetAsync();
-        if (productList.IsNullOrEmpty())
-            return BadRequest($"Could not find any products");
-        return Ok(productList);
-    }
+        #region GET
+        [HttpGet()]
+        // [AllowAuthorized(AccessRoles.Admin)]
+        //[AllowAnonymous]
+        public async Task<IActionResult> GetAllAsync ()
+        {
+            List<Product> productList = await _productService.GetAsync();
+            if (productList.IsNullOrEmpty())
+                return BadRequest($"Could not find any products");
+            return Ok(productList);
+        }
     
     
-    [HttpGet("{id}")]
-    //[AllowAuthorizedAttribute(AccessRoles.Admin)]
-    public async Task<IActionResult> GetAsyncById(string id)
-    {
-        // Product product = await _productService.GetAsyncById(id);
-        // if (product != null) 
-        //     return Ok (product);
-        // return BadRequest($"Could not find product with Id : {id}");
-        return null;
-    }
+        [HttpGet("{id}")]
+        //[AllowAuthorizedAttribute(AccessRoles.Admin)]
+        public async Task<IActionResult> GetAsyncById(string id)
+        {
+            Product product = await _productService.GetByIdAsync(id);
+            if (product != null) 
+                return Ok (product);
+            return BadRequest($"Could not find product with Id : {id}");
+        }
 
-    #endregion
+        #endregion
     
-    #region POST
-    [HttpPost()]
-    //[AllowAuthorizedAttribute(AccessRoles.Admin)]
-    public async Task<IActionResult> CreateAsync([FromBody]PostProductModel request)
-    {
-       //  // move to services 
-       //  Product product = new Product()
-       // {
-       //     Id = Guid.NewGuid().ToString(),
-       //     Title = request.Title,
-       //     Description = request.Description,
-       //     DoB = DateTime.Now,
-       //     AgeLimit = request.AgeLimit
-       //
-       // };
-       //  Product resultProduct = await _productService.CreateAsync(product);
-       //  
-       //  if(resultProduct == null) 
-       //      return BadRequest($"Could not create product");
-       //  return Ok(resultProduct);
-       return null;
-    }
+        #region POST
+        [HttpPost()]
+        //[AllowAuthorizedAttribute(AccessRoles.Admin)]
+        public async Task<IActionResult> CreateAsync([FromBody]PostProductModel request)
+        {
+            // move to services ?
+            Product product = new Product()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = request.Title,
+                Description = request.Description,
+                Image = request.Image,
+                IsActive = request.IsActive,
+                UnitPrice = request.UnitPrice,
+                UnitsInStock = request.UnitsInStock
+            };
+            Product resultProduct = await _productService.CreateAsync(product,request.Category);
+        
+            // TODO: Needs to have categories before fetching by Id (for N:N)
+            //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
+            if(resultProduct == null) 
+                return BadRequest($"Could not create product");
+            return Ok(resultProduct);
+        }
  
     
-    #endregion
-    
-    #region PUT
-    [HttpPut()]
-    //[Authorize(Roles ="Admin")]
-    public async Task<IActionResult> UpdateAsync([FromBody]PostProductModel request)
-    {
-        return null;
-    }
-    
-    #endregion
+        #endregion
+        
+        #region PUT
+        [HttpPut()]
+        //[Authorize(Roles ="Admin")]
+        public async Task<IActionResult> UpdateAsync([FromBody]PutProductModel request)
+        {
+            Product fetchedProduct = await _productService.GetByIdAsync(request.Id);
+            if (fetchedProduct != null)
+            {
+                Product updatedProduct = new Product()
+                {
+                    Title = request.Title,
+                    Description = request.Description,
+                    Image = request.Image,
+                    IsActive = request.IsActive,
+                    UnitPrice = request.UnitPrice,
+                    UnitsInStock = request.UnitsInStock
+                };
+                Product resultProduct = await _productService.UpdateAsync(updatedProduct);
+                // TODO: Needs to have categories before fetching by Id (for N:N)
+                //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
+                if(resultProduct == null) 
+                    return BadRequest($"Could not create product");
+                return Ok(resultProduct);
+            }
+            return null;
+        }
+        
+        #endregion
 
     
-    #region DELETE
+        #region DELETE
 
-    [HttpDelete("{id}")]
-    //[Authorize(Roles ="Admin")]
-    public async Task<IActionResult> DeleteAsync(string id)
-    {
-        // Product fetchedProduct = await _productService.GetAsyncById(id);
-        // if(fetchedUser == null) BadRequest($"Could not find product with {id}");
-        // bool result = await _productService.DeleteAsync(fetchedProduct.Id); 
-        // if(result == null) BadRequest($"Could not delete product with {id}");
-        // return Ok($"User with Id : {id} has been deleted !");
-        return null;
-    }
-    #endregion
+        [HttpDelete("{id}")]
+        //[Authorize(Roles ="Admin")]
+        public async Task<IActionResult> DeleteAsync(string id)
+        {
+            Product fetchedProduct = await _productService.GetByIdAsync(id);
+            if(fetchedProduct == null) BadRequest($"Could not find product with {id}");
+            bool result = await _productService.DeleteAsync(fetchedProduct.Id); 
+            if(result == null) BadRequest($"Could not delete product with {id}");
+            return Ok($"Product with Id : {id} has been deleted !");
+        }
+        #endregion
     
+    }
 }
