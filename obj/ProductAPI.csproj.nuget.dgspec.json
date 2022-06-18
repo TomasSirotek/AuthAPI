@@ -105,6 +105,10 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.19.0, )"
+            },
+            "dbup-sqlserver": {
+              "target": "Package",
+              "version": "[4.6.0, )"
             }
           },
           "imports": [

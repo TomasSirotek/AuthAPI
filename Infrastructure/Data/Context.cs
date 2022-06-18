@@ -21,7 +21,10 @@ namespace ProductAPI.Infrastructure.Data {
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                          e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
                 property.SetColumnType("varchar(255)");
-
+            
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes()
+                         .SelectMany(e => e.GetForeignKeys())) relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+            
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(Context).Assembly);
         }
     }

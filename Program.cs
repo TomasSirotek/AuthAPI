@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Builder;
 using ProductAPI.Configuration;
+using ProductAPI.Infrastructure.Data;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,8 +22,6 @@ var app = builder.Build();
 #endregion
 
 #region Configure Pipeline
-
-// seed data 
 
 app.UseSwaggerConfiguration();
 
