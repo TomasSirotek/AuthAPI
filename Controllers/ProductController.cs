@@ -72,7 +72,6 @@ public class ProductController : DefaultController {
     //[Authorize(Roles ="Admin")]
     public async Task<IActionResult> UpdateAsync([FromBody]PostProductModel request)
     {
-            // implement update 
         return null;
     }
     
