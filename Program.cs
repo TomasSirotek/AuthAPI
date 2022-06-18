@@ -23,8 +23,6 @@ var app = builder.Build();
 
 #region Configure Pipeline
 
-// seed data 
-
 app.UseSwaggerConfiguration();
 
 app.UseApiConfiguration(app.Environment);
