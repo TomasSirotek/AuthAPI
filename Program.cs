@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Builder;
 using ProductAPI.Configuration;
 using Serilog;
 
