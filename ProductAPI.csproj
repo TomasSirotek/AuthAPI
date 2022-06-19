@@ -36,9 +36,9 @@
 
     <ItemGroup>
       <None Remove="Infrastructure\Scripts\Script0001-CreateTable.sql" />
-      <EmbeddedResource Include="Infrastructure\Scripts\Script0001-CreateTable.sql" />
+      <EmbeddedResource Include="Infrastructure\Seeding\Script0001-CreateTable.sql" />
       <None Remove="Infrastructure\Scripts\Script0002-InsertTable.sql" />
-      <EmbeddedResource Include="Infrastructure\Scripts\Script0002-InsertTable.sql" />
+      <EmbeddedResource Include="Infrastructure\Seeding\Script0002-InsertTable.sql" />
     </ItemGroup>
 
 </Project>

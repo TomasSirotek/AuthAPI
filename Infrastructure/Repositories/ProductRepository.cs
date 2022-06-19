@@ -18,8 +18,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             {
                 var sql = $@"SELECT *
                             FROM product p
-                            inner JOIN product_category pc ON p.id = pc.product_id  
-                            inner JOIN category c ON pc.category_id = c.id";
+                            inner JOIN product_category pc ON p.id = pc.productId  
+                            inner JOIN category c ON pc.categoryId = c.id";
 
                 IEnumerable<Product> products = cnn.Query<Product, Category, Product>(sql, (p, c) =>
                         {
@@ -53,8 +53,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             {
                 var sql = @"SELECT *
                         FROM product p
-                        inner JOIN product_category pc ON p.id = pc.product_id
-                        inner JOIN category c ON pc.category_id = c.id
+                        inner JOIN product_category pc ON p.id = pc.productId
+                        inner JOIN category c ON pc.categoryId = c.id
                         where p.id = @id";
 
                 IEnumerable<Product> product = cnn.Query<Product, Category, Product>(sql, (p, c) =>
@@ -88,8 +88,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             using (var cnn = _connection.CreateConnection())
             {
                 var sql =
-                    $@"INSERT INTO product (id,title,description,isAvailable,ageLimit) 
-                        values (@id,@title,@description,@isAvailable,@ageLimit)";
+                    $@"INSERT INTO product (id,title,description,isActive,unitAmount,unitPrice) 
+                        values (@id,@title,@description,@isActive,@unitAmount,@unitPrice)";
 
                 var newProduct = await cnn.ExecuteAsync(sql, product);
                 if (newProduct > 0)
@@ -111,8 +111,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             {
                 var sql =
                     $@"DELETE 
-                   FROM product p
-                   WHERE p.id = @id";
+                   FROM product
+                   WHERE id = @id";
 
                 var deletePExecuteAsync = await cnn.ExecuteAsync(sql);
                 if (deletePExecuteAsync > 0)

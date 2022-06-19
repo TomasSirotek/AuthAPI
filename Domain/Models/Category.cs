@@ -3,12 +3,12 @@ namespace ProductAPI.Domain.Models {
 
         public string Id { get; set; }
         
-        public string Platform { get; set; }
+        public string Name { get; set; }
         
-        public Category(string id, string platform)
+        public Category(string id, string name)
         {
             Id = id;
-            Platform = platform;
+            Name = name;
         }
 
         public Category() {}

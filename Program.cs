@@ -1,5 +1,4 @@
 using ProductAPI.Configuration;
-using ProductAPI.Infrastructure.Data;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

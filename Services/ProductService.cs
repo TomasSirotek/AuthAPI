@@ -24,11 +24,11 @@ namespace ProductAPI.Services {
         {
             List<Category> categoryProduct = new();
             List<Category> productCategory = categoryProduct;
-            foreach (var platform in category)
+            foreach (var name in category)
             {
                 var categoryList = new Category
                 {
-                    Platform = platform
+                    Name = name
                 };
                 productCategory.Add(categoryList);
             }
