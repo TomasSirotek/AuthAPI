@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using ProductAPI.Domain.Models;
-using MediatR;
+
 
 namespace ProductAPI.Infrastructure.Data {
     public class Context : DbContext {

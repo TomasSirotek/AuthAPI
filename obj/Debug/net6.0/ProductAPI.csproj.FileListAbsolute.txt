@@ -5,8 +5,6 @@
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/ProductAPI.runtimeconfig.json
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/ProductAPI.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/ProductAPI.pdb
-/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/AutoMapper.dll
-/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Dapper.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Humanizer.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
@@ -157,8 +155,6 @@
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.File.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.PeriodicBatching.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Serilog.Sinks.Seq.dll
-/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/MediatR.dll
-/Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/MediatR.Contracts.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/dbup-core.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/dbup-sqlserver.dll
 /Users/Tomas/Projects/ProductAPI/bin/Debug/net6.0/Microsoft.Azure.Services.AppAuthentication.dll

@@ -1,17 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "MicKPm5Z4C8MvE8IhVITNMFR+IJnCiIwGcSC7B0lOyY1cz+bN2PIJwRu0AU7ePrZ+dUclx/fX08qdrH88CyuDQ==",
+  "dgSpecHash": "m/DFhs1NGtt8sUPSiHTuNZ2mtY1JKKxXirA27zPdUnnrTeJkg6VbKDWFfcomPSj7NT4o5MwY4uJ5JjaavL0Zrw==",
   "success": true,
   "projectFilePath": "/Users/Tomas/Projects/ProductAPI/ProductAPI.csproj",
   "expectedPackageFiles": [
-    "/Users/Tomas/.nuget/packages/automapper/11.0.0/automapper.11.0.0.nupkg.sha512",
-    "/Users/Tomas/.nuget/packages/automapper.extensions.microsoft.dependencyinjection/11.0.0/automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/dapper/2.0.123/dapper.2.0.123.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/dbup-core/4.6.0/dbup-core.4.6.0.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/dbup-sqlserver/4.6.0/dbup-sqlserver.4.6.0.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
-    "/Users/Tomas/.nuget/packages/mediatr/10.0.1/mediatr.10.0.1.nupkg.sha512",
-    "/Users/Tomas/.nuget/packages/mediatr.contracts/1.0.1/mediatr.contracts.1.0.1.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/6.0.6/microsoft.aspnetcore.authentication.jwtbearer.6.0.6.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.jsonpatch/6.0.6/microsoft.aspnetcore.jsonpatch.6.0.6.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/6.0.6/microsoft.aspnetcore.mvc.newtonsoftjson.6.0.6.nupkg.sha512",

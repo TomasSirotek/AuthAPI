@@ -1,18 +1,23 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2 AS build-env
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal AS base
 WORKDIR /app
 EXPOSE 80
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-dotnet-configure-containers
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+USER appuser
 
-#Copy csproj and restore
-COPY *.csproj ./
-RUN dotnet restore
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
+WORKDIR /src
+COPY ["ProductAPI.csproj", "./"]
+RUN dotnet restore "ProductAPI.csproj"
+COPY . .
+WORKDIR "/src/."
+RUN dotnet build "ProductAPI.csproj" -c Release -o /app/build
 
-#Copy all else and build 
-COPY . ./
-RUN dotnet publish -c Release -o out
+FROM build AS publish
+RUN dotnet publish "ProductAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
-##Gen image
-FROM mcr.microsoft.com/dotnet/core/sdk:2.2
+FROM base AS final
 WORKDIR /app
-COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet","ProductAPI.dll"]
-
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ProductAPI.dll"]
