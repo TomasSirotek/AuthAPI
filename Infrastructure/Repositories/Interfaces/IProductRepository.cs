@@ -1,6 +1,6 @@
 using ProductAPI.Domain.Models;
 
-namespace ProductAPI.Infrastructure.Repositories {
+namespace ProductAPI.Infrastructure.Repositories.Interfaces {
     public interface IProductRepository {
 
         Task<List<Product>> GetAsync();

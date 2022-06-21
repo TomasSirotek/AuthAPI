@@ -4,6 +4,7 @@ using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Services;
+using ProductAPI.Services.Interfaces;
 
 namespace ProductAPI.Controllers {
     public class ProductController : DefaultController {

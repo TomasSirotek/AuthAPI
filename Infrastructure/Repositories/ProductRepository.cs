@@ -1,6 +1,7 @@
 using Dapper;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Data;
+using ProductAPI.Infrastructure.Repositories.Interfaces;
 
 namespace ProductAPI.Infrastructure.Repositories {
     public class ProductRepository : IProductRepository{
@@ -100,9 +101,33 @@ namespace ProductAPI.Infrastructure.Repositories {
             return null;
         }
 
-        public async Task<Product> UpdateAsync(Product character)
+        public async Task<Product> UpdateAsync(Product product)
         {
-            throw new NotImplementedException();
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql = $@"update product
+                        SET 
+                            title = @title,
+                            description = @description,
+                            isActive = @isActive,
+                            unitPrice = @unitPrice,
+                            unitsInStock = @unitsInStock
+                        where id = @id;";
+
+                var affectedRows = await cnn.ExecuteAsync(sql, new
+                {
+                    title = product.Title,
+                    description = product.Description,
+                    isActive = product.IsActive,
+                    unitPrice = product.UnitPrice,
+                    unitsInStock = product.UnitsInStock
+                    
+                });
+
+                if (affectedRows > 0)
+                    return product;
+                throw new ArgumentNullException(nameof(product));
+            }
         }
 
         public async Task<bool> DeleteAsync(string id)
@@ -114,7 +139,10 @@ namespace ProductAPI.Infrastructure.Repositories {
                    FROM product
                    WHERE id = @id";
 
-                var deletePExecuteAsync = await cnn.ExecuteAsync(sql);
+                var deletePExecuteAsync = await cnn.ExecuteAsync(sql,new
+                {
+                    Id = id 
+                });
                 if (deletePExecuteAsync > 0)
                 {
                     return true;
