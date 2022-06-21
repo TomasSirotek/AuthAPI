@@ -10,9 +10,8 @@ namespace ProductAPI.Infrastructure.Data {
             base(options)
         { }
         public DbSet<Product> Characters { get; set; }
-        public DbSet<Category> Category { get; set; }
         
-        
+    
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<ValidationResult>();
