@@ -1,7 +1,5 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace ProductAPI.Configuration {
     public static class SwaggerUiConfig {

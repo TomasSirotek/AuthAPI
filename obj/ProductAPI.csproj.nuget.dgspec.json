@@ -38,17 +38,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
-            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
-              "target": "Package",
-              "version": "[11.0.0, )"
-            },
             "Dapper": {
               "target": "Package",
               "version": "[2.0.123, )"
-            },
-            "MediatR": {
-              "target": "Package",
-              "version": "[10.0.1, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
@@ -105,6 +97,10 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.19.0, )"
+            },
+            "dbup-sqlserver": {
+              "target": "Package",
+              "version": "[4.6.0, )"
             }
           },
           "imports": [
