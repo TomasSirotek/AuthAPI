@@ -6,10 +6,13 @@ using ProductAPI.Services.Interfaces;
 namespace ProductAPI.Services {
     public class ProductService : IProductService{
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository,ICategoryRepository categoryRepository)
         {
             _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
+
         }
 
         public async Task<List<Product>> GetAsync()
@@ -39,7 +42,25 @@ namespace ProductAPI.Services {
             Product newProduct = await _productRepository.CreateAsync(product);
             if (newProduct != null)
             {
-                // Check for existing category and asign it to the product
+                // Check for existing category
+                foreach (string name in category)
+                {
+                    Category checkCategory = await _categoryRepository.GetByNameAsync(name);
+                    if (checkCategory != null)
+                    {
+                        bool resultAddCategory =
+                            await _productRepository.CreateCategoryAsync(newProduct.Id,checkCategory.Id);
+                    }
+
+                }
+
+                Product productTest = await _productRepository.GetByIdAsync(product.Id);
+                
+                return productTest;
+                // if exists asign each of one to the Product
+                // find category by name from categoryRepository
+                // if exist asign each categoryId and productId into SQL from R
+
             }
             throw new Exception($"Could not create product with Id: {product.Id}");;
 

@@ -44,6 +44,22 @@ namespace ProductAPI.Infrastructure.Repositories {
                 throw new ArgumentNullException(nameof(category));
             }
         }
+        
+        public async Task<Category> GetByNameAsync(string name)
+        {
+
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql = @"select * from category as c where c.name = @name";
+
+                Category category = await cnn.QueryFirstAsync<Category>(sql, new {Name = name});
+                if (category != null)
+                {
+                    return category;
+                }
+                throw new ArgumentNullException(nameof(category));
+            }
+        }
 
         public async Task<Category> CreateAsync(Category category)
         {

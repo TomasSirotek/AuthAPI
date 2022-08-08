@@ -89,8 +89,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             using (var cnn = _connection.CreateConnection())
             {
                 var sql =
-                    $@"INSERT INTO product (id,title,description,isActive,unitAmount,unitPrice) 
-                        values (@id,@title,@description,@isActive,@unitAmount,@unitPrice)";
+                    $@"INSERT INTO product (id,title,description,isActive,unitPrice,unitsInStock) 
+                        values (@id,@title,@description,@isActive,@unitPrice,@unitsInStock)";
 
                 var newProduct = await cnn.ExecuteAsync(sql, product);
                 if (newProduct > 0)
@@ -99,6 +99,27 @@ namespace ProductAPI.Infrastructure.Repositories {
                 }
             }
             return null;
+        }
+        
+        public async Task<bool> CreateCategoryAsync(string productId,string categoryId)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql =
+                    $@"INSERT INTO product_category(productId,categoryId)
+                        VALUES (@productId,@categoryId);";
+
+                var newProduct = await cnn.ExecuteAsync(sql, new
+                {
+                    ProductId = productId,
+                    CategoryId = categoryId
+                });
+                if (newProduct > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public async Task<Product> UpdateAsync(Product product)

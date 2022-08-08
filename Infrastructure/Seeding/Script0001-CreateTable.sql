@@ -4,8 +4,8 @@ CREATE TABLE [dbo].[product]
     [title] NVARCHAR(255) NOT NULL,
     [description] NVARCHAR(255) NOT NULL,
     [isActive] BIGINT NOT NULL,
-    [unitAmount] INT NOT NULL,
     [unitPrice] DECIMAL NOT NULL,
+    [unitsInStock] INT NOT NULL,
     -- Specify keys
     CONSTRAINT product_pkey PRIMARY KEY (id),
     

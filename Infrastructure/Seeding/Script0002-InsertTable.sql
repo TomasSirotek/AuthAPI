@@ -1,7 +1,7 @@
-INSERT INTO product (id,title,description,isActive,unitAmount,unitPrice)
+INSERT INTO product (id,title,description,isActive,unitPrice,unitsInStock)
 VALUES ('1', 'The Last of Us', 'Very nice game with a lot of gaming features',1,30,69.90);
 
-INSERT INTO product (id,title,description,isActive,unitAmount,unitPrice)
+INSERT INTO product (id,title,description,isActive,unitPrice,unitsInStock)
 VALUES ('2', 'Call of Duty', 'Super action game',1,4,39.90);
 
 INSERT INTO category(id,name)

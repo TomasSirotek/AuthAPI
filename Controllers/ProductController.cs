@@ -59,10 +59,10 @@ namespace ProductAPI.Controllers {
             Product resultProduct = await _productService.CreateAsync(product,request.Category);
         
             // TODO: Needs to have categories before fetching by Id (for N:N)
-            //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
-            if(resultProduct == null) 
+            Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
+            if(fetchedDbProduct == null) 
                 return BadRequest($"Could not create product");
-            return Ok(resultProduct);
+            return Ok(fetchedDbProduct);
         }
  
     

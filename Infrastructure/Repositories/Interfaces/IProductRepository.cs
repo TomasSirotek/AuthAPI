@@ -8,6 +8,8 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
         Task<Product> GetByIdAsync(string id);
 
         Task<Product> CreateAsync(Product product);
+
+        Task<bool> CreateCategoryAsync(string productId, string categoryId);
         
         Task<Product> UpdateAsync(Product product);
         

@@ -6,6 +6,8 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
     
         Task<Category> GetByIdAsync(string id);
 
+        Task<Category> GetByNameAsync(string name);
+
         Task<Category> CreateAsync(Category category);
         
         Task<Category> UpdateAsync(Category category);
