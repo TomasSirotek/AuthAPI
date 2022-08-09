@@ -135,6 +135,7 @@ namespace ProductAPI.Infrastructure.Repositories {
 
                 var affectedRows = await cnn.ExecuteAsync(sql, new
                 {
+                    id = product.Id,
                     title = product.Title,
                     description = product.Description,
                     isActive = product.IsActive,

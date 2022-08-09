@@ -45,7 +45,6 @@ namespace ProductAPI.Controllers {
         //[AllowAuthorizedAttribute(AccessRoles.Admin)]
         public async Task<IActionResult> CreateAsync([FromBody]PostProductModel request)
         {
-            // move to services ?
             Product product = new Product()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -57,8 +56,7 @@ namespace ProductAPI.Controllers {
                 UnitsInStock = request.UnitsInStock
             };
             Product resultProduct = await _productService.CreateAsync(product,request.Category);
-        
-            // TODO: Needs to have categories before fetching by Id (for N:N)
+            
             Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
             if(fetchedDbProduct == null) 
                 return BadRequest($"Could not create product");
@@ -86,11 +84,9 @@ namespace ProductAPI.Controllers {
                     UnitsInStock = request.UnitsInStock
                 };
                 Product resultProduct = await _productService.UpdateAsync(updatedProduct);
-                // TODO: Needs to have categories before fetching by Id (for N:N)
-                //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
-                if(resultProduct == null) 
-                    return BadRequest($"Could not create product");
-                return Ok(resultProduct);
+                
+                Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
+                return Ok(fetchedDbProduct);
             }
             return null;
         }
