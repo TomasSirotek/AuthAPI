@@ -40,11 +40,11 @@ namespace ProductAPI.Services {
             product.Category = productCategory;
             
             // Check for existing category
-            foreach (string name in category)
+            foreach (Category categoryName in product.Category)
             {
-                Category checkCategory = await _categoryRepository.GetByNameAsync(name);
-                if (checkCategory == null)  throw new Exception($"Category with name: {name} does not exist");
-                
+                Category checkCategory = await _categoryRepository.GetByNameAsync(categoryName.Name);
+                if (checkCategory == null)  throw new Exception($"Category with name: {categoryName.Name} does not exist");
+                categoryName.Id = checkCategory.Id;
             }
             
             // comming empty product needs to have its id
