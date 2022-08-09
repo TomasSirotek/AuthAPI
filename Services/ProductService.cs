@@ -38,30 +38,22 @@ namespace ProductAPI.Services {
                 productCategory.Add(categoryList);
             }
             product.Category = productCategory;
-
-            Product newProduct = await _productRepository.CreateAsync(product);
-            if (newProduct != null)
+            
+            // Check for existing category
+            foreach (string name in category)
             {
-                // Check for existing category
-                foreach (string name in category)
-                {
-                    Category checkCategory = await _categoryRepository.GetByNameAsync(name);
-                    if (checkCategory != null)
-                    {
-                        bool resultAddCategory =
-                            await _productRepository.CreateCategoryAsync(newProduct.Id,checkCategory.Id);
-                    }
-
-                }
-
-                Product productTest = await _productRepository.GetByIdAsync(product.Id);
+                Category checkCategory = await _categoryRepository.GetByNameAsync(name);
+                if (checkCategory == null)  throw new Exception($"Category with name: {name} does not exist");
                 
-                return productTest;
-                // if exists asign each of one to the Product
-                // find category by name from categoryRepository
-                // if exist asign each categoryId and productId into SQL from R
-
             }
+            
+            // comming empty product needs to have its id
+            
+            Product newProduct = await _productRepository.CreateAsync(product);
+
+            if (newProduct != null)
+                return newProduct;
+            
             throw new Exception($"Could not create product with Id: {product.Id}");;
 
         }
@@ -74,7 +66,7 @@ namespace ProductAPI.Services {
             Product productUpdated = await _productRepository.UpdateAsync(product);
             if (productUpdated == null) 
                 throw new Exception("Product could not be created");
-            // fetch updated role
+            // fetch updated product
             Product updatedProduct = await _productRepository.GetByIdAsync(product.Id);
             // if done return back 
             return updatedProduct;
@@ -86,3 +78,26 @@ namespace ProductAPI.Services {
         }
     }
 }
+
+// if (newProduct != null)
+// {
+//     // Check for existing category
+//     foreach (string name in category)
+//     {
+//         Category checkCategory = await _categoryRepository.GetByNameAsync(name);
+//         if (checkCategory != null)
+//         {
+//             bool resultAddCategory =
+//                 await _productRepository.CreateCategoryAsync(newProduct.Id,checkCategory.Id);
+//         }
+//
+//     }
+//
+//     Product productTest = await _productRepository.GetByIdAsync(product.Id);
+//     
+//     return productTest;
+//     // if exists asign each of one to the Product
+//     // find category by name from categoryRepository
+//     // if exist asign each categoryId and productId into SQL from R
+//
+// }

@@ -95,7 +95,22 @@ namespace ProductAPI.Infrastructure.Repositories {
                 var newProduct = await cnn.ExecuteAsync(sql, product);
                 if (newProduct > 0)
                 {
-                    return product;
+                    foreach (Category category in product.Category)
+                   {
+                       var categorySql =
+                           $@"INSERT INTO product_category(productId,categoryId)
+                        VALUES (@productId,@categoryId);";
+
+                       var productCategory = await cnn.ExecuteAsync(categorySql, new
+                       {
+                           ProductId = product.Id,
+                           CategoryId = category.Id
+                       });
+                       if (productCategory > 0)
+                       {
+                           return product;
+                       }
+                   }
                 }
             }
             return null;
