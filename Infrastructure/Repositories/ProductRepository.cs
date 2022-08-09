@@ -19,8 +19,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             {
                 var sql = $@"SELECT *
                             FROM product p
-                            inner JOIN product_category pc ON p.id = pc.productId  
-                            inner JOIN category c ON pc.categoryId = c.id";
+                            LEFT JOIN product_category pc ON p.id = pc.productId  
+                            LEFT JOIN category c ON pc.categoryId = c.id";
 
                 IEnumerable<Product> products = cnn.Query<Product, Category, Product>(sql, (p, c) =>
                         {
@@ -31,7 +31,7 @@ namespace ProductAPI.Infrastructure.Repositories {
                                 productCategory.Add(p.Id, product = p);
                             }
 
-                            if (product.Category == null)
+                            // if (product.Category == null)
                                 product.Category = new List<Category>();
                             product.Category.Add(c);
                             return product;
@@ -54,8 +54,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             {
                 var sql = @"SELECT *
                         FROM product p
-                        inner JOIN product_category pc ON p.id = pc.productId
-                        inner JOIN category c ON pc.categoryId = c.id
+                        LEFT JOIN product_category pc ON p.id = pc.productId
+                        LEFT JOIN category c ON pc.categoryId = c.id
                         where p.id = @id";
 
                 IEnumerable<Product> product = cnn.Query<Product, Category, Product>(sql, (p, c) =>
@@ -95,6 +95,7 @@ namespace ProductAPI.Infrastructure.Repositories {
                 var newProduct = await cnn.ExecuteAsync(sql, product);
                 if (newProduct > 0)
                 {
+                    bool result = false;
                     foreach (Category category in product.Category)
                    {
                        var categorySql =
@@ -107,35 +108,17 @@ namespace ProductAPI.Infrastructure.Repositories {
                            CategoryId = category.Id
                        });
                        if (productCategory > 0)
-                       {
-                           return product;
-                       }
+                           result = true;
                    }
+                    if (result)
+                    {
+                        return product;
+                    }
                 }
             }
             return null;
         }
         
-        public async Task<bool> CreateCategoryAsync(string productId,string categoryId)
-        {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql =
-                    $@"INSERT INTO product_category(productId,categoryId)
-                        VALUES (@productId,@categoryId);";
-
-                var newProduct = await cnn.ExecuteAsync(sql, new
-                {
-                    ProductId = productId,
-                    CategoryId = categoryId
-                });
-                if (newProduct > 0)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
 
         public async Task<Product> UpdateAsync(Product product)
         {
