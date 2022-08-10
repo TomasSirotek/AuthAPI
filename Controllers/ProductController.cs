@@ -72,23 +72,23 @@ namespace ProductAPI.Controllers {
         public async Task<IActionResult> UpdateAsync([FromBody]PutProductModel request)
         {
             Product fetchedProduct = await _productService.GetByIdAsync(request.Id);
-            if (fetchedProduct != null)
+            if (fetchedProduct == null) return BadRequest($"Could not find product with Id {request.Id}");
+            Product updatedProduct = new Product()
             {
-                Product updatedProduct = new Product()
-                {
-                    Title = request.Title,
-                    Description = request.Description,
-                    Image = request.Image,
-                    IsActive = request.IsActive,
-                    UnitPrice = request.UnitPrice,
-                    UnitsInStock = request.UnitsInStock
-                };
-                Product resultProduct = await _productService.UpdateAsync(updatedProduct);
+                Id = request.Id,
+                Title = request.Title,
+                Description = request.Description,
+                Image = request.Image,
+                IsActive = request.IsActive,
+                UnitPrice = request.UnitPrice,
+                UnitsInStock = request.UnitsInStock
+            };
+            // not comming strings of category for update
+            Product resultProduct = await _productService.UpdateAsync(updatedProduct);
                 
-                Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
-                return Ok(fetchedDbProduct);
-            }
-            return null;
+               // Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
+                return Ok(resultProduct);
+                
         }
         
         #endregion

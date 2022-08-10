@@ -95,29 +95,32 @@ namespace ProductAPI.Infrastructure.Repositories {
                 var newProduct = await cnn.ExecuteAsync(sql, product);
                 if (newProduct > 0)
                 {
-                    bool result = false;
-                    foreach (Category category in product.Category)
-                   {
-                       var categorySql =
-                           $@"INSERT INTO product_category(productId,categoryId)
-                        VALUES (@productId,@categoryId);";
-
-                       var productCategory = await cnn.ExecuteAsync(categorySql, new
-                       {
-                           ProductId = product.Id,
-                           CategoryId = category.Id
-                       });
-                       if (productCategory > 0)
-                           result = true;
-                   }
-                    if (result)
-                    {
-                        return product;
-                    }
+                    return product;
                 }
             }
             return null;
         }
+        
+        public async Task<Product> AddCategoryAsync(Product product,Category category)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var categorySql =
+                            $@"INSERT INTO product_category(productId,categoryId)
+                        VALUES (@productId,@categoryId);";
+
+                        var productCategory = await cnn.ExecuteAsync(categorySql, new
+                        {
+                            ProductId = product.Id,
+                            CategoryId = category.Id
+                        });
+                        if (productCategory > 0)
+                            return product;
+            }
+
+            return null;
+        }
+        
         
 
         public async Task<Product> UpdateAsync(Product product)
@@ -143,9 +146,12 @@ namespace ProductAPI.Infrastructure.Repositories {
                     unitsInStock = product.UnitsInStock
                     
                 });
-
+                
+              
                 if (affectedRows > 0)
                     return product;
+                
+                
                 throw new ArgumentNullException(nameof(product));
             }
         }

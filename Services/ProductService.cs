@@ -1,3 +1,4 @@
+using ProductAPI.Domain.BindingModels.Category;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
@@ -39,20 +40,18 @@ namespace ProductAPI.Services {
             }
             product.Category = productCategory;
             
+            Product createdProduct = await _productRepository.CreateAsync(product);
             // Check for existing category
             foreach (Category categoryName in product.Category)
             {
-                Category checkCategory = await _categoryRepository.GetByNameAsync(categoryName.Name);
-                if (checkCategory == null)  throw new Exception($"Category with name: {categoryName.Name} does not exist");
-                categoryName.Id = checkCategory.Id;
+                Category fetchedCategory = await _categoryRepository.GetByNameAsync(categoryName.Name);
+                if (fetchedCategory == null)  throw new Exception($"Category with name: {categoryName.Name} does not exist");
+                Product  productResult = await _productRepository.AddCategoryAsync(createdProduct, fetchedCategory);
+                if (productResult == null)  throw new Exception($"Could not add category to with name: {categoryName.Name} does not exist");
+
             }
             
-            // comming empty product needs to have its id
-            
-            Product newProduct = await _productRepository.CreateAsync(product);
-
-            if (newProduct != null)
-                return newProduct;
+            return createdProduct;
             
             throw new Exception($"Could not create product with Id: {product.Id}");;
 
@@ -60,16 +59,24 @@ namespace ProductAPI.Services {
 
         public async Task<Product> UpdateAsync(Product product)
         {
-            if (product == null) 
-                throw new Exception("Product cannot be empty");
-            // try to update
+            product.Category.Clear();
+            
+          
             Product productUpdated = await _productRepository.UpdateAsync(product);
-            if (productUpdated == null) 
-                throw new Exception("Product could not be created");
-            // fetch updated product
-            Product updatedProduct = await _productRepository.GetByIdAsync(product.Id);
-            // if done return back 
-            return updatedProduct;
+            if (productUpdated == null) throw new Exception("Could not product ");
+
+          
+       
+            foreach (Category category in product.Category)
+            {
+                Category fetchedCategory = await _categoryRepository.GetByIdAsync(product.Id);
+
+                if(fetchedCategory == null)  throw new Exception($"Could not find category with name {category.Name}");
+                Product  productResult = await _productRepository.AddCategoryAsync(productUpdated, fetchedCategory);
+                if (productResult == null)  throw new Exception($"Could not add category to with name: {category.Name} does not exist");
+            }
+                
+            return productUpdated;
         }
 
         public async Task<bool> DeleteAsync(string id)
