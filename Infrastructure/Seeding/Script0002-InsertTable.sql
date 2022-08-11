@@ -1,6 +1,6 @@
 --User insert
 
-INSERT INTO appUser (id,firstName,lastName,email,passwordHash,isActivated,createdAt)
+INSERT INTO app_user (id,firstName,lastName,email,passwordHash,isActivated,createdAt)
 VALUES ('a8bd0476-eb11-46f4-9d83-bd5e44f8637f','Admin', 'LastName','google@yahoo.com','hashofpsw',0,'2020-02-03');
 
 INSERT INTO role(id,name)

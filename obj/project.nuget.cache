@@ -1,14 +1,17 @@
 {
   "version": 2,
-  "dgSpecHash": "m/DFhs1NGtt8sUPSiHTuNZ2mtY1JKKxXirA27zPdUnnrTeJkg6VbKDWFfcomPSj7NT4o5MwY4uJ5JjaavL0Zrw==",
+  "dgSpecHash": "Lk++tzgq65CbFHNcnGWbRh0pzg68TGROtLbz9bH/AUmFZzGZEKUAN8/F1Ivmrn5SPjlMqJgeumP14Lxomzkg9g==",
   "success": true,
   "projectFilePath": "/Users/Tomas/Projects/ProductAPI/ProductAPI.csproj",
   "expectedPackageFiles": [
+    "/Users/Tomas/.nuget/packages/cryptohelper/3.0.2/cryptohelper.3.0.2.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/dapper/2.0.123/dapper.2.0.123.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/dbup-core/4.6.0/dbup-core.4.6.0.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/dbup-sqlserver/4.6.0/dbup-sqlserver.4.6.0.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/6.0.6/microsoft.aspnetcore.authentication.jwtbearer.6.0.6.nupkg.sha512",
+    "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.cryptography.internal/2.0.1/microsoft.aspnetcore.cryptography.internal.2.0.1.nupkg.sha512",
+    "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.cryptography.keyderivation/2.0.1/microsoft.aspnetcore.cryptography.keyderivation.2.0.1.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.jsonpatch/6.0.6/microsoft.aspnetcore.jsonpatch.6.0.6.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.mvc.newtonsoftjson/6.0.6/microsoft.aspnetcore.mvc.newtonsoftjson.6.0.6.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.azure.services.appauthentication/1.3.1/microsoft.azure.services.appauthentication.1.3.1.nupkg.sha512",

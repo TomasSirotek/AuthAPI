@@ -1,4 +1,5 @@
-CREATE TABLE [dbo].[appUser]
+-- Creates user table
+CREATE TABLE [dbo].[app_user]
 (
     [id] NVARCHAR(255)  NOT NULL ,
     [firstName] NVARCHAR(255) NOT NULL,
@@ -31,7 +32,7 @@ CREATE TABLE [dbo].[user_role]
     -- Specify keys
     CONSTRAINT userRole_pkey PRIMARY KEY(userId,roleId),
     CONSTRAINT fk_userRole__User
-        FOREIGN KEY (userId) REFERENCES appUser(id) ON DELETE CASCADE ,
+        FOREIGN KEY (userId) REFERENCES app_user(id) ON DELETE CASCADE ,
 
     CONSTRAINT fk_userRole__Role
         FOREIGN KEY (roleId) REFERENCES role(id) ON DELETE CASCADE,

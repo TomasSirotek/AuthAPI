@@ -1,7 +1,5 @@
 using ProductAPI.Domain.BindingModels;
-using ProductAPI.Domain.BindingModels.Category;
 using ProductAPI.Domain.Models;
-using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
 using ProductAPI.Services.Interfaces;
 

@@ -7,6 +7,7 @@
     <UserSecretsId>46b08fa9-05dc-4fa0-b888-29701461d3ca</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="CryptoHelper" Version="3.0.2" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="dbup-sqlserver" Version="4.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />

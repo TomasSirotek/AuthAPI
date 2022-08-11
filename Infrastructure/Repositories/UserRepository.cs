@@ -1,0 +1,216 @@
+using Dapper;
+using ProductAPI.Identity.Models;
+using ProductAPI.Infrastructure.Data;
+using ProductAPI.Infrastructure.Repositories.Interfaces;
+
+namespace ProductAPI.Infrastructure.Repositories {
+    public class UserRepository : IUserRepository {
+        
+        private readonly SqlServerConnection _connection;
+
+        public UserRepository(SqlServerConnection connection)
+        {
+            _connection = connection;
+        }
+
+        public async Task<List<AppUser>> GetAllUsersAsync()
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql = @"SELECT *
+                        FROM app_user u
+                        LEFT JOIN user_role ur ON u.id = ur.userId 
+                        LEFT JOIN role r ON ur.roleId = r.id";
+
+                IEnumerable<AppUser> users = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
+                        {
+                            Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
+                            AppUser user;
+                            if (!userRoles.TryGetValue(u.Id, out user))
+                            {
+                                userRoles.Add(u.Id, user = u);
+                            }
+
+                            if (user.Roles == null)
+                                user.Roles = new List<UserRole>();
+                            user.Roles.Add(r);
+                            return user;
+                        },
+                        splitOn: "id"
+                    ).GroupBy(u => u.Id)
+                    .Select(group =>
+                    {
+                        AppUser user = group.First();
+                        user.Roles = group.Select(u => u.Roles.Single()).ToList();
+                        return user;
+                    });
+                return users.ToList();
+            }
+        }
+
+        public async Task<AppUser> GetUserByIdAsync(string id)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql = @"SELECT *
+                        FROM app_user u
+                        LEFT JOIN user_role ur ON u.id = ur.userId 
+                        LEFT JOIN role r ON ur.roleId = r.id
+                        where u.id = @id";
+
+                IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
+                        {
+                            var userRoles = new Dictionary<string, AppUser>();
+                            AppUser user;
+                            if (!userRoles.TryGetValue(u.Id, out user))
+                            {
+                                userRoles.Add(u.Id, user = u);
+                            }
+
+                            if (user.Roles == null)
+                                user.Roles = new List<UserRole>();
+                            user.Roles.Add(r);
+                            return user;
+                        },
+                        new {Id = id}
+                    ).GroupBy(u => u.Id)
+                    .Select(group =>
+                    {
+                        AppUser user = group.First();
+                        user.Roles = group.Select(u => u.Roles.Single()).ToList();
+                        return user;
+                    });
+                return user.First();
+            }
+        }
+
+        public async Task<AppUser> GetAsyncByEmailAsync(string email)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql = @"SELECT *
+                        FROM app_user u
+                        LEFT JOIN user_role ur ON u.id = ur.userId 
+                        LEFT JOIN role r ON ur.roleId = r.id
+                        where u.email = @email";
+
+                IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
+                        {
+                            var userRoles = new Dictionary<string, AppUser>();
+                            AppUser user;
+                            if (!userRoles.TryGetValue(u.Id, out user))
+                            {
+                                userRoles.Add(u.Id, user = u);
+                            }
+
+                            if (user.Roles == null)
+                                user.Roles = new List<UserRole>();
+                            user.Roles.Add(r);
+                            return user;
+                        },
+                        new {Email = email}
+                    ).GroupBy(u => u.Id)
+                    .Select(group =>
+                    {
+                        AppUser user = group.First();
+                        user.Roles = group.Select(u => u.Roles.Single()).ToList();
+                        return user;
+                    });
+                AppUser[] appUsers = user as AppUser[] ?? user.ToArray();
+                if (appUsers.Any())
+                    return appUsers.First();
+                return null;
+            }
+        }
+
+        public async Task<AppUser> CreateUserAsync(AppUser user)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql =
+                    $@"INSERT INTO app_user (id,firstName,lastName,email,passwordHash,isActivated,createdAt) 
+                                        values (@id,@firstName,@lastName,@email,@passwordHash,@isActivated,@createdAt)";
+
+                var newUser = await cnn.ExecuteAsync(sql, user);
+                if (newUser > 0)
+                    return user;
+                return null;
+            }
+        }
+
+        public async Task<AppUser> AddToRoleAsync(AppUser user, UserRole role)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+            var sql = @"insert into user_role (userId,roleId) 
+                        values (@userId,@roleId)";
+
+            var newUser = await cnn.ExecuteAsync(sql, new
+            {
+                UserId = user.Id,
+                RoleId = role.Id
+            });
+            if (newUser > 0)
+                return user;
+            }  
+            return null;
+        }
+
+        public async Task<bool> ChangePasswordAsync(AppUser user, string newPasswordHash)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<AppUser> UpdateAsync(AppUser user)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+            var sql = $@"update
+                        app_user
+                        set 
+                        firstname = @firstname,
+                        lastName = @lastName,
+                        email = @email,
+                        passwordHash = @lastName,
+                        isActivated = @isActivated,
+                        updatedAt = @current_timestamp
+                        where id = @id;";
+            
+            var newUser = await cnn.ExecuteAsync(sql, new
+            {
+                id = user.Id,
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                passwordHash = user.PasswordHash,
+                isActivated = user.IsActivated
+            });
+            if (newUser > 0) 
+                return user;
+            }
+            return null;
+        }
+
+        public async Task<bool> SetActiveAsync(string id, bool result)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<bool> DeleteUser(string id)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+            var sql = $@"Delete 
+                         from app_user 
+                         where id = @Id";
+            
+            var newUser = await cnn.ExecuteAsync(sql, new
+            {
+                Id = id
+            });
+            if (newUser > 0) 
+                return true;
+            return false;
+        }
+        }
+    }
+}

@@ -1,3 +1,5 @@
+using ProductAPI.Configuration.Token;
+using ProductAPI.Engines.Cryptography;
 using ProductAPI.Infrastructure.Data;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
@@ -18,6 +20,13 @@ namespace ProductAPI.Configuration {
             // Category DI
             services.AddTransient<ICategoryRepository, CategoryRepository>();
             services.AddTransient<ICategoryService, CategoryService>();
+            // User DI
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IUserService, UserService>();
+            // Token DI
+            services.AddScoped<IJwtToken, JwtToken>();
+            // Crypto DI
+            services.AddScoped<ICryptoEngine, CryptoEngine>();
         }
     }
 }
