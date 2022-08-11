@@ -9,11 +9,11 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
 
         Task<Product> CreateAsync(Product product);
 
-        // Task<bool> CreateCategoryAsync(string productId, string categoryId);
-
         Task<Product> AddCategoryAsync(Product product, Category category);
         
         Task<Product> UpdateAsync(Product product);
+
+        Task<bool> RemoveCategoryAsync(string categoryId);
         
         Task<bool> DeleteAsync(string id);
     }

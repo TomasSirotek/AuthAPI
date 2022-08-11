@@ -10,7 +10,7 @@ namespace ProductAPI.Services.Interfaces {
 
         Task<Product> CreateAsync(Product product,List<string> category);
         
-        Task<Product> UpdateAsync(Product product);
+        Task<Product> UpdateAsync(PutProductModel productModel);
         
         Task<bool> DeleteAsync(string id);
     }

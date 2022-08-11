@@ -1,3 +1,4 @@
+using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.BindingModels.Category;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Repositories;
@@ -57,25 +58,38 @@ namespace ProductAPI.Services {
 
         }
 
-        public async Task<Product> UpdateAsync(Product product)
+        public async Task<Product> UpdateAsync(PutProductModel productModel)
         {
-            product.Category.Clear();
-            
-          
-            Product productUpdated = await _productRepository.UpdateAsync(product);
-            if (productUpdated == null) throw new Exception("Could not product ");
-
-          
-       
-            foreach (Category category in product.Category)
+            Product fetchedProduct = await _productRepository.GetByIdAsync(productModel.Id);
+            foreach (Category category in fetchedProduct.Category)
             {
-                Category fetchedCategory = await _categoryRepository.GetByIdAsync(product.Id);
-
-                if(fetchedCategory == null)  throw new Exception($"Could not find category with name {category.Name}");
-                Product  productResult = await _productRepository.AddCategoryAsync(productUpdated, fetchedCategory);
-                if (productResult == null)  throw new Exception($"Could not add category to with name: {category.Name} does not exist");
+                bool removeCategory = await _productRepository.RemoveCategoryAsync(category.Id);
+                if (!removeCategory) throw new Exception("Could not delete category ");
             }
-                
+            // make new one 
+            Product updatedProduct = new Product()
+            {
+                Id = productModel.Id,
+                Title = productModel.Title,
+                Description = productModel.Description,
+                Image = productModel.Image,
+                IsActive = productModel.IsActive,
+                UnitPrice = productModel.UnitPrice,
+                UnitsInStock = productModel.UnitsInStock
+            };
+            // update product 
+            Product productUpdated = await _productRepository.UpdateAsync(updatedProduct);
+            if (productUpdated == null) throw new Exception("Could not update product ");
+            
+       
+            foreach (var name in productModel.Category)
+            {
+                Category fetchedCategory = await _categoryRepository.GetByNameAsync(name);
+
+                if(fetchedCategory == null)  throw new Exception($"Could not find category with name {name}");
+                Product  productResult = await _productRepository.AddCategoryAsync(productUpdated, fetchedCategory);
+                if (productResult == null)  throw new Exception($"Could not add category to with name: {name} does not exist");
+            }
             return productUpdated;
         }
 

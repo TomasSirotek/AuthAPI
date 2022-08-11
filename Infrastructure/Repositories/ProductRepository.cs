@@ -147,15 +147,33 @@ namespace ProductAPI.Infrastructure.Repositories {
                     
                 });
                 
+              // if its null how can I choose from it :(
+              if (affectedRows > 0)
+                  return product;
               
-                if (affectedRows > 0)
-                    return product;
-                
-                
                 throw new ArgumentNullException(nameof(product));
             }
         }
 
+        public async Task<bool> RemoveCategoryAsync(string categoryId)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var categorySql =
+                    $@"DELETE FROM product_category WHERE categoryId = @categoryId 
+                                ";
+
+                var productCategory = await cnn.ExecuteAsync(categorySql, new
+                {
+                    CategoryId = categoryId
+                });
+                if (productCategory > 0)
+                    return true;
+            }
+            throw new ArgumentNullException(nameof(categoryId));
+        }
+        
+        
         public async Task<bool> DeleteAsync(string id)
         {
             using (var cnn = _connection.CreateConnection())

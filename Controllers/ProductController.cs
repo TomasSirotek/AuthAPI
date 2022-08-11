@@ -73,21 +73,10 @@ namespace ProductAPI.Controllers {
         {
             Product fetchedProduct = await _productService.GetByIdAsync(request.Id);
             if (fetchedProduct == null) return BadRequest($"Could not find product with Id {request.Id}");
-            Product updatedProduct = new Product()
-            {
-                Id = request.Id,
-                Title = request.Title,
-                Description = request.Description,
-                Image = request.Image,
-                IsActive = request.IsActive,
-                UnitPrice = request.UnitPrice,
-                UnitsInStock = request.UnitsInStock
-            };
-            // not comming strings of category for update
-            Product resultProduct = await _productService.UpdateAsync(updatedProduct);
-                
-               // Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
-                return Ok(resultProduct);
+            
+            Product resultProduct = await _productService.UpdateAsync(request);
+            Product createdProduct = await _productService.GetByIdAsync(resultProduct.Id);
+            return Ok(createdProduct);
                 
         }
         
