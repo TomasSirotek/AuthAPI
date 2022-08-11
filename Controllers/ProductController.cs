@@ -4,6 +4,7 @@ using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Services;
+using ProductAPI.Services.Interfaces;
 
 namespace ProductAPI.Controllers {
     public class ProductController : DefaultController {
@@ -44,7 +45,6 @@ namespace ProductAPI.Controllers {
         //[AllowAuthorizedAttribute(AccessRoles.Admin)]
         public async Task<IActionResult> CreateAsync([FromBody]PostProductModel request)
         {
-            // move to services ?
             Product product = new Product()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -56,12 +56,11 @@ namespace ProductAPI.Controllers {
                 UnitsInStock = request.UnitsInStock
             };
             Product resultProduct = await _productService.CreateAsync(product,request.Category);
-        
-            // TODO: Needs to have categories before fetching by Id (for N:N)
-            //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
-            if(resultProduct == null) 
+            
+            Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
+            if(fetchedDbProduct == null) 
                 return BadRequest($"Could not create product");
-            return Ok(resultProduct);
+            return Ok(fetchedDbProduct);
         }
  
     
@@ -72,26 +71,11 @@ namespace ProductAPI.Controllers {
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateAsync([FromBody]PutProductModel request)
         {
-            Product fetchedProduct = await _productService.GetByIdAsync(request.Id);
-            if (fetchedProduct != null)
-            {
-                Product updatedProduct = new Product()
-                {
-                    Title = request.Title,
-                    Description = request.Description,
-                    Image = request.Image,
-                    IsActive = request.IsActive,
-                    UnitPrice = request.UnitPrice,
-                    UnitsInStock = request.UnitsInStock
-                };
-                Product resultProduct = await _productService.UpdateAsync(updatedProduct);
-                // TODO: Needs to have categories before fetching by Id (for N:N)
-                //   Product fetchedDbProduct = await _productRepository.GetByIdAsync(resultProduct.Id);
-                if(resultProduct == null) 
-                    return BadRequest($"Could not create product");
-                return Ok(resultProduct);
-            }
-            return null;
+            if (request.Id == null) return BadRequest($"Could not find product with Id {request.Id}");
+            Product resultProduct = await _productService.UpdateAsync(request);
+            Product createdProduct = await _productService.GetByIdAsync(resultProduct.Id);
+            return Ok(createdProduct);
+                
         }
         
         #endregion

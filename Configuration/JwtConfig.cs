@@ -7,7 +7,6 @@ namespace ProductAPI.Configuration {
         public static void AddJwtConfiguration(this IServiceCollection services,
             IConfiguration configuration)
         {
-            // jwt config move => 
             var key = Encoding.UTF8.GetBytes(configuration["JwtConfig:Secret"]);
             services.AddAuthentication(x =>
                 {

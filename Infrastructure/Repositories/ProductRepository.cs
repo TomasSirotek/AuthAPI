@@ -1,6 +1,7 @@
 using Dapper;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Data;
+using ProductAPI.Infrastructure.Repositories.Interfaces;
 
 namespace ProductAPI.Infrastructure.Repositories {
     public class ProductRepository : IProductRepository{
@@ -18,8 +19,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             {
                 var sql = $@"SELECT *
                             FROM product p
-                            inner JOIN product_category pc ON p.id = pc.productId  
-                            inner JOIN category c ON pc.categoryId = c.id";
+                            LEFT JOIN product_category pc ON p.id = pc.productId  
+                            LEFT JOIN category c ON pc.categoryId = c.id";
 
                 IEnumerable<Product> products = cnn.Query<Product, Category, Product>(sql, (p, c) =>
                         {
@@ -30,7 +31,7 @@ namespace ProductAPI.Infrastructure.Repositories {
                                 productCategory.Add(p.Id, product = p);
                             }
 
-                            if (product.Category == null)
+                            // if (product.Category == null)
                                 product.Category = new List<Category>();
                             product.Category.Add(c);
                             return product;
@@ -53,8 +54,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             {
                 var sql = @"SELECT *
                         FROM product p
-                        inner JOIN product_category pc ON p.id = pc.productId
-                        inner JOIN category c ON pc.categoryId = c.id
+                        LEFT JOIN product_category pc ON p.id = pc.productId
+                        LEFT JOIN category c ON pc.categoryId = c.id
                         where p.id = @id";
 
                 IEnumerable<Product> product = cnn.Query<Product, Category, Product>(sql, (p, c) =>
@@ -88,8 +89,8 @@ namespace ProductAPI.Infrastructure.Repositories {
             using (var cnn = _connection.CreateConnection())
             {
                 var sql =
-                    $@"INSERT INTO product (id,title,description,isActive,unitAmount,unitPrice) 
-                        values (@id,@title,@description,@isActive,@unitAmount,@unitPrice)";
+                    $@"INSERT INTO product (id,title,description,isActive,unitPrice,unitsInStock) 
+                        values (@id,@title,@description,@isActive,@unitPrice,@unitsInStock)";
 
                 var newProduct = await cnn.ExecuteAsync(sql, product);
                 if (newProduct > 0)
@@ -99,12 +100,80 @@ namespace ProductAPI.Infrastructure.Repositories {
             }
             return null;
         }
-
-        public async Task<Product> UpdateAsync(Product character)
+        
+        public async Task<Product> AddCategoryAsync(Product product,Category category)
         {
-            throw new NotImplementedException();
+            using (var cnn = _connection.CreateConnection())
+            {
+                var categorySql =
+                            $@"INSERT INTO product_category(productId,categoryId)
+                        VALUES (@productId,@categoryId);";
+
+                        var productCategory = await cnn.ExecuteAsync(categorySql, new
+                        {
+                            ProductId = product.Id,
+                            CategoryId = category.Id
+                        });
+                        if (productCategory > 0)
+                            return product;
+            }
+
+            return null;
+        }
+        
+        
+
+        public async Task<Product> UpdateAsync(Product product)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql = $@"update product
+                        SET 
+                            title = @title,
+                            description = @description,
+                            isActive = @isActive,
+                            unitPrice = @unitPrice,
+                            unitsInStock = @unitsInStock
+                        where id = @id;";
+
+                var affectedRows = await cnn.ExecuteAsync(sql, new
+                {
+                    id = product.Id,
+                    title = product.Title,
+                    description = product.Description,
+                    isActive = product.IsActive,
+                    unitPrice = product.UnitPrice,
+                    unitsInStock = product.UnitsInStock
+                    
+                });
+                
+              // if its null how can I choose from it :(
+              if (affectedRows > 0)
+                  return product;
+              
+                throw new ArgumentNullException(nameof(product));
+            }
         }
 
+        public async Task<bool> RemoveCategoryAsync(string categoryId)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var categorySql =
+                    $@"DELETE FROM product_category WHERE categoryId = @categoryId 
+                                ";
+
+                var productCategory = await cnn.ExecuteAsync(categorySql, new
+                {
+                    CategoryId = categoryId
+                });
+                if (productCategory > 0)
+                    return true;
+            }
+            throw new ArgumentNullException(nameof(categoryId));
+        }
+        
+        
         public async Task<bool> DeleteAsync(string id)
         {
             using (var cnn = _connection.CreateConnection())
@@ -114,7 +183,10 @@ namespace ProductAPI.Infrastructure.Repositories {
                    FROM product
                    WHERE id = @id";
 
-                var deletePExecuteAsync = await cnn.ExecuteAsync(sql);
+                var deletePExecuteAsync = await cnn.ExecuteAsync(sql,new
+                {
+                    Id = id 
+                });
                 if (deletePExecuteAsync > 0)
                 {
                     return true;

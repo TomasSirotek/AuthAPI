@@ -1,6 +1,7 @@
+using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
 
-namespace ProductAPI.Services {
+namespace ProductAPI.Services.Interfaces {
     public interface IProductService {
     
         Task<List<Product>> GetAsync();
@@ -9,7 +10,7 @@ namespace ProductAPI.Services {
 
         Task<Product> CreateAsync(Product product,List<string> category);
         
-        Task<Product> UpdateAsync(Product product);
+        Task<Product> UpdateAsync(PutProductModel productModel);
         
         Task<bool> DeleteAsync(string id);
     }
