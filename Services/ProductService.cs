@@ -53,9 +53,6 @@ namespace ProductAPI.Services {
             }
             
             return createdProduct;
-            
-            throw new Exception($"Could not create product with Id: {product.Id}");;
-
         }
 
         public async Task<Product> UpdateAsync(PutProductModel productModel)
@@ -99,26 +96,3 @@ namespace ProductAPI.Services {
         }
     }
 }
-
-// if (newProduct != null)
-// {
-//     // Check for existing category
-//     foreach (string name in category)
-//     {
-//         Category checkCategory = await _categoryRepository.GetByNameAsync(name);
-//         if (checkCategory != null)
-//         {
-//             bool resultAddCategory =
-//                 await _productRepository.CreateCategoryAsync(newProduct.Id,checkCategory.Id);
-//         }
-//
-//     }
-//
-//     Product productTest = await _productRepository.GetByIdAsync(product.Id);
-//     
-//     return productTest;
-//     // if exists asign each of one to the Product
-//     // find category by name from categoryRepository
-//     // if exist asign each categoryId and productId into SQL from R
-//
-// }
