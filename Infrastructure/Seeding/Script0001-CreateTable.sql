@@ -1,3 +1,42 @@
+CREATE TABLE [dbo].[appUser]
+(
+    [id] NVARCHAR(255)  NOT NULL ,
+    [firstName] NVARCHAR(255) NOT NULL,
+    [lastName] NVARCHAR(255) NOT NULL,
+    [email] NVARCHAR(255) NOT NULL,
+    [passwordHash] NVARCHAR(255) NOT NULL,
+    [isActivated] BIGINT NOT NULL ,
+    [createdAt] DATETIME NOT NULL,
+    [updatedAt] DATETIME 
+        -- Specify keys
+        CONSTRAINT user_pkey PRIMARY KEY (id),
+    CONSTRAINT user_ukey UNIQUE (email),
+
+);
+
+CREATE TABLE [dbo].[role]
+(
+    [id] NVARCHAR(255)  NOT NULL ,
+    [name] NVARCHAR(255) NOT NULL,
+    -- Specify keys
+    CONSTRAINT role_pkey PRIMARY KEY (id),
+    CONSTRAINT role_ukey UNIQUE (name),
+
+);
+
+CREATE TABLE [dbo].[user_role]
+(
+    [userId] NVARCHAR(255)  NOT NULL,
+    [roleId] NVARCHAR(255) NOT NULL,
+    -- Specify keys
+    CONSTRAINT userRole_pkey PRIMARY KEY(userId,roleId),
+    CONSTRAINT fk_userRole__User
+        FOREIGN KEY (userId) REFERENCES appUser(id) ON DELETE CASCADE ,
+
+    CONSTRAINT fk_userRole__Role
+        FOREIGN KEY (roleId) REFERENCES role(id) ON DELETE CASCADE,
+);
+
 CREATE TABLE [dbo].[product]
 (
     [id] NVARCHAR(255)  NOT NULL,
