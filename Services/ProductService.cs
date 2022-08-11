@@ -61,6 +61,8 @@ namespace ProductAPI.Services {
         public async Task<Product> UpdateAsync(PutProductModel productModel)
         {
             Product fetchedProduct = await _productRepository.GetByIdAsync(productModel.Id);
+            if(fetchedProduct == null) throw new Exception($"Could not find product with Id : {productModel.Id}");
+           
             foreach (Category category in fetchedProduct.Category)
             {
                 bool removeCategory = await _productRepository.RemoveCategoryAsync(category.Id);
@@ -81,11 +83,9 @@ namespace ProductAPI.Services {
             Product productUpdated = await _productRepository.UpdateAsync(updatedProduct);
             if (productUpdated == null) throw new Exception("Could not update product ");
             
-       
             foreach (var name in productModel.Category)
             {
                 Category fetchedCategory = await _categoryRepository.GetByNameAsync(name);
-
                 if(fetchedCategory == null)  throw new Exception($"Could not find category with name {name}");
                 Product  productResult = await _productRepository.AddCategoryAsync(productUpdated, fetchedCategory);
                 if (productResult == null)  throw new Exception($"Could not add category to with name: {name} does not exist");

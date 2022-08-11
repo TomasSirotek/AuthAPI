@@ -71,9 +71,7 @@ namespace ProductAPI.Controllers {
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateAsync([FromBody]PutProductModel request)
         {
-            Product fetchedProduct = await _productService.GetByIdAsync(request.Id);
-            if (fetchedProduct == null) return BadRequest($"Could not find product with Id {request.Id}");
-            
+            if (request.Id == null) return BadRequest($"Could not find product with Id {request.Id}");
             Product resultProduct = await _productService.UpdateAsync(request);
             Product createdProduct = await _productService.GetByIdAsync(resultProduct.Id);
             return Ok(createdProduct);
