@@ -50,9 +50,9 @@ namespace ProductAPI.Controllers {
                 CreatedAt = DateTime.Now
             };
             AppUser newUser = await _userService.RegisterUserAsync(user, model.Password);
-            // debug looks that comming emptyy 
+          
             var token = _token.CreateToken(newUser.Roles.Select(role => role.Name).ToList(), user.Id, 24);
-            user.Token = token;
+            newUser.Token = token;
             if (newUser == null) return BadRequest($"Could not register");
             return Ok(newUser);
 

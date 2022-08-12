@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using ProductAPI.Domain.Enum;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 using ProductAPI.Services.Interfaces;
@@ -27,7 +28,7 @@ namespace ProductAPI.Controllers.User {
     
     
         [HttpGet("{id}")]
-        //[AllowAuthorizedAttribute(AccessRoles.Admin)]
+       //  [AllowAuthorizedAttribute(AccessRole.Admin)]
         public async Task<IActionResult> GetAsyncById(string id)
         {
             AppUser user = await _userService.GetUserByIdAsync(id);
