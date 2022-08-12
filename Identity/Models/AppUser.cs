@@ -8,6 +8,8 @@ namespace ProductAPI.Identity.Models {
         
         public string Email { get; set; }
         
+        public string Token { get; set; }
+        
         public List<UserRole> Roles { get; set; }
 
         public string PasswordHash { get; set; }

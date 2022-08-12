@@ -3,8 +3,6 @@ namespace ProductAPI.Configuration {
     
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            // services.ConfigureProviderForContext<Context>(DetectDatabase(configuration));
-
             services.AddControllers();
 
             services.AddCors(options =>

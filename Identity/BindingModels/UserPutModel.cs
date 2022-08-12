@@ -8,7 +8,7 @@ namespace ProductAPI.Identity.BindingModels {
         public string FirstName { get; set; }
         
         public string LastName { get; set; }
-        
+        [EmailAddress]
         public string Email { get; set; }
         
         public List<string> Roles { get; set; }
