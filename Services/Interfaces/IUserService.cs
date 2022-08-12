@@ -1,3 +1,4 @@
+using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 
 namespace ProductAPI.Services.Interfaces {
@@ -13,7 +14,7 @@ namespace ProductAPI.Services.Interfaces {
         
         Task<AppUser> CreateUserAsync(AppUser user,List<string> roles,string password);
         
-        Task<AppUser> UpdateUserAsync(AppUser user);
+        Task<AppUser> UpdateUserAsync(UserPutModel model);
         
         Task<bool> DeleteAsync(string id);
 

@@ -156,6 +156,24 @@ namespace ProductAPI.Infrastructure.Repositories {
             return null;
         }
 
+        public async Task<bool> RemoveUserRoleAsync(string roleId)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql =
+                    $@"DELETE FROM user_role  WHERE roleId = @roleId
+                                ";
+
+                var affectedRows = await cnn.ExecuteAsync(sql, new
+                {
+                    RoleId = roleId
+                });
+                if (affectedRows > 0)
+                    return true;
+            }
+            throw new ArgumentNullException(nameof(roleId));
+        }
+
         public async Task<bool> ChangePasswordAsync(AppUser user, string newPasswordHash)
         {
             throw new NotImplementedException();
@@ -171,9 +189,8 @@ namespace ProductAPI.Infrastructure.Repositories {
                         firstname = @firstname,
                         lastName = @lastName,
                         email = @email,
-                        passwordHash = @lastName,
                         isActivated = @isActivated,
-                        updatedAt = @current_timestamp
+                        updatedAt = @updatedAt
                         where id = @id;";
             
             var newUser = await cnn.ExecuteAsync(sql, new
@@ -181,8 +198,9 @@ namespace ProductAPI.Infrastructure.Repositories {
                 id = user.Id,
                 firstName = user.FirstName,
                 lastName = user.LastName,
-                passwordHash = user.PasswordHash,
-                isActivated = user.IsActivated
+                email = user.Email,
+                isActivated = user.IsActivated,
+                updatedAt = user.UpdatedAt
             });
             if (newUser > 0) 
                 return user;

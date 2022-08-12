@@ -4,7 +4,7 @@ using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 using ProductAPI.Services.Interfaces;
 
-namespace ProductAPI.Controllers {
+namespace ProductAPI.Controllers.User {
     public class UserController : DefaultController {
         private readonly IUserService _userService;
 
@@ -51,6 +51,7 @@ namespace ProductAPI.Controllers {
                 LastName = request.LastName,
                 Email = request.Email,
                 PasswordHash = request.Password,
+                CreatedAt = DateTime.Now,
                 IsActivated = request.IsActivated
             };
             AppUser resultUser = await _userService.CreateUserAsync(user,request.Roles, request.Password);
@@ -71,17 +72,8 @@ namespace ProductAPI.Controllers {
             AppUser fetchedUser = await _userService.GetUserByIdAsync(request.Id);
             if(fetchedUser == null) 
                 return BadRequest($"Could not find user with Id : {request.Id}");
-        
-            AppUser requestUser = new AppUser()
-            {
-                FirstName = request.FirstName,
-                LastName = request.LastName,
-                Email = request.Email,
-                PasswordHash = request.Password,
-                IsActivated = request.IsActivated
-            };
-            AppUser updatedUser = await _userService.UpdateUserAsync(requestUser);
-        
+            
+            AppUser updatedUser = await _userService.UpdateUserAsync(request);
             if(updatedUser == null) 
                 return BadRequest($"Could not update user with Id : {request.Id}");
             return Ok(updatedUser);

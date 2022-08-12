@@ -1,5 +1,6 @@
 using ProductAPI.Configuration.Token;
 using ProductAPI.Engines.Cryptography;
+using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
 using ProductAPI.Services.Interfaces;
@@ -8,18 +9,16 @@ namespace ProductAPI.Services {
     public class UserService : IUserService{
         
         private readonly IUserRepository _userRepository;
-      //  private readonly IRoleRepository _roleRepository;
-      //  private readonly IEmailService _emailService;
+        private readonly IRoleRepository _roleRepository;
         private readonly ICryptoEngine _cryptoEngine;
         private readonly IJwtToken _token;
         
-        public UserService (IUserRepository userRepository,ICryptoEngine cryptoEngine,IJwtToken token)
+        public UserService (IUserRepository userRepository,ICryptoEngine cryptoEngine,IJwtToken token,IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
-           // _emailService = emailService;
             _cryptoEngine = cryptoEngine;
-            // _roleRepository = roleRepository;
-           _token = token;
+            _token = token;
+            _roleRepository = roleRepository;
 
         }
         public async Task<List<AppUser>> GetAllUsersAsync()
@@ -67,10 +66,10 @@ namespace ProductAPI.Services {
                 throw new Exception("Could now create user");
             foreach (UserRole role in user.Roles)
             {
-              //  UserRole fetchedRole = await _roleRepository.GetAsyncByName(role.Name);
-                // if (fetchedRole == null) 
-                //     throw new Exception("Could now create roles for user");
-                // await _userRepository.AddToRoleAsync(createdUser, fetchedRole);
+               UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(role.Name);
+                if (fetchedRole == null) 
+                    throw new Exception("Could now create roles for user");
+                await _userRepository.AddToRoleAsync(createdUser, fetchedRole);
             }
             if (user is {IsActivated: false})
             {
@@ -81,26 +80,38 @@ namespace ProductAPI.Services {
             AppUser fetchedNewUser = await _userRepository.GetUserByIdAsync(createdUser.Id);
             return fetchedNewUser;
         }
+        
 
-        public async Task<AppUser> UpdateUserAsync(AppUser user)
+        public async Task<AppUser> UpdateUserAsync(UserPutModel model)
         {
-            AppUser updatedUser = await _userRepository.UpdateAsync(user);
-            if (updatedUser == null) throw new Exception("Could not update user ");
-           
-            foreach (UserRole category in updatedUser.Roles)
+            AppUser requestUser = new AppUser()
             {
-               // bool removeCategory = await _userRepository.RemoveUserRoleAsync(category.Id);
-              //  if (!removeCategory) throw new Exception("Could not delete category ");
+                Id = model.Id,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Email = model.Email,
+                IsActivated = model.IsActivated,
+                UpdatedAt = DateTime.Now
+            };
+            AppUser updatedUser = await _userRepository.UpdateAsync(requestUser);
+            
+            if (updatedUser == null) throw new Exception("Could not update user ");
+            AppUser fetchedUser = await _userRepository.GetUserByIdAsync(model.Id);
+
+            foreach (UserRole oldRole in fetchedUser.Roles)
+            {
+               bool removeCategory = await _userRepository.RemoveUserRoleAsync(oldRole.Id);
+               if (!removeCategory) throw new Exception("Could not delete role ");
             }
          
-            foreach (UserRole role in user.Roles)
+            foreach (var name in model.Roles)
             {
-              //  UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(role.Name);
-              //  if(fetchedRole == null)  throw new Exception($"Could not find role with name {role.Name}");
-                // await _userRepository.AddToRoleAsync(updatedUser, fetchedRole);
+               UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(name);
+               if(fetchedRole == null)  throw new Exception($"Could not find role with name {name}");
+                await _userRepository.AddToRoleAsync(updatedUser, fetchedRole);
             }
-                
-            return updatedUser;
+            AppUser completedUser = await _userRepository.GetUserByIdAsync(updatedUser.Id);
+            return completedUser;
         }
 
         public async Task<bool> DeleteAsync(string id)

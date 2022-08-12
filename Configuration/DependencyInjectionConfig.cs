@@ -23,6 +23,10 @@ namespace ProductAPI.Configuration {
             // User DI
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
+            // Role DI
+            // User DI
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IRoleService, RoleService>();
             // Token DI
             services.AddScoped<IJwtToken, JwtToken>();
             // Crypto DI
