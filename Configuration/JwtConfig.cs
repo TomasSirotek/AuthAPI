@@ -17,13 +17,13 @@ namespace ProductAPI.Configuration {
                 .AddJwtBearer(x =>
                 {
                     x.RequireHttpsMetadata = false;
-                    x.SaveToken = false;
+                    x.SaveToken = true;
                     x.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(key),
                         ValidateIssuer = false,
                         ValidateAudience = false,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
                         ClockSkew = TimeSpan.Zero
                     };
                 });

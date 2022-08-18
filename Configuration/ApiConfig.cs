@@ -24,8 +24,6 @@ namespace ProductAPI.Configuration {
                 app.UseDeveloperExceptionPage();
             }
 
-         //   app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors("AllowOrigin");

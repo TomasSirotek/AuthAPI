@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Configuration.Token;
 using ProductAPI.Engines.Cryptography;
 using ProductAPI.Infrastructure.Data;
@@ -31,6 +32,8 @@ namespace ProductAPI.Configuration {
             services.AddScoped<IJwtToken, JwtToken>();
             // Crypto DI
             services.AddScoped<ICryptoEngine, CryptoEngine>();
+            //
+            services.AddSingleton<TokenValidationParameters>();
         }
     }
 }

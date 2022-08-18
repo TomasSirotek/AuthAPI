@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.Enum;
@@ -16,7 +17,7 @@ namespace ProductAPI.Controllers.User {
 
         #region GET
         [HttpGet()]
-        // [AllowAuthorized(AccessRoles.Admin)]
+        [Authorize(Roles ="Administrator")]
         //[AllowAnonymous]
         public async Task<IActionResult> GetAllAsync ()
         {
