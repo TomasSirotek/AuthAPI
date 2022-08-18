@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.Enum;
+using ProductAPI.Identity;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 using ProductAPI.Services.Interfaces;
@@ -9,10 +11,12 @@ using ProductAPI.Services.Interfaces;
 namespace ProductAPI.Controllers.User {
     public class UserController : DefaultController {
         private readonly IUserService _userService;
+        private readonly AppUserManager<AppUser> _userManager;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, AppUserManager<AppUser> userManager)
         {
             _userService = userService;
+            _userManager = userManager;
         }
 
         #region GET
@@ -43,7 +47,7 @@ namespace ProductAPI.Controllers.User {
         #region POST
         [HttpPost()]
         //[AllowAuthorizedAttribute(AccessRoles.Admin)]
-        public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request)
+        public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request,CancellationToken cancellationToken)
         {
            
             AppUser user = new AppUser()
@@ -56,11 +60,12 @@ namespace ProductAPI.Controllers.User {
                 CreatedAt = DateTime.Now,
                 IsActivated = request.IsActivated
             };
-            AppUser resultUser = await _userService.CreateUserAsync(user,request.Roles, request.Password);
+          //  AppUser resultUser = await _userManager.CreateAsync(user,request.Roles, request.Password);
         
-            if(resultUser == null) 
-                return BadRequest($"Could not create user with Email : {request.Email}");
-            return Ok(resultUser);
+            // if(resultUser == null) 
+            //     return BadRequest($"Could not create user with Email : {request.Email}");
+            // return Ok(resultUser);
+            return null;
         }
  
     

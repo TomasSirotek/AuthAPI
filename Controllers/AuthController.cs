@@ -1,10 +1,12 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Configuration.Token;
 using ProductAPI.Domain.Models;
 using ProductAPI.Engines.Cryptography;
+using ProductAPI.Identity;
 using ProductAPI.Identity.BindingModels.Authentication;
 using ProductAPI.Identity.Models;
 using ProductAPI.Services.Interfaces;
@@ -17,13 +19,16 @@ namespace ProductAPI.Controllers {
         private readonly IUserService _userService;
         private readonly ICryptoEngine _cryptoEngine;
         private readonly TokenValidationParameters _tokenValidationParams;
+        private readonly AppUserManager<AppUser> _userManager;
         
-        public AuthController (IJwtToken token,IUserService userService,ICryptoEngine cryptoEngine,TokenValidationParameters tokenValidationParams)
+        
+        public AuthController (IJwtToken token,IUserService userService,ICryptoEngine cryptoEngine,TokenValidationParameters tokenValidationParams, AppUserManager<AppUser> userManager)
         {
             _token = token;
             _userService = userService;
             _cryptoEngine = cryptoEngine;
             _tokenValidationParams = tokenValidationParams;
+            _userManager = userManager;
         }
 
         [HttpPost ()] 
@@ -43,7 +48,7 @@ namespace ProductAPI.Controllers {
         }
 	
         [HttpPost ("register")] 
-        public async Task<IActionResult> Register ([FromBody]RegisterPostModel model)
+        public async Task<IActionResult> Register ([FromBody]RegisterPostModel model,CancellationToken cancellationToken)
         {
 		
             AppUser user = new AppUser()
@@ -55,12 +60,16 @@ namespace ProductAPI.Controllers {
                 IsActivated = true,
                 CreatedAt = DateTime.Now
             };
-            AppUser newUser = await _userService.RegisterUserAsync(user, model.Password);
+            // Find by Email if exist !! 
+            
+            AppUser newUser = await _userManager.RegisterUserAsync(user, model.Password,cancellationToken);
+            // get user with roles etc 
+            
           // generating jwt token
-            var token = _token.CreateToken(newUser.Roles.Select(role => role.Name).ToList(), user.Id, 24);
-            newUser.Token = token;
+            // var token = _token.CreateToken(newUser.Roles.Select(role => role.Name).ToList(), user.Id, 24);
+            // newUser.Token = token;
 
-        
+            // Get user by id 
             if (newUser == null) return BadRequest($"Could not register");
             return Ok(newUser);
 

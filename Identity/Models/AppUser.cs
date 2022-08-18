@@ -1,3 +1,5 @@
+using System.Security.Principal;
+
 namespace ProductAPI.Identity.Models {
     public class AppUser {
         public string Id { get; set; }

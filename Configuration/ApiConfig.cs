@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+using ProductAPI.Identity;
+using ProductAPI.Identity.Models;
+
 namespace ProductAPI.Configuration {
     public static class ApiConfig {
     
@@ -14,7 +18,7 @@ namespace ProductAPI.Configuration {
                             .AllowAnyMethod()
                             .AllowAnyHeader());
             });
-        
+            
         }
 
         public static void UseApiConfiguration(this WebApplication app, IWebHostEnvironment env)

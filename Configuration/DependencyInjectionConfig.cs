@@ -1,6 +1,8 @@
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Configuration.Token;
 using ProductAPI.Engines.Cryptography;
+using ProductAPI.Identity;
+using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
@@ -34,6 +36,15 @@ namespace ProductAPI.Configuration {
             services.AddScoped<ICryptoEngine, CryptoEngine>();
             //
             services.AddSingleton<TokenValidationParameters>();
+            
+            services.AddScoped<AppRoleStore>();
+            services.AddTransient<AppUserManager<AppUser>>();
+            services.AddScoped<AppRoleStore>();
+            services.AddScoped<AppUserStore>();
+
+
+            
+            
         }
     }
 }

@@ -1,4 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using ProductAPI.Configuration;
+using ProductAPI.Identity;
+using ProductAPI.Identity.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +19,14 @@ builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices();
+
+// Add identity types
+builder.Services.AddIdentity<AppUser, UserRole>()
+    .AddDefaultTokenProviders();
+
+// Identity Services 
+builder.Services.AddTransient<IUserStore<AppUser>, AppUserStore>();
+ builder.Services.AddTransient<IRoleStore<UserRole>, AppRoleStore>();
 
 var app = builder.Build();
 #endregion
