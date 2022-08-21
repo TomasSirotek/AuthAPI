@@ -1,3 +1,4 @@
+using ProductAPI.Domain.Models;
 using ProductAPI.Identity.Models;
 
 namespace ProductAPI.Infrastructure.Repositories.Interfaces {
@@ -10,6 +11,10 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
         Task<AppUser> GetAsyncByEmailAsync(string email);
 		
         Task<AppUser> CreateUserAsync(AppUser user);
+
+        Task<RefreshToken> UpdateToken(RefreshToken refreshToken);
+
+        Task<RefreshToken> FindByTokenAsync(string token);
 
         Task<AppUser> AddToRoleAsync(AppUser user, UserRole role);
         

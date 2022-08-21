@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using ProductAPI.Configuration;
+using ProductAPI.Helpers;
 using ProductAPI.Identity;
 using ProductAPI.Identity.Models;
 using Serilog;
@@ -36,6 +37,12 @@ var app = builder.Build();
 app.UseSwaggerConfiguration();
 
 app.UseApiConfiguration(app.Environment);
+
+// global error handler
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+// custom jwt auth middleware
+//app.UseMiddleware<JwtMiddleware>();
 
 app.UseAuthConfiguration();
 

@@ -1,4 +1,5 @@
 using System.Security.Principal;
+using Newtonsoft.Json;
 
 namespace ProductAPI.Identity.Models {
     public class AppUser {
@@ -10,8 +11,8 @@ namespace ProductAPI.Identity.Models {
         
         public string Email { get; set; }
         
+        [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
-        
         public string Token { get; set; }
         
         public List<UserRole> Roles { get; set; }

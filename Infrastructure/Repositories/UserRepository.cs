@@ -1,4 +1,5 @@
 using Dapper;
+using ProductAPI.Domain.Models;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
@@ -119,6 +120,39 @@ namespace ProductAPI.Infrastructure.Repositories {
                 AppUser[] appUsers = user as AppUser[] ?? user.ToArray();
                 if (appUsers.Any())
                     return appUsers.First();
+                return null;
+            }
+        }
+        
+        public async Task<RefreshToken> FindByTokenAsync(string token)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql = @"select * from refreshToken as r where r.token = @token";
+
+                RefreshToken newToken = await cnn.QueryFirstAsync<RefreshToken>(sql, new {Token = token});
+                if (token != null)
+                {
+                    return newToken;
+                }
+                throw new ArgumentNullException(nameof(token));
+            }
+        }
+        
+        
+        
+        
+        public async Task<RefreshToken> UpdateToken(RefreshToken refreshToken)
+        {
+            using (var cnn = _connection.CreateConnection())
+            {
+                var sql =
+                    $@"INSERT INTO refreshToken (id,userId,Token,IsUsed,ExpDate,AddedDate) 
+                                        values (@id,@userId,@token,@isUsed,@expDate,@addedDate)";
+
+                var newUser = await cnn.ExecuteAsync(sql, refreshToken);
+                if (newUser > 0)
+                    return refreshToken;
                 return null;
             }
         }

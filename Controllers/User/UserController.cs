@@ -21,8 +21,8 @@ namespace ProductAPI.Controllers.User {
 
         #region GET
         [HttpGet()]
-        [Authorize(Roles ="Administrator")]
-        //[AllowAnonymous]
+       // [Authorize(Roles ="Administrator")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync ()
         {
             List<AppUser> userList = await _userService.GetAllUsersAsync();
@@ -35,8 +35,8 @@ namespace ProductAPI.Controllers.User {
         [HttpGet("{id}")]
        //  [AllowAuthorizedAttribute(AccessRole.Admin)]
         public async Task<IActionResult> GetAsyncById(string id)
-        {
-            AppUser user = await _userService.GetUserByIdAsync(id);
+       {
+           AppUser user = await _userManager.FindByIdAsync(id);
             if (user != null) 
                 return Ok (user);
             return BadRequest($"Could not find user with Id : {id}");
@@ -60,12 +60,11 @@ namespace ProductAPI.Controllers.User {
                 CreatedAt = DateTime.Now,
                 IsActivated = request.IsActivated
             };
-          //  AppUser resultUser = await _userManager.CreateAsync(user,request.Roles, request.Password);
+            AppUser resultUser = await _userManager.CreateAsync(user,request.Roles, request.Password,cancellationToken);
         
-            // if(resultUser == null) 
-            //     return BadRequest($"Could not create user with Email : {request.Email}");
-            // return Ok(resultUser);
-            return null;
+            if(resultUser == null) 
+                return BadRequest($"Could not create user with Email : {request.Email}");
+            return Ok(resultUser);
         }
  
     
@@ -76,7 +75,7 @@ namespace ProductAPI.Controllers.User {
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateAsync([FromBody]UserPutModel request)
         {
-            AppUser fetchedUser = await _userService.GetUserByIdAsync(request.Id);
+            AppUser fetchedUser = await _userManager.FindByIdAsync(request.Id);
             if(fetchedUser == null) 
                 return BadRequest($"Could not find user with Id : {request.Id}");
             
@@ -96,9 +95,9 @@ namespace ProductAPI.Controllers.User {
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
-            AppUser fetchedUser = await _userService.GetUserByIdAsync(id);
+            AppUser fetchedUser = await _userManager.FindByIdAsync(id);
             if(fetchedUser == null) BadRequest($"Could not find user with {id}");
-            bool result = await _userService.DeleteAsync(fetchedUser.Id); 
+            bool result = await _userManager.DeleteAsync(id);
             if(result == null) BadRequest($"Could not delete user with {id}");
             return Ok($"User with Id : {id} has been deleted !");
         }

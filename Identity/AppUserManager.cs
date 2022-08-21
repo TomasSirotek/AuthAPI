@@ -1,34 +1,48 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using ProductAPI.Configuration.Token;
+using ProductAPI.Domain.Models;
 using ProductAPI.Engines.Cryptography;
 using ProductAPI.Identity.Models;
+using ProductAPI.Infrastructure.Repositories.Interfaces;
 
 namespace ProductAPI.Identity; 
 
-public class AppUserManager<TUser> : UserManager<AppUser>, IRoleStore<AppUser> {
+public class AppUserManager<TUser> : UserManager<AppUser>{
     
     // Inject UserStore 
 
     private readonly AppUserStore _userStore;
+    private readonly IRoleRepository _roleRepository;
     private readonly ICryptoEngine _cryptoEngine;
+    private readonly IUserRepository _userRepository;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly IJwtToken _token;
-    public AppUserManager(AppUserStore userStore,IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<AppUser> passwordHasher, IEnumerable<IUserValidator<AppUser>> userValidators, IEnumerable<IPasswordValidator<AppUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<AppUser>> logger, ICryptoEngine cryptoEngine, IJwtToken token, SignInManager<AppUser> signInManager) : base(userStore, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+    public AppUserManager(AppUserStore userStore,IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<AppUser> passwordHasher, IEnumerable<IUserValidator<AppUser>> userValidators, IEnumerable<IPasswordValidator<AppUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<AppUser>> logger, ICryptoEngine cryptoEngine, IJwtToken token, SignInManager<AppUser> signInManager, IRoleRepository roleRepository, IUserRepository userRepository) : base(userStore, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
         _userStore = userStore;
         _cryptoEngine = cryptoEngine;
         _token = token;
         _signInManager = signInManager;
+        _roleRepository = roleRepository;
+        _userRepository = userRepository;
     }
-
-
-    public async Task<AppUser> RegisterUserAsync(AppUser user, string password,CancellationToken cancellationToken)
+    public async Task<List<AppUser>> GetAllUsersAsync()
+    {
+        return await _userStore.GetAllAsync();
+    }
+    
+    public async Task<AppUser> GetAsyncByEmailAsync(string email)
+    {
+        return await _userStore.GetAsyncByEmailAsync(email);
+    }
+    public async Task<IdentityResult> RegisterUserAsync(AppUser user, string password,CancellationToken cancellationToken)
     {
         List<string> roles = new() {"User"};
             
         AppUser newUser = await CreateAsync(user, roles, password,cancellationToken);
-        return newUser;
+        if(newUser != null) return IdentityResult.Success;
+       throw new Exception("Could now create user");
     }
     public async Task<AppUser> CreateAsync(AppUser user, List<string> roles, string password,CancellationToken cancellationToken)
     {
@@ -49,18 +63,22 @@ public class AppUserManager<TUser> : UserManager<AppUser>, IRoleStore<AppUser> {
             
         IdentityResult createdUser = await _userStore.CreateAsync(user,cancellationToken);
         
+        if (createdUser.Succeeded)
+        {
+            AppUser fetchedNewUser = await _userStore.FindByIdAsync(user.Id,cancellationToken);
+            
+            foreach (UserRole role in user.Roles)
+            {
+                UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(role.Name);
+                if (fetchedRole == null) 
+                    throw new Exception("Could now create roles for user");
+                await _userRepository.AddToRoleAsync(fetchedNewUser, fetchedRole);
+            }
+            return fetchedNewUser;
+        }
+     
+        throw new Exception("Could now create roles for user");
         
-        // Create user to sign him in 
-        
-        // if (createdUser == null)
-        //     throw new Exception("Could now create user");
-        // foreach (UserRole role in user.Roles)
-        // {
-        //     UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(role.Name);
-        //     if (fetchedRole == null) 
-        //         throw new Exception("Could now create roles for user");
-        //     await _userRepository.AddToRoleAsync(createdUser, fetchedRole);
-        // }
         // if (user is {IsActivated: false})
         // {
         //     var confirmEmailToken = _token.CreateToken(user.Roles.Select(role => role.Name).ToList(), user.Id, 24);;
@@ -68,57 +86,26 @@ public class AppUserManager<TUser> : UserManager<AppUser>, IRoleStore<AppUser> {
         //     //  _emailService.SendEmail(user.Email,user.UserName,link,"Confirm email");
         // }
        //  AppUser fetchedNewUser = await _userStore.GetUserByIdAsync(user.Id);
-       return null;
     }
+    
 
-
-    public async Task<IdentityResult> CreateAsync(AppUser role, CancellationToken cancellationToken)
+    public async Task<RefreshToken>  FindTokenAsync(string token)
+    {
+        return await _userStore.FindByTokenAsync(token);
+    }
+   
+    
+    public async Task<IdentityResult> UpdateAsync(AppUser user, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<IdentityResult> UpdateAsync(AppUser role, CancellationToken cancellationToken)
+    public async Task<bool> DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        return await _userStore.DeleteAsync(id);
     }
+    
+    
 
-    public async Task<IdentityResult> DeleteAsync(AppUser role, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<string> GetRoleIdAsync(AppUser role, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<string> GetRoleNameAsync(AppUser role, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task SetRoleNameAsync(AppUser role, string roleName, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<string> GetNormalizedRoleNameAsync(AppUser role, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task SetNormalizedRoleNameAsync(AppUser role, string normalizedName, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<AppUser> FindByIdAsync(string roleId, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<AppUser> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
-    {
-        throw new NotImplementedException();
-    }
+  
 }
