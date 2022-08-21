@@ -20,9 +20,6 @@ namespace ProductAPI.Configuration {
             // Product DI
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
-            // Category DI
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<ICategoryService, CategoryService>();
             // User DI
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
@@ -34,17 +31,12 @@ namespace ProductAPI.Configuration {
             services.AddScoped<IJwtToken, JwtToken>();
             // Crypto DI
             services.AddScoped<ICryptoEngine, CryptoEngine>();
-            //
+            // Token validation
             services.AddSingleton<TokenValidationParameters>();
-            
-            services.AddScoped<AppRoleStore>();
+            // Custom User manager and store
             services.AddTransient<AppUserManager<AppUser>>();
-            services.AddScoped<AppRoleStore>();
-            services.AddScoped<AppUserStore>();
+            services.AddScoped<AppUserStore<AppUser>>();
 
-
-            
-            
         }
     }
 }

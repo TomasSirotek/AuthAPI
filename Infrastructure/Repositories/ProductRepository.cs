@@ -1,4 +1,5 @@
 using Dapper;
+using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.Models;
 using ProductAPI.Infrastructure.Data;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
@@ -17,34 +18,14 @@ namespace ProductAPI.Infrastructure.Repositories {
         {
             using (var cnn = _connection.CreateConnection())
             {
-                var sql = $@"SELECT *
-                            FROM product p
-                            LEFT JOIN product_category pc ON p.id = pc.productId  
-                            LEFT JOIN category c ON pc.categoryId = c.id";
+                var sql = @"select * from product";
 
-                IEnumerable<Product> products = cnn.Query<Product, Category, Product>(sql, (p, c) =>
-                        {
-                            Dictionary<string, Product> productCategory = new Dictionary<string, Product>();
-                            Product product;
-                            if (!productCategory.TryGetValue(p.Id, out product))
-                            {
-                                productCategory.Add(p.Id, product = p);
-                            }
-
-                            // if (product.Category == null)
-                                product.Category = new List<Category>();
-                            product.Category.Add(c);
-                            return product;
-                        },
-                        splitOn: "id"
-                    ).GroupBy(p => p.Id)
-                    .Select(group =>
-                    {
-                        Product product = group.First();
-                        product.Category = group.Select(p => p.Category.Single()).ToList();
-                        return product;
-                    });
-                return products.ToList();
+                IEnumerable<Product> products = await cnn.QueryAsync<Product>(sql);
+                if (!products.IsNullOrEmpty())
+                {
+                    return products.ToList();
+                }
+                throw new ArgumentNullException(nameof(products));
             }
         }
 
@@ -52,35 +33,14 @@ namespace ProductAPI.Infrastructure.Repositories {
         {
             using (var cnn = _connection.CreateConnection())
             {
-                var sql = @"SELECT *
-                        FROM product p
-                        LEFT JOIN product_category pc ON p.id = pc.productId
-                        LEFT JOIN category c ON pc.categoryId = c.id
-                        where p.id = @id";
+                var sql = @"select * from product as p where p.id = @id";
 
-                IEnumerable<Product> product = cnn.Query<Product, Category, Product>(sql, (p, c) =>
-                        {
-                            var categories = new Dictionary<string, Product>();
-                            Product product;
-                            if (!categories.TryGetValue(p.Id, out product))
-                            {
-                                categories.Add(p.Id, product = p);
-                            }
-
-                            if (product.Category == null)
-                                product.Category = new List<Category>();
-                            product.Category.Add(c);
-                            return product;
-                        },
-                        new {Id = id}
-                    ).GroupBy(p => p.Id)
-                    .Select(group =>
-                    {
-                        Product product = group.First();
-                        product.Category  = group.Select(p => p.Category.Single()).ToList();
-                        return product;
-                    });
-                return product.First();
+                Product product = await cnn.QueryFirstAsync<Product>(sql, new {Id = id});
+                if (product != null)
+                {
+                    return product;
+                }
+                throw new ArgumentNullException(nameof(product));
             }
         }
 
@@ -101,25 +61,6 @@ namespace ProductAPI.Infrastructure.Repositories {
             return null;
         }
         
-        public async Task<Product> AddCategoryAsync(Product product,Category category)
-        {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var categorySql =
-                            $@"INSERT INTO product_category(productId,categoryId)
-                        VALUES (@productId,@categoryId);";
-
-                        var productCategory = await cnn.ExecuteAsync(categorySql, new
-                        {
-                            ProductId = product.Id,
-                            CategoryId = category.Id
-                        });
-                        if (productCategory > 0)
-                            return product;
-            }
-
-            return null;
-        }
         
         
 
@@ -155,25 +96,7 @@ namespace ProductAPI.Infrastructure.Repositories {
             }
         }
 
-        public async Task<bool> RemoveCategoryAsync(string categoryId)
-        {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var categorySql =
-                    $@"DELETE FROM product_category WHERE categoryId = @categoryId 
-                                ";
 
-                var productCategory = await cnn.ExecuteAsync(categorySql, new
-                {
-                    CategoryId = categoryId
-                });
-                if (productCategory > 0)
-                    return true;
-            }
-            throw new ArgumentNullException(nameof(categoryId));
-        }
-        
-        
         public async Task<bool> DeleteAsync(string id)
         {
             using (var cnn = _connection.CreateConnection())

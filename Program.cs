@@ -27,7 +27,6 @@ builder.Services.AddIdentity<AppUser, UserRole>()
 
 // Identity Services 
 builder.Services.AddTransient<IUserStore<AppUser>, AppUserStore>();
- builder.Services.AddTransient<IRoleStore<UserRole>, AppRoleStore>();
 
 var app = builder.Build();
 #endregion
@@ -37,12 +36,6 @@ var app = builder.Build();
 app.UseSwaggerConfiguration();
 
 app.UseApiConfiguration(app.Environment);
-
-// global error handler
-app.UseMiddleware<ErrorHandlerMiddleware>();
-
-// custom jwt auth middleware
-//app.UseMiddleware<JwtMiddleware>();
 
 app.UseAuthConfiguration();
 

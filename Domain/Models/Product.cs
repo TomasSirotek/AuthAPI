@@ -9,8 +9,6 @@ namespace ProductAPI.Domain.Models {
 
         public string Image { get; set; }
 
-        public List<Category> Category { get; set; }
-
         public bool IsActive { get; set; }
 
         public decimal UnitPrice { get; set; }

@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Domain.Enum;
 using ProductAPI.Identity;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
@@ -21,11 +19,11 @@ namespace ProductAPI.Controllers.User {
 
         #region GET
         [HttpGet()]
-       // [Authorize(Roles ="Administrator")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetAllAsync ()
+        [Authorize(Roles ="Administrator")]
+        //[AllowAnonymous]
+        public async Task<IActionResult> GetAllAsync()
         {
-            List<AppUser> userList = await _userService.GetAllUsersAsync();
+            List<AppUser> userList = await _userManager.GetAllUsersAsync();
             if (userList.IsNullOrEmpty())
                 return BadRequest($"Could not find any users");
             return Ok(userList);
@@ -49,7 +47,6 @@ namespace ProductAPI.Controllers.User {
         //[AllowAuthorizedAttribute(AccessRoles.Admin)]
         public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request,CancellationToken cancellationToken)
         {
-           
             AppUser user = new AppUser()
             {
                 Id = Guid.NewGuid().ToString(),

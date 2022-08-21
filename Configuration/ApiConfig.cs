@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using ProductAPI.Helpers;
 using ProductAPI.Identity;
 using ProductAPI.Identity.Models;
 
@@ -31,6 +32,10 @@ namespace ProductAPI.Configuration {
             app.UseRouting();
 
             app.UseCors("AllowOrigin");
+           
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            
+            app.UseMiddleware<JwtMiddleware>();
         
             app.MapControllers();
         

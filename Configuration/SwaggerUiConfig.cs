@@ -10,7 +10,7 @@ namespace ProductAPI.Configuration {
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "ProductsAPI",
+                    Title = "UsersAPI",
                     Version = "v1",
                     Description = "This is development product API "
                 });

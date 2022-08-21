@@ -10,8 +10,6 @@ namespace ProductAPI.Identity.Models {
         public string LastName { get; set; }
         
         public string Email { get; set; }
-        
-        [JsonIgnore] // refresh token is returned in http only cookie
         public string RefreshToken { get; set; }
         public string Token { get; set; }
         

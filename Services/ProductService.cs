@@ -6,12 +6,10 @@ using ProductAPI.Services.Interfaces;
 namespace ProductAPI.Services {
     public class ProductService : IProductService{
         private readonly IProductRepository _productRepository;
-        private readonly ICategoryRepository _categoryRepository;
 
-        public ProductService(IProductRepository productRepository,ICategoryRepository categoryRepository)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            _categoryRepository = categoryRepository;
 
         }
 
@@ -25,31 +23,10 @@ namespace ProductAPI.Services {
             return await _productRepository.GetByIdAsync(id);
         }
 
-        public async Task<Product> CreateAsync(Product product,List<string> category)
+        public async Task<Product> CreateAsync(Product product)
         {
-            List<Category> categoryProduct = new();
-            List<Category> productCategory = categoryProduct;
-            foreach (var name in category)
-            {
-                var categoryList = new Category
-                {
-                    Name = name
-                };
-                productCategory.Add(categoryList);
-            }
-            product.Category = productCategory;
-            
             Product createdProduct = await _productRepository.CreateAsync(product);
-            // Check for existing category
-            foreach (Category categoryName in product.Category)
-            {
-                Category fetchedCategory = await _categoryRepository.GetByNameAsync(categoryName.Name);
-                if (fetchedCategory == null)  throw new Exception($"Category with name: {categoryName.Name} does not exist");
-                Product  productResult = await _productRepository.AddCategoryAsync(createdProduct, fetchedCategory);
-                if (productResult == null)  throw new Exception($"Could not add category to with name: {categoryName.Name} does not exist");
 
-            }
-            
             return createdProduct;
         }
 
@@ -57,12 +34,7 @@ namespace ProductAPI.Services {
         {
             Product fetchedProduct = await _productRepository.GetByIdAsync(productModel.Id);
             if(fetchedProduct == null) throw new Exception($"Could not find product with Id : {productModel.Id}");
-           
-            foreach (Category category in fetchedProduct.Category)
-            {
-                bool removeCategory = await _productRepository.RemoveCategoryAsync(category.Id);
-                if (!removeCategory) throw new Exception("Could not delete category ");
-            }
+            
             // make new one 
             Product updatedProduct = new Product()
             {
@@ -78,13 +50,6 @@ namespace ProductAPI.Services {
             Product productUpdated = await _productRepository.UpdateAsync(updatedProduct);
             if (productUpdated == null) throw new Exception("Could not update product ");
             
-            foreach (var name in productModel.Category)
-            {
-                Category fetchedCategory = await _categoryRepository.GetByNameAsync(name);
-                if(fetchedCategory == null)  throw new Exception($"Could not find category with name {name}");
-                Product  productResult = await _productRepository.AddCategoryAsync(productUpdated, fetchedCategory);
-                if (productResult == null)  throw new Exception($"Could not add category to with name: {name} does not exist");
-            }
             return productUpdated;
         }
 
