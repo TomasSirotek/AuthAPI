@@ -12,13 +12,13 @@ public class AppUserManager<TUser> : UserManager<AppUser>{
     
     // Inject UserStore 
 
-    private readonly AppUserStore<AppUser> _userStore;
+    private readonly AppUserStore _userStore;
     private readonly IRoleRepository _roleRepository;
     private readonly ICryptoEngine _cryptoEngine;
     private readonly IUserRepository _userRepository;
     private readonly SignInManager<AppUser> _signInManager;
     private readonly IJwtToken _token;
-    public AppUserManager(AppUserStore<AppUser> userStore,IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<AppUser> passwordHasher, IEnumerable<IUserValidator<AppUser>> userValidators, IEnumerable<IPasswordValidator<AppUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<AppUser>> logger, ICryptoEngine cryptoEngine, IJwtToken token, SignInManager<AppUser> signInManager, IRoleRepository roleRepository, IUserRepository userRepository) : base(userStore, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
+    public AppUserManager(AppUserStore userStore,IOptions<IdentityOptions> optionsAccessor, IPasswordHasher<AppUser> passwordHasher, IEnumerable<IUserValidator<AppUser>> userValidators, IEnumerable<IPasswordValidator<AppUser>> passwordValidators, ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors, IServiceProvider services, ILogger<UserManager<AppUser>> logger, ICryptoEngine cryptoEngine, IJwtToken token, SignInManager<AppUser> signInManager, IRoleRepository roleRepository, IUserRepository userRepository) : base(userStore, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
     {
         _userStore = userStore;
         _cryptoEngine = cryptoEngine;

@@ -19,8 +19,8 @@ namespace ProductAPI.Controllers.User {
 
         #region GET
         [HttpGet()]
-        [Authorize(Roles ="Administrator")]
-        //[AllowAnonymous]
+       // [Authorize(Roles ="Administrator")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync()
         {
             List<AppUser> userList = await _userManager.GetAllUsersAsync();

@@ -35,7 +35,7 @@ namespace ProductAPI.Configuration {
             services.AddSingleton<TokenValidationParameters>();
             // Custom User manager and store
             services.AddTransient<AppUserManager<AppUser>>();
-            services.AddScoped<AppUserStore<AppUser>>();
+            services.AddScoped<AppUserStore>();
 
         }
     }

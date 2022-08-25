@@ -97,16 +97,6 @@ namespace ProductAPI.Controllers {
             return dateTimeVal;
         }
         
-        private string ipAddress()
-        {
-            // get source ip address for the current request
-            if (Request.Headers.ContainsKey("X-Forwarded-For"))
-                return Request.Headers["X-Forwarded-For"];
-            else
-                return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
-        }
-        
-	
         [HttpPost ("register")] 
         public async Task<IActionResult> Register ([FromBody]RegisterPostModel model,CancellationToken cancellationToken)
         {

@@ -27,6 +27,7 @@ builder.Services.AddIdentity<AppUser, UserRole>()
 
 // Identity Services 
 builder.Services.AddTransient<IUserStore<AppUser>, AppUserStore>();
+builder.Services.AddTransient<IRoleStore<UserRole>, AppRoleStore>();
 
 var app = builder.Build();
 #endregion

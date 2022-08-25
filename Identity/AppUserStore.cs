@@ -5,7 +5,7 @@ using ProductAPI.Infrastructure.Repositories.Interfaces;
 
 namespace ProductAPI.Identity; 
 
-public class AppUserStore<TUser> : IUserStore<AppUser> where TUser : class {
+public class AppUserStore : IUserStore<AppUser> {
 
     private readonly IUserRepository _userRepository;
 
