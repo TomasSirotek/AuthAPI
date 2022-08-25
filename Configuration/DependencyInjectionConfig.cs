@@ -23,7 +23,6 @@ namespace ProductAPI.Configuration {
             // User DI
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
-            // Role DI
             // User DI
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IRoleService, RoleService>();
@@ -33,9 +32,8 @@ namespace ProductAPI.Configuration {
             services.AddScoped<ICryptoEngine, CryptoEngine>();
             // Token validation
             services.AddSingleton<TokenValidationParameters>();
-            // Custom User manager and store
-            services.AddTransient<AppUserManager<AppUser>>();
-            services.AddScoped<AppUserStore>();
+            
+           
 
         }
     }

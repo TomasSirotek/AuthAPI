@@ -1,4 +1,5 @@
 using ProductAPI.Configuration.Token;
+using ProductAPI.Domain.Models;
 using ProductAPI.Engines.Cryptography;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
@@ -34,6 +35,11 @@ namespace ProductAPI.Services {
         public async Task<AppUser> GetAsyncByEmailAsync(string email)
         {
             return await _userRepository.GetAsyncByEmailAsync(email);
+        }
+        
+        public async Task<RefreshToken>  FindTokenAsync(string token)
+        {
+            return await _userRepository.FindByTokenAsync(token);
         }
 
         public async Task<AppUser> RegisterUserAsync(AppUser user, string password)

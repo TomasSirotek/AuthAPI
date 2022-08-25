@@ -21,13 +21,6 @@ builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices();
 
-// Add identity types
-builder.Services.AddIdentity<AppUser, UserRole>()
-    .AddDefaultTokenProviders();
-
-// Identity Services 
-builder.Services.AddTransient<IUserStore<AppUser>, AppUserStore>();
-builder.Services.AddTransient<IRoleStore<UserRole>, AppRoleStore>();
 
 var app = builder.Build();
 #endregion

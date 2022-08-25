@@ -1,3 +1,4 @@
+using ProductAPI.Domain.Models;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 
@@ -9,6 +10,8 @@ namespace ProductAPI.Services.Interfaces {
         Task<AppUser> GetUserByIdAsync(string id);
 
         Task<AppUser> GetAsyncByEmailAsync(string email);
+
+        Task<RefreshToken> FindTokenAsync(string token);
 
         Task<AppUser> RegisterUserAsync(AppUser user, string password);
         

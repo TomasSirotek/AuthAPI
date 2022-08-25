@@ -11,6 +11,7 @@ using ProductAPI.Identity;
 using ProductAPI.Identity.BindingModels.Authentication;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
+using ProductAPI.Services.Interfaces;
 
 namespace ProductAPI.Controllers {
     
@@ -20,22 +21,22 @@ namespace ProductAPI.Controllers {
         private readonly ICryptoEngine _cryptoEngine;
         private readonly IUserRepository _userRepository;
         private readonly TokenValidationParameters _tokenValidationParams;
-        private readonly AppUserManager<AppUser> _userManager;
-        
-        
-        public AuthController (IJwtToken token,ICryptoEngine cryptoEngine,TokenValidationParameters tokenValidationParams, AppUserManager<AppUser> userManager, IUserRepository userRepository)
+        private readonly IUserService _userService;
+
+
+        public AuthController (IJwtToken token,ICryptoEngine cryptoEngine,TokenValidationParameters tokenValidationParams, IUserRepository userRepository, IUserService userService)
         {
             _token = token;
             _cryptoEngine = cryptoEngine;
             _tokenValidationParams = tokenValidationParams;
-            _userManager = userManager;
             _userRepository = userRepository;
+            _userService = userService;
         }
 
         [HttpPost ()] 
         public async Task<ActionResult> Authenticate ([FromBody]AuthPostModel request)
         {
-            AppUser user = await _userManager.GetAsyncByEmailAsync(request.Email);
+            AppUser user = await _userService.GetAsyncByEmailAsync(request.Email);
             
             if (user == null || !_cryptoEngine.HashCheck(user.PasswordHash, request.Password))
                 return BadRequest("Email or password is incorrect");
@@ -81,8 +82,8 @@ namespace ProductAPI.Controllers {
             {
                Console.WriteLine("nope");
             }
-            RefreshToken storedToken = await _userManager.FindTokenAsync(tokenRequest.RefreshToken);
-            AppUser user= await _userManager.FindByIdAsync(storedToken.UserId);
+            RefreshToken storedToken = await _userService.FindTokenAsync(tokenRequest.RefreshToken);
+            AppUser user= await _userService.GetUserByIdAsync(storedToken.UserId);
             var token = _token.CreateToken(user.Roles.Select(role => role.Name).ToList(), user.Id, 24); // 24
             return token;
 
@@ -98,11 +99,11 @@ namespace ProductAPI.Controllers {
         }
         
         [HttpPost ("register")] 
-        public async Task<IActionResult> Register ([FromBody]RegisterPostModel model,CancellationToken cancellationToken)
+        public async Task<IActionResult> Register ([FromBody]RegisterPostModel model)
         {
             if (ModelState.IsValid)
             {
-                AppUser fetchedUser = await _userManager.GetAsyncByEmailAsync(model.Email);
+                AppUser fetchedUser = await _userService.GetAsyncByEmailAsync(model.Email);
                 if (fetchedUser != null) return BadRequest($"User with email {model.Email} already exists");
             }
 		
@@ -116,12 +117,12 @@ namespace ProductAPI.Controllers {
                 CreatedAt = DateTime.Now
             };
             
-            IdentityResult identityResult = await _userManager.RegisterUserAsync(user, model.Password,cancellationToken);
-            if (!identityResult.Succeeded) return BadRequest($"Could not register user");
+            AppUser createdUser = await _userService.RegisterUserAsync(user, model.Password);
+            if (createdUser == null) return BadRequest($"Could not register user");
             
-            AppUser createdUser = await _userManager.FindByIdAsync(user.Id);
+            AppUser newUser = await _userService.GetUserByIdAsync(user.Id);
   
-            var token = _token.CreateToken(createdUser.Roles.Select(role => role.Name).ToList(), user.Id, 24);
+            var token = _token.CreateToken(newUser.Roles.Select(role => role.Name).ToList(), newUser.Id, 24);
             createdUser.Token = token;
             
             return Ok(createdUser);
