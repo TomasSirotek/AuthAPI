@@ -30,6 +30,7 @@ namespace ProductAPI.Configuration {
             services.AddTransient<IRoleService, RoleService>();
             // Token DI
             services.AddScoped<IJwtToken, JwtToken>();
+            services.AddScoped<IVerifyJwtToken, VerifyJwtToken>();
             // Crypto DI
             services.AddScoped<ICryptoEngine, CryptoEngine>();
             
