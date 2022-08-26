@@ -1,3 +1,4 @@
+using ProductAPI.Domain.Models;
 using ProductAPI.Identity.Models;
 
 namespace ProductAPI.Infrastructure.Repositories.Interfaces {
@@ -8,8 +9,14 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
         Task<AppUser> GetUserByIdAsync(string id);
 
         Task<AppUser> GetAsyncByEmailAsync(string email);
+        
+        Task<EmailToken> GetTokenByUserId(string id);
 		
         Task<AppUser> CreateUserAsync(AppUser user);
+
+        Task<RefreshToken> UpdateToken(RefreshToken refreshToken);
+
+        Task<RefreshToken> FindByTokenAsync(string token);
 
         Task<AppUser> AddToRoleAsync(AppUser user, UserRole role);
         
@@ -19,7 +26,10 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
 
         Task<AppUser> UpdateAsync(AppUser user);
 
-        Task<bool> SetActiveAsync(string id, bool result);
+        Task<bool> SetActiveAsync(string id);
+        
+        Task<EmailToken> CreateEmailToken(string userId, EmailToken newToken);
+        
         Task<bool> DeleteUser(string id);
     }
 }

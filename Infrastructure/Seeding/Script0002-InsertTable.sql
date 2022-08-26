@@ -17,22 +17,8 @@ VALUES ('a8bd0476-eb11-46f4-9d83-bd5e44f8637f','301');
 
 --Product insert
 INSERT INTO product (id,title,description,isActive,unitPrice,unitsInStock)
-VALUES ('1', 'The Last of Us', 'Very nice game with a lot of gaming features',1,30,69.90);
+VALUES ('a8bd0476-46f4-eb11-9d83-bd5e44f8637f', 'The Last of Us', 'Very nice game with a lot of gaming features',1,30,69.90);
 
 INSERT INTO product (id,title,description,isActive,unitPrice,unitsInStock)
-VALUES ('2', 'Call of Duty', 'Super action game',1,4,39.90);
+VALUES ('bd5e44f8637f-eb11-46f4-9d83-a8bd0476', 'Call of Duty', 'Super action game',1,4,39.90);
 
-INSERT INTO category(id,name)
-VALUES ('100','Survival');
-
-INSERT INTO category(id,name)
-VALUES ('101','FPS');
-
-INSERT INTO product_category(productId,categoryId)
-VALUES ('1','100');
-
-INSERT INTO product_category(productId,categoryId)
-VALUES ('1','101');
-
-INSERT INTO product_category(productId,categoryId)
-VALUES ('2','100');

@@ -55,7 +55,7 @@ namespace ProductAPI.Controllers {
                 UnitPrice = request.UnitPrice,
                 UnitsInStock = request.UnitsInStock
             };
-            Product resultProduct = await _productService.CreateAsync(product,request.Category);
+            Product resultProduct = await _productService.CreateAsync(product);
             
             Product fetchedDbProduct = await _productService.GetByIdAsync(resultProduct.Id);
             if(fetchedDbProduct == null) 

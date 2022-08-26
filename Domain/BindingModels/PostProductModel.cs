@@ -8,8 +8,7 @@ namespace ProductAPI.Domain.BindingModels {
         public string Description { get; set; } 
         [Required]
         public string Image { get; set; } 
-
-        public List<string> Category { get; set; } 
+        
         [Required]
         public bool IsActive { get; set; } 
  

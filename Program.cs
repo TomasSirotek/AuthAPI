@@ -17,6 +17,9 @@ builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices();
 
+builder.Services.AddEmailConfiguration(builder.Configuration);
+
+
 var app = builder.Build();
 #endregion
 

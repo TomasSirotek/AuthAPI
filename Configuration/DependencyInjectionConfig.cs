@@ -1,5 +1,10 @@
+using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Configuration.Token;
+using ProductAPI.Engines;
 using ProductAPI.Engines.Cryptography;
+using ProductAPI.ExternalServices;
+using ProductAPI.Identity;
+using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
@@ -17,13 +22,9 @@ namespace ProductAPI.Configuration {
             // Product DI
             services.AddTransient<IProductRepository, ProductRepository>();
             services.AddTransient<IProductService, ProductService>();
-            // Category DI
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<ICategoryService, CategoryService>();
             // User DI
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
-            // Role DI
             // User DI
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<IRoleService, RoleService>();
@@ -31,6 +32,13 @@ namespace ProductAPI.Configuration {
             services.AddScoped<IJwtToken, JwtToken>();
             // Crypto DI
             services.AddScoped<ICryptoEngine, CryptoEngine>();
+            
+            services.AddScoped<IUnixStampDateConverter, UnixStampDateConverter>();
+            // Token validation
+            services.AddSingleton<TokenValidationParameters>();
+            // Email DI
+            services.AddTransient<IEmailService, EmailService>();
+
         }
     }
 }

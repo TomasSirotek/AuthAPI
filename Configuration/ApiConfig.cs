@@ -1,3 +1,8 @@
+using Microsoft.AspNetCore.Identity;
+using ProductAPI.Helpers;
+using ProductAPI.Identity;
+using ProductAPI.Identity.Models;
+
 namespace ProductAPI.Configuration {
     public static class ApiConfig {
     
@@ -14,7 +19,7 @@ namespace ProductAPI.Configuration {
                             .AllowAnyMethod()
                             .AllowAnyHeader());
             });
-        
+            
         }
 
         public static void UseApiConfiguration(this WebApplication app, IWebHostEnvironment env)
@@ -24,11 +29,13 @@ namespace ProductAPI.Configuration {
                 app.UseDeveloperExceptionPage();
             }
 
-         //   app.UseHttpsRedirection();
-
             app.UseRouting();
 
             app.UseCors("AllowOrigin");
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            
+            app.UseMiddleware<JwtMiddleware>();
         
             app.MapControllers();
         

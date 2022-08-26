@@ -10,9 +10,9 @@ namespace ProductAPI.Configuration {
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "ProductsAPI",
+                    Title = "DevApi",
                     Version = "v1",
-                    Description = "This is development product API "
+                    Description = "This is development API "
                 });
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {

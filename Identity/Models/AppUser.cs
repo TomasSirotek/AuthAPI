@@ -1,3 +1,6 @@
+using System.Security.Principal;
+using Newtonsoft.Json;
+
 namespace ProductAPI.Identity.Models {
     public class AppUser {
         public string Id { get; set; }
@@ -7,7 +10,7 @@ namespace ProductAPI.Identity.Models {
         public string LastName { get; set; }
         
         public string Email { get; set; }
-        
+        public string RefreshToken { get; set; }
         public string Token { get; set; }
         
         public List<UserRole> Roles { get; set; }

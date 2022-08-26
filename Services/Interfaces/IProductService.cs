@@ -8,7 +8,7 @@ namespace ProductAPI.Services.Interfaces {
     
         Task<Product> GetByIdAsync(string id);
 
-        Task<Product> CreateAsync(Product product,List<string> category);
+        Task<Product> CreateAsync(Product product);
         
         Task<Product> UpdateAsync(PutProductModel productModel);
         
