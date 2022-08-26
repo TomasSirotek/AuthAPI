@@ -21,6 +21,8 @@ namespace ProductAPI.Services.Interfaces {
         
         Task<bool> DeleteAsync(string id);
 
+        Task<bool> ConfirmEmailAsync(string userId, string token);
+
         Task<bool> ChangePasswordAsync(AppUser user,string newPassword);
     }
 }

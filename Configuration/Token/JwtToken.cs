@@ -18,7 +18,7 @@ public class JwtToken : IJwtToken {
         _userRepository = userRepository;
     }
 
-    public string CreateToken(List<string> roles, string userId, double duration)
+    public string CreateToken(List<string> roles, string userId)
     {
         List<Claim> claims = new()
         {
@@ -36,7 +36,7 @@ public class JwtToken : IJwtToken {
         
         var token = new JwtSecurityToken(
             claims: claims,
-            expires: DateTime.Now.AddMinutes(duration),
+            expires:DateTime.UtcNow.Add(TimeSpan.Parse(_config.GetSection("JwtConfig:ExpiryTimeFrame").Value)),
             signingCredentials: credentials
         );
         var jwt = new JwtSecurityTokenHandler().WriteToken(token);
@@ -80,12 +80,13 @@ public class JwtToken : IJwtToken {
         var refreshToken = new RefreshToken
         {
             Id = Guid.NewGuid().ToString(),
+            UserId = usedId,
             Token = getUniqueToken(),
-            IsUsed = true,
+            IsUsed = false,
+            IsRevoked = false,
             // token is valid for 7 days
             ExpDate = DateTime.UtcNow.AddDays(7),
             AddedDate = DateTime.UtcNow,
-            UserId = usedId
         };
         // Save to db for user
         RefreshToken savedToken = await _userRepository.UpdateToken(refreshToken);

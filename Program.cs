@@ -1,8 +1,4 @@
-using Microsoft.AspNetCore.Identity;
 using ProductAPI.Configuration;
-using ProductAPI.Helpers;
-using ProductAPI.Identity;
-using ProductAPI.Identity.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +16,8 @@ builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.AddSwaggerConfiguration();
 
 builder.Services.RegisterServices();
+
+builder.Services.AddEmailConfiguration(builder.Configuration);
 
 
 var app = builder.Build();

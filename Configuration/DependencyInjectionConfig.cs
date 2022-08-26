@@ -1,6 +1,8 @@
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Configuration.Token;
+using ProductAPI.Engines;
 using ProductAPI.Engines.Cryptography;
+using ProductAPI.ExternalServices;
 using ProductAPI.Identity;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
@@ -30,10 +32,12 @@ namespace ProductAPI.Configuration {
             services.AddScoped<IJwtToken, JwtToken>();
             // Crypto DI
             services.AddScoped<ICryptoEngine, CryptoEngine>();
+            
+            services.AddScoped<IUnixStampDateConverter, UnixStampDateConverter>();
             // Token validation
             services.AddSingleton<TokenValidationParameters>();
-            
-           
+            // Email DI
+            services.AddTransient<IEmailService, EmailService>();
 
         }
     }

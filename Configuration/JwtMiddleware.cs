@@ -19,14 +19,14 @@ public class JwtMiddleware
         _appSettings = appSettings.Value;
     }
 
-    public async Task Invoke(HttpContext context,UserManager<AppUser> userManager, IJwtToken jwtToken)
+    public async Task Invoke(HttpContext context,IUserService userService, IJwtToken jwtToken)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         var userId = jwtToken.ValidateJwtToken(token);
         if (userId != null)
         {
             // attach user to context on successful jwt validation
-            context.Items["User"] = userManager.FindByIdAsync(userId);
+            context.Items["User"] = userService.GetUserByIdAsync(userId);
         }
 
         await _next(context);

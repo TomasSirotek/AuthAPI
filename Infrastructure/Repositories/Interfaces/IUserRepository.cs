@@ -9,6 +9,8 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
         Task<AppUser> GetUserByIdAsync(string id);
 
         Task<AppUser> GetAsyncByEmailAsync(string email);
+        
+        Task<EmailToken> GetTokenByUserId(string id);
 		
         Task<AppUser> CreateUserAsync(AppUser user);
 
@@ -24,7 +26,10 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
 
         Task<AppUser> UpdateAsync(AppUser user);
 
-        Task<bool> SetActiveAsync(string id, bool result);
+        Task<bool> SetActiveAsync(string id);
+        
+        Task<EmailToken> CreateEmailToken(string userId, EmailToken newToken);
+        
         Task<bool> DeleteUser(string id);
     }
 }

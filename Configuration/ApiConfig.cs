@@ -32,7 +32,7 @@ namespace ProductAPI.Configuration {
             app.UseRouting();
 
             app.UseCors("AllowOrigin");
-           
+
             app.UseMiddleware<ErrorHandlerMiddleware>();
             
             app.UseMiddleware<JwtMiddleware>();
