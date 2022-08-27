@@ -589,3 +589,6 @@
 /Users/Tomas/Projects/Game_Store_Crud/ProductAPI/bin/Debug/net6.0/refs/System.Xml.XPath.dll
 /Users/Tomas/Projects/Game_Store_Crud/ProductAPI/bin/Debug/net6.0/refs/System.Xml.XPath.XDocument.dll
 /Users/Tomas/Projects/Game_Store_Crud/ProductAPI/bin/Debug/net6.0/refs/WindowsBase.dll
+/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/bin/Debug/net6.0/FluentValidation.dll
+/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/bin/Debug/net6.0/FluentValidation.AspNetCore.dll
+/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/bin/Debug/net6.0/FluentValidation.DependencyInjectionExtensions.dll

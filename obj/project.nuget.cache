@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "WpmYnySe3u2MrX0bQtl78aYJMkmD3p8Y4hAXqRnO6X0BVijWwUfX9cCNQOP/ahwlV0pTQYH/ZMGj4kIQkVzRqA==",
+  "dgSpecHash": "ThPMYc9qmnnoOPBkzcI3Y1XTqdEdPKfB7yS+Sa4r9BGughthpu2anrHw2YnGM17ZdIHkTtAHs31qYBN6CoFvMw==",
   "success": true,
   "projectFilePath": "/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/ProductAPI.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,9 @@
     "/Users/Tomas/.nuget/packages/fluentemail.razor/3.0.2/fluentemail.razor.3.0.2.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/fluentemail.sendgrid/3.0.2/fluentemail.sendgrid.3.0.2.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/fluentemail.smtp/3.0.2/fluentemail.smtp.3.0.2.nupkg.sha512",
+    "/Users/Tomas/.nuget/packages/fluentvalidation/11.2.0/fluentvalidation.11.2.0.nupkg.sha512",
+    "/Users/Tomas/.nuget/packages/fluentvalidation.aspnetcore/11.2.1/fluentvalidation.aspnetcore.11.2.1.nupkg.sha512",
+    "/Users/Tomas/.nuget/packages/fluentvalidation.dependencyinjectionextensions/11.2.0/fluentvalidation.dependencyinjectionextensions.11.2.0.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/humanizer.core/2.8.26/humanizer.core.2.8.26.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.authentication.jwtbearer/6.0.6/microsoft.aspnetcore.authentication.jwtbearer.6.0.6.nupkg.sha512",
     "/Users/Tomas/.nuget/packages/microsoft.aspnetcore.cryptography.internal/2.0.1/microsoft.aspnetcore.cryptography.internal.2.0.1.nupkg.sha512",

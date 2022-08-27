@@ -1,3 +1,4 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using ProductAPI.Helpers;
 using ProductAPI.Identity;
@@ -9,7 +10,8 @@ namespace ProductAPI.Configuration {
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddControllers();
-
+            
+            services.AddFluentValidationAutoValidation(fv => fv.DisableDataAnnotationsValidation = false).AddFluentValidationClientsideAdapters();
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin",

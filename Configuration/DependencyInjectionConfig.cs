@@ -1,15 +1,16 @@
+using FluentValidation;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Configuration.Token;
 using ProductAPI.Engines;
 using ProductAPI.Engines.Cryptography;
 using ProductAPI.ExternalServices;
-using ProductAPI.Identity;
-using ProductAPI.Identity.Models;
+using ProductAPI.Identity.BindingModels;
 using ProductAPI.Infrastructure.Data;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
 using ProductAPI.Services;
 using ProductAPI.Services.Interfaces;
+using ProductAPI.Validations;
 
 namespace ProductAPI.Configuration {
     public static class DependencyInjectionConfig {
@@ -39,7 +40,12 @@ namespace ProductAPI.Configuration {
             services.AddSingleton<TokenValidationParameters>();
             // Email DI
             services.AddTransient<IEmailService, EmailService>();
+            // Validators
+            services.AddScoped<IValidator<UserPostModel>, PostUserValidation>();
+            services.AddScoped<IValidator<UserPutModel>, PutUserValidation>();
 
+
+            
         }
     }
 }

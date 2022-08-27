@@ -77,7 +77,8 @@ namespace ProductAPI.Services {
 
             AppUser createdUser = await _userRepository.CreateUserAsync(user);
             if (createdUser == null)
-                throw new Exception("Could now create user");
+                throw new Exception("Could not create user");
+
             foreach (UserRole role in user.Roles)
             {
                 UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(role.Name);
@@ -89,39 +90,40 @@ namespace ProductAPI.Services {
             if (user is {IsActivated: false})
             {
                 var token = Guid.NewGuid().ToString();
-                
+
                 EmailToken verifyToken = await _userRepository.GetTokenByUserId(createdUser.Id);
                 if (verifyToken?.Token == token)
                     throw new Exception("Could generate token because it exists");
-                
-                    EmailToken newEmailToken = new EmailToken()
-                    {
-                        Id = Guid.NewGuid().ToString(),
-                        UserId = createdUser.Id,
-                        Token = token,
-                        CreatedAt = DateTime.Now,
-                        IsUsed = false,
-                    };
-                
-                    EmailToken confirmEmailToken = await _userRepository.CreateEmailToken(createdUser.Id, newEmailToken);
-                    var link =
-                        $"https://localhost:5000/Auth/confirm-email?userId={createdUser.Id}&token={confirmEmailToken.Token}"; 
-                  
-                    var email = new EmailModel()
-                    {
-                        EmailTo = user.Email,
-                        Name = user.FirstName,
-                        Body = link,
-                        Subject = Status.CONFIRM_EMAIL.ToString()
-                    };
-                     _emailService.SendEmail(email);
+
+                EmailToken newEmailToken = new EmailToken()
+                {
+                    Id = Guid.NewGuid().ToString(),
+                    UserId = createdUser.Id,
+                    Token = token,
+                    CreatedAt = DateTime.Now,
+                    IsUsed = false,
+                };
+
+                EmailToken confirmEmailToken = await _userRepository.CreateEmailToken(createdUser.Id, newEmailToken);
+
+                var link =
+                    $"https://localhost:5000/Auth/confirm-email?userId={createdUser.Id}&token={confirmEmailToken.Token}";
+
+                var email = new EmailModel()
+                {
+                    EmailTo = user.Email,
+                    Name = user.FirstName,
+                    Body = link,
+                    Subject = Status.CONFIRM_EMAIL.ToString()
+                };
+                _emailService.SendEmail(email);
             }
 
             AppUser fetchedNewUser = await _userRepository.GetUserByIdAsync(createdUser.Id);
             return fetchedNewUser;
         }
 
-        
+
         public async Task<AppUser> UpdateUserAsync(UserPutModel model)
         {
             AppUser requestUser = new AppUser()
@@ -155,14 +157,13 @@ namespace ProductAPI.Services {
             return completedUser;
         }
 
-      
-        
+
         public async Task<bool> ConfirmEmailAsync(string userId, string token)
         {
             AppUser fetchedUser = await _userRepository.GetUserByIdAsync(userId);
             if (fetchedUser == null) throw new Exception($"Could not find user with Id : {userId}");
             EmailToken verifyToken = await _userRepository.GetTokenByUserId(userId);
-            if(verifyToken.Token != token)
+            if (verifyToken.Token != token)
                 throw new Exception($"Could not confirm email with Id : {userId}");
             if (verifyToken.CreatedAt < DateTime.Now.AddMinutes(15) && verifyToken.IsUsed == false &&
                 verifyToken.UserId == userId)
@@ -179,7 +180,7 @@ namespace ProductAPI.Services {
             // find user => compare if password matched the current password => if yes then generate and save new password
             throw new NotImplementedException();
         }
-        
+
         public async Task<bool> DeleteAsync(string id)
         {
             return await _userRepository.DeleteUser(id);

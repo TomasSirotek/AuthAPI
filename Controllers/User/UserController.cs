@@ -1,7 +1,7 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Identity;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 using ProductAPI.Services.Interfaces;
@@ -9,11 +9,14 @@ using ProductAPI.Services.Interfaces;
 namespace ProductAPI.Controllers.User {
     public class UserController : DefaultController {
         private readonly IUserService _userService;
+        private readonly IValidator<UserPostModel> _validator;
+        private readonly IValidator<UserPutModel> _validatorUpdate;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IValidator<UserPostModel> validator, IValidator<UserPutModel> validatorUpdate)
         {
             _userService = userService;
-          
+            _validator = validator;
+            _validatorUpdate = validatorUpdate;
         }
 
         #region GET
@@ -34,9 +37,9 @@ namespace ProductAPI.Controllers.User {
         public async Task<IActionResult> GetAsyncById(string id)
        {
            AppUser user = await _userService.GetUserByIdAsync(id);
-            if (user != null) 
-                return Ok (user);
-            return BadRequest($"Could not find user with Id : {id}");
+            if (user is null) 
+                return BadRequest($"Could not find user with Id : {id}");
+            return Ok (user);
         }
 
         #endregion
@@ -44,8 +47,9 @@ namespace ProductAPI.Controllers.User {
         #region POST
         [HttpPost()]
         //[AllowAuthorizedAttribute(AccessRoles.Admin)]
-        public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request,CancellationToken cancellationToken)
+        public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request)
         {
+            await _validator.ValidateAndThrowAsync(request);
             AppUser user = new AppUser()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -58,7 +62,7 @@ namespace ProductAPI.Controllers.User {
             };
             AppUser resultUser = await _userService.CreateUserAsync(user,request.Roles, request.Password);
         
-            if(resultUser == null) 
+            if(resultUser is null) 
                 return BadRequest($"Could not create user with Email : {request.Email}");
             return Ok(resultUser);
         }
@@ -71,6 +75,8 @@ namespace ProductAPI.Controllers.User {
         //[Authorize(Roles ="Admin")]
         public async Task<IActionResult> UpdateAsync([FromBody]UserPutModel request)
         {
+            await _validatorUpdate.ValidateAndThrowAsync(request);
+            
             AppUser fetchedUser = await _userService.GetUserByIdAsync(request.Id);
             if(fetchedUser == null) 
                 return BadRequest($"Could not find user with Id : {request.Id}");
@@ -79,7 +85,6 @@ namespace ProductAPI.Controllers.User {
             if(updatedUser == null) 
                 return BadRequest($"Could not update user with Id : {request.Id}");
             return Ok(updatedUser);
-                
         }
         
         #endregion
@@ -92,9 +97,11 @@ namespace ProductAPI.Controllers.User {
         public async Task<IActionResult> DeleteAsync(string id)
         {
             AppUser fetchedUser = await _userService.GetUserByIdAsync(id);
-            if(fetchedUser == null) BadRequest($"Could not find user with {id}");
+            if(fetchedUser == null) 
+                BadRequest($"Could not find user with {id}");
             bool result = await _userService.DeleteAsync(id);
-            if(result == null) BadRequest($"Could not delete user with {id}");
+            if(result == null) 
+                BadRequest($"Could not delete user with {id}");
             return Ok($"User with Id : {id} has been deleted !");
         }
         #endregion
