@@ -38,19 +38,6 @@ CREATE TABLE [dbo].[user_role]
         FOREIGN KEY (roleId) REFERENCES role(id) ON DELETE CASCADE,
 );
 
-CREATE TABLE [dbo].[product]
-(
-    [id] NVARCHAR(255)  NOT NULL,
-    [title] NVARCHAR(255) NOT NULL,
-    [description] NVARCHAR(255) NOT NULL,
-    [isActive] BIGINT NOT NULL,
-    [unitPrice] DECIMAL NOT NULL,
-    [unitsInStock] INT NOT NULL
-    -- Specify keys
-    CONSTRAINT product_pkey UNIQUE PRIMARY KEY (id),
-    
-);
-
 CREATE TABLE [dbo].[email_token]
 (
     [id] NVARCHAR(255)  NOT NULL UNIQUE,

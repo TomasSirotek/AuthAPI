@@ -5,6 +5,7 @@ using ProductAPI.Engines;
 using ProductAPI.Engines.Cryptography;
 using ProductAPI.ExternalServices;
 using ProductAPI.Identity.BindingModels;
+using ProductAPI.Identity.BindingModels.Authentication;
 using ProductAPI.Infrastructure.Data;
 using ProductAPI.Infrastructure.Repositories;
 using ProductAPI.Infrastructure.Repositories.Interfaces;
@@ -20,9 +21,6 @@ namespace ProductAPI.Configuration {
             services.AddScoped<SqlServerConnection>();
             services.AddTransient<IStartupFilter, DatabaseExtension>();
             services.AddTransient<DbCustomLogger<DatabaseExtension>>();
-            // Product DI
-            services.AddTransient<IProductRepository, ProductRepository>();
-            services.AddTransient<IProductService, ProductService>();
             // User DI
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IUserService, UserService>();
@@ -34,7 +32,7 @@ namespace ProductAPI.Configuration {
             services.AddScoped<IVerifyJwtToken, VerifyJwtToken>();
             // Crypto DI
             services.AddScoped<ICryptoEngine, CryptoEngine>();
-            
+            // Date Converter
             services.AddScoped<IUnixStampDateConverter, UnixStampDateConverter>();
             // Token validation
             services.AddSingleton<TokenValidationParameters>();
@@ -46,8 +44,8 @@ namespace ProductAPI.Configuration {
             // Validators : Role
             services.AddScoped<IValidator<RolePostModel>, RolePostValidation>();
             services.AddScoped<IValidator<RolePutModel>, RolePutValidation>();
-
-            
+            // Validators : Register
+            services.AddScoped<IValidator<RegisterPostModel>, RegisterValidator>();
         }
     }
 }

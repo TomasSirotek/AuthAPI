@@ -1,5 +1,4 @@
 using Dapper;
-using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Domain.Models;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
@@ -18,164 +17,125 @@ namespace ProductAPI.Infrastructure.Repositories {
 
         public async Task<List<AppUser>> GetAllUsersAsync()
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = @"SELECT *
+            using var cnn = _connection.CreateConnection();
+            var sql = @"SELECT *
                         FROM app_user u
                         LEFT JOIN user_role ur ON u.id = ur.userId 
                         LEFT JOIN role r ON ur.roleId = r.id";
 
-                IEnumerable<AppUser> users = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
-                        {
-                            Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-                            AppUser user;
-                            if (!userRoles.TryGetValue(u.Id, out user))
-                            {
-                                userRoles.Add(u.Id, user = u);
-                            }
-
-                            if (user.Roles == null)
-                                user.Roles = new List<UserRole>();
-                            user.Roles.Add(r);
-                            return user;
-                        },
-                        splitOn: "id"
-                    ).GroupBy(u => u.Id)
-                    .Select(group =>
+            IEnumerable<AppUser> users = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
                     {
-                        AppUser user = group.First();
-                        user.Roles = group.Select(u => u.Roles.Single()).ToList();
+                        Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
+                        if (!userRoles.TryGetValue(u.Id, out var user))
+                        {
+                            userRoles.Add(u.Id, user = u);
+                        }
+
+                        user.Roles.Add(r);
                         return user;
-                    });
-                return users.ToList();
-            }
+                    },
+                    splitOn: "id"
+                ).GroupBy(u => u.Id)
+                .Select(group =>
+                {
+                    AppUser user = @group.First();
+                    user.Roles = @group.Select(u => u.Roles.Single()).ToList();
+                    return user;
+                });
+            return users.ToList();
         }
 
         public async Task<AppUser> GetUserByIdAsync(string id)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = @"SELECT *
+            using var cnn = _connection.CreateConnection();
+            var sql = @"SELECT *
                         FROM app_user u
                         LEFT JOIN user_role ur ON u.id = ur.userId 
                         LEFT JOIN role r ON ur.roleId = r.id
                         where u.id = @id";
 
-                IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
-                        {
-                            var userRoles = new Dictionary<string, AppUser>();
-                            AppUser user;
-                            if (!userRoles.TryGetValue(u.Id, out user))
-                            {
-                                userRoles.Add(u.Id, user = u);
-                            }
-
-                            if (user.Roles == null)
-                                user.Roles = new List<UserRole>();
-                            user.Roles.Add(r);
-                            return user;
-                        },
-                        new {Id = id}
-                    ).GroupBy(u => u.Id)
-                    .Select(group =>
+            IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
                     {
-                        AppUser user = group.First();
-                        user.Roles = group.Select(u => u.Roles.Single()).ToList();
+                        var userRoles = new Dictionary<string, AppUser>();
+                        if (!userRoles.TryGetValue(u.Id, out var user))
+                        {
+                            userRoles.Add(u.Id, user = u);
+                        }
+
+                        user.Roles.Add(r);
                         return user;
-                    });
-                return user.First();
-            }
+                    },
+                    new {Id = id}
+                ).GroupBy(u => u.Id)
+                .Select(group =>
+                {
+                    AppUser user = @group.First();
+                    user.Roles = @group.Select(u => u.Roles.Single()).ToList();
+                    return user;
+                });
+            return user.First();
         }
 
         public async Task<AppUser> GetAsyncByEmailAsync(string email)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = @"SELECT *
+            using var cnn = _connection.CreateConnection();
+            var sql = @"SELECT *
                         FROM app_user u
                         LEFT JOIN user_role ur ON u.id = ur.userId 
                         LEFT JOIN role r ON ur.roleId = r.id
                         where u.email = @email";
 
-                IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
-                        {
-                            var userRoles = new Dictionary<string, AppUser>();
-                            AppUser user;
-                            if (!userRoles.TryGetValue(u.Id, out user))
-                            {
-                                userRoles.Add(u.Id, user = u);
-                            }
-
-                            if (user.Roles == null)
-                                user.Roles = new List<UserRole>();
-                            user.Roles.Add(r);
-                            return user;
-                        },
-                        new {Email = email}
-                    ).GroupBy(u => u.Id)
-                    .Select(group =>
+            IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
                     {
-                        AppUser user = group.First();
-                        user.Roles = group.Select(u => u.Roles.Single()).ToList();
+                        var userRoles = new Dictionary<string, AppUser>();
+                        if (!userRoles.TryGetValue(u.Id, out var user))
+                        {
+                            userRoles.Add(u.Id, user = u);
+                        }
+
+                        user.Roles.Add(r);
                         return user;
-                    });
-                AppUser[] appUsers = user as AppUser[] ?? user.ToArray();
-                if (appUsers.Any())
-                    return appUsers.First();
-                return null;
-            }
+                    },
+                    new {Email = email}
+                ).GroupBy(u => u.Id)
+                .Select(group =>
+                {
+                    AppUser user = @group.First();
+                    user.Roles = @group.Select(u => u.Roles.Single()).ToList();
+                    return user;
+                });
+            AppUser[] appUsers = user as AppUser[] ?? user.ToArray();
+            return appUsers.First();
         }
 
         public async Task<RefreshToken> FindByTokenAsync(string token)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = @"select * from refreshToken as r where r.token = @token";
-
-                RefreshToken newToken = await cnn.QueryFirstAsync<RefreshToken>(sql, new {Token = token});
-                if (token != null)
-                {
-                    return newToken;
-                }
-
-                throw new ArgumentNullException(nameof(token));
-            }
+            using var cnn = _connection.CreateConnection();
+            return await cnn.QuerySingleOrDefaultAsync<RefreshToken>( 
+                @"SELECT * FROM refreshToken AS r WHERE r.token = @token", new {Token = token});
         }
 
         public async Task<EmailToken> GetTokenByUserId(string id)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = $@"select * from email_token as et where et.userId = @Id";
-
-                EmailToken emailTokenResult = cnn.QueryFirstOrDefault<EmailToken>(sql, new
-                {
-                    Id = id
-                });
-                if (emailTokenResult != null)
-                    return emailTokenResult;
-                return null;
-            }
+            using var cnn = _connection.CreateConnection();
+            return await cnn.QuerySingleOrDefaultAsync<EmailToken>(
+                $@"SELECT * FROM email_token AS et WHERE et.userId = @Id", new {Id = id});
         }
 
         #endregion
-
-
+        
         #region POST
 
         public async Task<AppUser> CreateUserAsync(AppUser user)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql =
-                    $@"INSERT INTO app_user (id,firstName,lastName,email,passwordHash,isActivated,createdAt) 
-                                        values (@id,@firstName,@lastName,@email,@passwordHash,@isActivated,@createdAt)";
+            using var cnn = _connection.CreateConnection();
 
-                var newUser = await cnn.ExecuteAsync(sql, user);
-                if (newUser > 0)
-                    return user;
-                throw new ArgumentNullException(nameof(user));
-            }
+            var newUser = await cnn.ExecuteAsync(  
+                $@"INSERT INTO app_user (id,firstName,lastName,email,passwordHash,isActivated,createdAt) 
+                                        VALUES (@id,@firstName,@lastName,@email,@passwordHash,@isActivated,@createdAt)", user);
+            if (newUser > 0)
+                return user;
+            throw new ArgumentNullException(nameof(user));
         }
 
         public async Task<AppUser> AddToRoleAsync(AppUser user, UserRole role)
@@ -199,76 +159,64 @@ namespace ProductAPI.Infrastructure.Repositories {
 
         public async Task<EmailToken> CreateEmailToken(string userId,EmailToken newToken)
         {
-            using (var cnn = _connection.CreateConnection())
+            using var cnn = _connection.CreateConnection();
+            var affectedRows = await cnn.ExecuteAsync(
+                $@"INSERT INTO email_token (id,userId,token,createdAt,isUsed) 
+                    VALUES (@id,@userId,@token,@createdAt,@isUsed)", new
             {
-                var sql =
-                    $@"INSERT INTO email_token (id,userId,token,createdAt,isUsed) 
-                                        values (@id,@userId,@token,@createdAt,@isUsed)";
-
-                var affectedRows = await cnn.ExecuteAsync(sql, new
-                {
-                    id = newToken.Id,
-                    userId = userId,
-                    token = newToken.Token,
-                    createdAt = newToken.CreatedAt,
-                    isUsed = newToken.IsUsed
-                });
-                if (affectedRows > 0)
-                    return newToken;
-            }
-            throw new ArgumentNullException(nameof(userId));
+                id = newToken.Id,
+                userId = userId,
+                token = newToken.Token,
+                createdAt = newToken.CreatedAt,
+                isUsed = newToken.IsUsed
+            });
+            
+            if (affectedRows > 0)
+                return newToken;
+            return null;
         }
 
         #endregion
 
         #region PUT
 
-        public async Task<RefreshToken> UpdateToken(RefreshToken refreshToken)
+        public async Task<bool> UpdateToken(RefreshToken refreshToken)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql =
-                    $@"INSERT INTO refreshToken (id,userId,token,JwtId,isUsed,isRevoked,AddedDate,ExpDate) 
-                                        values (@id,@userId,@token,@JwtId,@isUsed,@isRevoked,@addedDate,@expDate)";
-
-                var newUser = await cnn.ExecuteAsync(sql, refreshToken);
-                if (newUser > 0)
-                    return refreshToken;
-                return null;
-            }
+            using var cnn = _connection.CreateConnection();
+            var affectedRows = await cnn.ExecuteAsync( 
+                $@"INSERT INTO refreshToken (id,userId,token,JwtId,isUsed,isRevoked,AddedDate,ExpDate) 
+                        values (@id,@userId,@token,@JwtId,@isUsed,@isRevoked,@addedDate,@expDate)", 
+                refreshToken);
+            return affectedRows > 0;
         }
 
         public async Task<AppUser> UpdateAsync(AppUser user)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = $@"update
+            using var cnn = _connection.CreateConnection();
+            var affectedRows = await cnn.ExecuteAsync( 
+                $@"UPDATE
                         app_user
-                        set 
+                        SET 
                         firstname = @firstname,
                         lastName = @lastName,
                         email = @email,
                         isActivated = @isActivated,
                         updatedAt = @updatedAt
-                        where id = @id;";
-
-                var newUser = await cnn.ExecuteAsync(sql, new
-                {
-                    id = user.Id,
-                    firstName = user.FirstName,
-                    lastName = user.LastName,
-                    email = user.Email,
-                    isActivated = user.IsActivated,
-                    updatedAt = user.UpdatedAt
-                });
-                if (newUser > 0)
-                    return user;
-            }
+                        WHERE id = @id;", new
+            {
+                id = user.Id,
+                firstName = user.FirstName,
+                lastName = user.LastName,
+                email = user.Email,
+                isActivated = user.IsActivated,
+                updatedAt = user.UpdatedAt
+            });
+            if (affectedRows > 0)
+                return user;
 
             return null;
         }
-
-
+        
         public async Task<bool> ChangePasswordAsync(AppUser user, string newPasswordHash)
         {
             throw new NotImplementedException();
@@ -276,22 +224,14 @@ namespace ProductAPI.Infrastructure.Repositories {
 
         public async Task<bool> SetActiveAsync(string id)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = $@"update
+            using var cnn = _connection.CreateConnection();
+            var affectedRows = await cnn.ExecuteAsync(
+                $@"UPDATE
                         app_user
-                        set 
+                        SET 
                         isActivated = 1
-                        where id = @Id";
-
-                var affectedRows = await cnn.ExecuteAsync(sql, new
-                {
-                    Id = id
-                });
-                if (affectedRows > 0)
-                    return true;
-                return false;
-            }
+                        WHERE id = @Id", new {Id = id});
+            return affectedRows > 0;
         }
 
         #endregion
@@ -300,39 +240,21 @@ namespace ProductAPI.Infrastructure.Repositories {
 
         public async Task<bool> RemoveUserRoleAsync(string roleId)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql =
-                    $@"DELETE FROM user_role  WHERE roleId = @roleId
-                                ";
+            using var cnn = _connection.CreateConnection();
+            var affectedRows = await cnn.ExecuteAsync( 
+                $@"DELETE FROM user_role  WHERE roleId = @roleId", new { RoleId = roleId});
 
-                var affectedRows = await cnn.ExecuteAsync(sql, new
-                {
-                    RoleId = roleId
-                });
-                if (affectedRows > 0)
-                    return true;
-            }
-
-            throw new ArgumentNullException(nameof(roleId));
+            return affectedRows > 0;
         }
 
         public async Task<bool> DeleteUser(string id)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = $@"Delete 
-                         from app_user 
-                         where id = @Id";
-
-                var newUser = await cnn.ExecuteAsync(sql, new
-                {
-                    Id = id
-                });
-                if (newUser > 0)
-                    return true;
-                return false;
-            }
+            using var cnn = _connection.CreateConnection();
+            var affectedRows = await cnn.ExecuteAsync(
+                $@"DELETE 
+                         FROM app_user 
+                         WHERE id = @Id", new {Id = id});
+            return affectedRows > 0;
         }
 
         #endregion

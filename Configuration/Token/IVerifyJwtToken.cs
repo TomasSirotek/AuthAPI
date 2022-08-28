@@ -1,3 +1,4 @@
+using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
 
 namespace ProductAPI.Configuration.Token; 

@@ -1,6 +1,3 @@
-using System.Security.Cryptography;
-using FluentEmail.Core.Models;
-using Microsoft.AspNetCore.Identity;
 using ProductAPI.Configuration.Token;
 using ProductAPI.Domain.Enum;
 using ProductAPI.Domain.Models;
@@ -83,12 +80,13 @@ namespace ProductAPI.Services {
             {
                 UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(role.Name);
                 if (fetchedRole == null)
-                    throw new Exception("Could now create roles for user");
+                    throw new Exception($"Could now create role for user | Role does not exist {role.Name}");
                 await _userRepository.AddToRoleAsync(createdUser, fetchedRole);
             }
 
             if (user is {IsActivated: false})
             {
+                // This is just random for now 
                 var token = Guid.NewGuid().ToString();
 
                 EmailToken verifyToken = await _userRepository.GetTokenByUserId(createdUser.Id);
@@ -137,19 +135,21 @@ namespace ProductAPI.Services {
             };
             AppUser updatedUser = await _userRepository.UpdateAsync(requestUser);
 
-            if (updatedUser == null) throw new Exception("Could not update user ");
+            if (updatedUser == null) 
+                throw new Exception("Could not update user ");
             AppUser fetchedUser = await _userRepository.GetUserByIdAsync(model.Id);
 
             foreach (UserRole oldRole in fetchedUser.Roles)
             {
                 bool removeCategory = await _userRepository.RemoveUserRoleAsync(oldRole.Id);
-                if (!removeCategory) throw new Exception("Could not delete role ");
+                if (!removeCategory) throw new Exception("Could not delete old role ");
             }
 
             foreach (var name in model.Roles)
             {
                 UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(name);
-                if (fetchedRole == null) throw new Exception($"Could not find role with name {name}");
+                if (fetchedRole == null) 
+                    throw new Exception($"Could not find role with name {name}");
                 await _userRepository.AddToRoleAsync(updatedUser, fetchedRole);
             }
 
@@ -161,18 +161,21 @@ namespace ProductAPI.Services {
         public async Task<bool> ConfirmEmailAsync(string userId, string token)
         {
             AppUser fetchedUser = await _userRepository.GetUserByIdAsync(userId);
-            if (fetchedUser == null) throw new Exception($"Could not find user with Id : {userId}");
+            if (fetchedUser == null) 
+                throw new Exception($"Could not find user with Id : {userId}");
+            
             EmailToken verifyToken = await _userRepository.GetTokenByUserId(userId);
             if (verifyToken.Token != token)
                 throw new Exception($"Could not confirm email with Id : {userId}");
+            
             if (verifyToken.CreatedAt < DateTime.Now.AddMinutes(15) && verifyToken.IsUsed == false &&
                 verifyToken.UserId == userId)
             {
                 bool activatedUser = await _userRepository.SetActiveAsync(userId);
-                if (activatedUser) return true;
+                if(!activatedUser) 
+                    throw new Exception($"Could not confirm email with Id : {userId}");
             }
-
-            throw new Exception($"Could not confirm email with user Id : {userId}");
+            return true;
         }
 
         public Task<bool> ChangePasswordAsync(AppUser user, string newPassword)

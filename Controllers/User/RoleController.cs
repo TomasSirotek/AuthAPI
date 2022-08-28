@@ -1,4 +1,5 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using ProductAPI.Identity.BindingModels;
@@ -22,7 +23,7 @@ namespace ProductAPI.Controllers.User {
         #region GET
 
         [HttpGet()]
-        //[AllowAnonymous]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> GetAllAsync()
         {
             List<UserRole> roles = await _roleService.GetAsync();
@@ -32,7 +33,7 @@ namespace ProductAPI.Controllers.User {
         }
 
         [HttpGet("{id}")]
-        // [AllowAnonymous]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> GetAsyncById(string id)
         {
             UserRole role = await _roleService.GetAsyncById(id);
@@ -42,6 +43,7 @@ namespace ProductAPI.Controllers.User {
         }
 
         [HttpGet("name")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> GetAsyncByName(string name)
         {
             UserRole role = await _roleService.GetAsyncByName(name);
@@ -55,6 +57,7 @@ namespace ProductAPI.Controllers.User {
         #region POST
 
         [HttpPost()]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> CreateAsync([FromBody] RolePostModel request)
         {
             await _validator.ValidateAndThrowAsync(request);
@@ -74,6 +77,7 @@ namespace ProductAPI.Controllers.User {
         #region PUT
 
         [HttpPut()]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> UpdateAsync([FromBody] RolePutModel request)
         {
             await _putValidator.ValidateAndThrowAsync(request);
@@ -94,6 +98,7 @@ namespace ProductAPI.Controllers.User {
         #region DELETE
 
         [HttpDelete]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
             UserRole fetchedRole = await _roleService.GetAsyncById(id);

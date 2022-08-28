@@ -14,7 +14,7 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
 		
         Task<AppUser> CreateUserAsync(AppUser user);
 
-        Task<RefreshToken> UpdateToken(RefreshToken refreshToken);
+        Task<bool> UpdateToken(RefreshToken refreshToken);
 
         Task<RefreshToken> FindByTokenAsync(string token);
 

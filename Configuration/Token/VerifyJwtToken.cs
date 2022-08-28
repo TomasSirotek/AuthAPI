@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
 using ProductAPI.Engines;
 using ProductAPI.Identity.Models;
@@ -56,7 +57,6 @@ public class VerifyJwtToken : IVerifyJwtToken {
                 if (expiryDate > DateTime.Now)
                 {
                     return null;// do better error handeling 
-                    
                 }
 
                 // validate Roles

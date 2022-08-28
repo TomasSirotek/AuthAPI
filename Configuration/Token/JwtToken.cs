@@ -43,7 +43,7 @@ public class JwtToken : IJwtToken {
 
         return jwt;
     }
-    public string? ValidateJwtToken(string token)
+    public string? ValidateJwtToken(string? token)
     {
         if (token == null)
             return null;
@@ -81,29 +81,28 @@ public class JwtToken : IJwtToken {
         {
             Id = Guid.NewGuid().ToString(),
             UserId = usedId,
-            Token = getUniqueToken(),
+            Token = GetUniqueToken(),
             IsUsed = false,
             IsRevoked = false,
-            // token is valid for 7 days
             ExpDate = DateTime.UtcNow.AddDays(7),
             AddedDate = DateTime.UtcNow,
         };
-        // Save to db for user
-        RefreshToken savedToken = await _userRepository.UpdateToken(refreshToken);
-        return savedToken;
+        bool savedToken = await _userRepository.UpdateToken(refreshToken);
+        if (!savedToken) 
+            throw new Exception("Could not save token");
+
+        // fix this
+        return new RefreshToken();
         
-        
-        string getUniqueToken()
+        string GetUniqueToken()
         {
             // token is a cryptographically strong random sequence of values
             var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
             // ensure token is unique by checking against db
-            var tokenIsUnique = true;// check againts db
-                //!_userManager.Users.Any(u => u.RefreshTokens.Any(t => t.Token == token));
+            var tokenIsUnique = true;
 
             if (!tokenIsUnique)
-                return getUniqueToken();
-            
+                return GetUniqueToken();
             return token;
         }
     }

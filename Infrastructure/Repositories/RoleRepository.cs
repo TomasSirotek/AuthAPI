@@ -18,22 +18,22 @@ public class RoleRepository : IRoleRepository {
         using var cnn = _connection.CreateConnection();
         return (List<UserRole>)
             await cnn.QueryAsync<UserRole>(
-                @"select * from role");
+                @"SELECT * FROM role");
     }
 
     public async Task<UserRole> GetRoleAsyncByName(string name)
     {
         using var cnn = _connection.CreateConnection();
         return
-            await cnn.QueryFirstAsync<UserRole>(
-                @"select * from role as c where c.name = @name", new {Name = name});
+            await cnn.QuerySingleOrDefaultAsync<UserRole>(
+                @"SELECT * FROM role AS c WHERE c.name = @name", new {Name = name});
     }
 
     public async Task<UserRole> GetRoleByIdAsync(string id)
     {
         using var cnn = _connection.CreateConnection();
         return await cnn.QuerySingleOrDefaultAsync<UserRole>(
-            @"select * from role as c where c.id = @id",
+            @"SELECT * FROM role AS c WHERE c.id = @id",
             new {Id = id});
     }
 
@@ -41,7 +41,7 @@ public class RoleRepository : IRoleRepository {
     {
         using var cnn = _connection.CreateConnection();
         var affectedRows = await cnn.ExecuteAsync(
-            @"insert into role (id,name) values (@id,@name)",
+            @"INSERT INTO role (id,name) VALUES (@id,@name)",
             role);
         return affectedRows > 0;
     }
@@ -50,9 +50,9 @@ public class RoleRepository : IRoleRepository {
     {
         using var cnn = _connection.CreateConnection();
         var affectedRows = await cnn.ExecuteAsync(
-            $@"update role
+            $@"UPDATE role
                          SET name = @name 
-                         where id = @id;", role);
+                         WHERE id = @id;", role);
         return affectedRows > 0;
     }
 

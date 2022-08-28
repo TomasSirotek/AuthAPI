@@ -21,7 +21,6 @@ namespace ProductAPI.Controllers.User {
 
         #region GET
         [HttpGet()]
-       // [Authorize(Roles ="Administrator")]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllAsync()
         {
@@ -33,7 +32,7 @@ namespace ProductAPI.Controllers.User {
     
     
         [HttpGet("{id}")]
-       //  [AllowAuthorizedAttribute(AccessRole.Admin)]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAsyncById(string id)
        {
            AppUser user = await _userService.GetUserByIdAsync(id);
@@ -46,7 +45,7 @@ namespace ProductAPI.Controllers.User {
     
         #region POST
         [HttpPost()]
-        //[AllowAuthorizedAttribute(AccessRoles.Admin)]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request)
         {
             await _validator.ValidateAndThrowAsync(request);
@@ -72,7 +71,7 @@ namespace ProductAPI.Controllers.User {
         
         #region PUT
         [HttpPut()]
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> UpdateAsync([FromBody]UserPutModel request)
         {
             await _validatorUpdate.ValidateAndThrowAsync(request);
@@ -93,14 +92,14 @@ namespace ProductAPI.Controllers.User {
         #region DELETE
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> DeleteAsync(string id)
         {
             AppUser fetchedUser = await _userService.GetUserByIdAsync(id);
             if(fetchedUser == null) 
                 BadRequest($"Could not find user with {id}");
             bool result = await _userService.DeleteAsync(id);
-            if(result == null) 
+            if(!result) 
                 BadRequest($"Could not delete user with {id}");
             return Ok($"User with Id : {id} has been deleted !");
         }
