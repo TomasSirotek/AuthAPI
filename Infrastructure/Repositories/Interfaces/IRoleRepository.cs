@@ -10,7 +10,7 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
 
         Task<bool> CreateRoleAsync(UserRole role);
 
-        Task<UserRole> UpdateRoleAsync(UserRole role);
+        Task<bool> UpdateRoleAsync(UserRole role);
 
         Task<bool> DeleteAsync(string id);
     }

@@ -40,10 +40,12 @@ namespace ProductAPI.Configuration {
             services.AddSingleton<TokenValidationParameters>();
             // Email DI
             services.AddTransient<IEmailService, EmailService>();
-            // Validators
+            // Validators : User
             services.AddScoped<IValidator<UserPostModel>, PostUserValidation>();
             services.AddScoped<IValidator<UserPutModel>, PutUserValidation>();
-
+            // Validators : Role
+            services.AddScoped<IValidator<RolePostModel>, RolePostValidation>();
+            services.AddScoped<IValidator<RolePutModel>, RolePutValidation>();
 
             
         }

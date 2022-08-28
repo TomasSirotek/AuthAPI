@@ -31,22 +31,17 @@ public class RoleService : IRoleService {
     public async Task<UserRole> CreateAsync(UserRole role)
     {
         bool result  = await _roleRepository.CreateRoleAsync(role);
-        if (!result)  throw new Exception("Role cannot be empty");
+        if (!result)  throw new Exception("Could not create role");
         UserRole fetchedRole = await _roleRepository.GetRoleByIdAsync(role.Id);
         return fetchedRole;
     }
 
     public async Task<UserRole> UpdateAsync(UserRole role)
     {
-        if (role == null) 
-            throw new Exception("Role cannot be empty");
-        // try to update
-        UserRole roleUpdated = await _roleRepository.UpdateRoleAsync(role);
-        if (roleUpdated == null) 
+        bool result = await _roleRepository.UpdateRoleAsync(role);
+        if (!result) 
             throw new Exception("Role could not be created");
-        // fetch updated role
         UserRole updatedRole = await _roleRepository.GetRoleByIdAsync(role.Id);
-        // if done return back 
         return updatedRole;
     }
 

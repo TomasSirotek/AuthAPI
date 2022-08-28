@@ -86,7 +86,8 @@ namespace ProductAPI.Controllers {
                 return NotFound();
 
             var result = await _userService.ConfirmEmailAsync(userId, token);
-            if (result) return Ok("Email confirmed");
+            if (result) 
+                return Ok("Email confirmed");
 
             return BadRequest($"Could not confirm account for user with id {userId}");
         }
