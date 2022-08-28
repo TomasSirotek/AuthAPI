@@ -44,19 +44,24 @@ public class VerifyJwtToken : IVerifyJwtToken {
                     var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha512Signature,
                         StringComparison.InvariantCultureIgnoreCase);
                     if (!result)
-                        return null;
+                        Console.WriteLine("Could not validate token");
                 }
 
                 var jwtToken = (JwtSecurityToken) validatedToken;
 
-                var utcExpiryDate = long.Parse(jwtToken.Claims
-                    .FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp).Value);
-
-                var expiryDate = _unixHelper.UnixTimeStampToDateTime(utcExpiryDate);
-
-                if (expiryDate > DateTime.Now)
+                var value = jwtToken.Claims
+                    .FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Exp)
+                    ?.Value;
+                if (value != null)
                 {
-                    return null;// do better error handeling 
+                    var utcExpiryDate = long.Parse(value);
+
+                    var expiryDate = _unixHelper.UnixTimeStampToDateTime(utcExpiryDate);
+
+                    if (expiryDate > DateTime.Now)
+                    {
+                        Console.WriteLine("Expired");
+                    }
                 }
 
                 // validate Roles
