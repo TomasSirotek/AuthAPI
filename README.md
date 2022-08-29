@@ -12,7 +12,9 @@
 This project is my practice repository to get familiar with .net 6 and C# 
 Goal of this repo is to spend time on the code and lear how to write efficient code and how to work with variaty different databases. 
 I wanted to implement JWT token auth where generated token can be used as bearer token for role-based end-points.
-Learning objective was to learn SQL Database / code seperation / clean architecture
+Learning objective was to learn SQL Database / code seperation / clean architecture. Seeding is automatickly from mocked data from script files CreateTable.sql | InserTable.sql. Project still need code reformating and major fixes in order to work properly.
+
+
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
