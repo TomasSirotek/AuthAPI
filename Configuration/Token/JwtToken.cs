@@ -68,8 +68,7 @@ public class JwtToken : IJwtToken {
         }
         catch(Exception e)
         {
-            Console.WriteLine(e);
-            throw;
+            throw new Exception(e.Message);
         }
     }
 
@@ -95,7 +94,6 @@ public class JwtToken : IJwtToken {
         {
             // token is a cryptographically strong random sequence of values
             var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-            // ensure token is unique by checking against db
             var tokenIsUnique = true;
 
             if (!tokenIsUnique)

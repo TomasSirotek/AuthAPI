@@ -58,9 +58,9 @@ public class VerifyJwtToken : IVerifyJwtToken {
 
                     var expiryDate = _unixHelper.UnixTimeStampToDateTime(utcExpiryDate);
 
-                    if (expiryDate > DateTime.Now)
+                    if (expiryDate > DateTime.Now.AddDays(7))
                     {
-                        Console.WriteLine("Expired");
+                        throw new Exception("Token is expired");
                     }
                 }
 

@@ -15,13 +15,13 @@ namespace ProductAPI.Infrastructure.Repositories {
 
         #region GET
 
-        public async Task<List<AppUser>> GetAllUsersAsync()
+        public Task<List<AppUser>> GetAllUsersAsync()
         {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
                         FROM app_user u
-                        LEFT JOIN user_role ur ON u.id = ur.userId 
-                        LEFT JOIN role r ON ur.roleId = r.id";
+                        INNER JOIN user_role ur ON u.id = ur.userId 
+                        INNER JOIN role r ON ur.roleId = r.id";
 
             IEnumerable<AppUser> users = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
                     {
@@ -30,7 +30,8 @@ namespace ProductAPI.Infrastructure.Repositories {
                         {
                             userRoles.Add(u.Id, user = u);
                         }
-
+                        
+                        user.Roles = new List<UserRole>();
                         user.Roles.Add(r);
                         return user;
                     },
@@ -38,14 +39,14 @@ namespace ProductAPI.Infrastructure.Repositories {
                 ).GroupBy(u => u.Id)
                 .Select(group =>
                 {
-                    AppUser user = @group.First();
-                    user.Roles = @group.Select(u => u.Roles.Single()).ToList();
+                    AppUser user = group.First();
+                    user.Roles = group.Select(u => u.Roles.Single()).ToList();
                     return user;
                 });
-            return users.ToList();
+            return Task.FromResult(users.ToList());
         }
 
-        public async Task<AppUser> GetUserByIdAsync(string id)
+        public Task<AppUser> GetUserByIdAsync(string id)
         {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
@@ -61,7 +62,8 @@ namespace ProductAPI.Infrastructure.Repositories {
                         {
                             userRoles.Add(u.Id, user = u);
                         }
-
+                        
+                        user.Roles = new List<UserRole>();
                         user.Roles.Add(r);
                         return user;
                     },
@@ -69,14 +71,14 @@ namespace ProductAPI.Infrastructure.Repositories {
                 ).GroupBy(u => u.Id)
                 .Select(group =>
                 {
-                    AppUser user = @group.First();
-                    user.Roles = @group.Select(u => u.Roles.Single()).ToList();
+                    AppUser user = group.First();
+                    user.Roles = group.Select(u => u.Roles.Single()).ToList();
                     return user;
                 });
-            return user.First();
+            return Task.FromResult(user.First());
         }
 
-        public async Task<AppUser> GetAsyncByEmailAsync(string email)
+        public Task<AppUser> GetAsyncByEmailAsync(string email)
         {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
@@ -105,7 +107,7 @@ namespace ProductAPI.Infrastructure.Repositories {
                     return user;
                 });
             AppUser[] appUsers = user as AppUser[] ?? user.ToArray();
-            return appUsers.First();
+            return Task.FromResult(appUsers.First());
         }
 
         public async Task<RefreshToken> FindByTokenAsync(string token)
