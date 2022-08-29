@@ -9,6 +9,11 @@
 # Simple REST API 
 📚 Practice | Docker | .NET 6 | DAPPER  
 
+This project is my practice repository to get familiar with .net 6 and C# 
+Goal of this repo is to spend time on the code and lear how to write efficient code and how to work with variaty different databases. 
+I wanted to implement JWT token auth where generated token can be used as bearer token for role-based end-points.
+Learning objective was to learn SQL Database / code seperation / clean architecture
+
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
@@ -88,9 +93,3 @@ Tomas Simko - [@twitter](https://twitter.com/TomasSimko_) - simko.t@email.cz - [
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/github_username/repo.svg?style=for-the-badge
-
-
-
-
-
-
