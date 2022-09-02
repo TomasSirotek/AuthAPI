@@ -78,7 +78,6 @@ Learning objective was to learn SQL Database / code seperation / clean architect
 ## Under Constraction
 
 - [x] Refresh token needs better generation and testing
-- [x] Dapper mapping from user repositories is not async
 - [x] Docker compose up has only mssql need to run api seperately
 - [x] Want to fix throwing exceptions for better formatting 
 - [x] Want to build some product end-points and one-to-one address 
