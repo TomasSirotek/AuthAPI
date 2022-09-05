@@ -1,4 +1,5 @@
 using Dapper;
+using Microsoft.EntityFrameworkCore;
 using ProductAPI.Domain.Models;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
@@ -15,38 +16,32 @@ namespace ProductAPI.Infrastructure.Repositories {
 
         #region GET
 
-        public Task<List<AppUser>> GetAllUsersAsync()
+        public async Task<List<AppUser>> GetAllUsersAsync()
         {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
                         FROM app_user u
-                        INNER JOIN user_role ur ON u.id = ur.userId 
-                        INNER JOIN role r ON ur.roleId = r.id";
+                        LEFT JOIN user_role ur ON u.id = ur.userId 
+                        LEFT JOIN role r ON ur.roleId = r.id";
+            
+            Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
 
-            IEnumerable<AppUser> users = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
                     {
-                        Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-                        if (!userRoles.TryGetValue(u.Id, out var user))
+                        if (!userRoles.TryGetValue(u.Id, out var userEntry))
                         {
-                            userRoles.Add(u.Id, user = u);
+                            userEntry = u;
+                            userEntry.Roles = new List<UserRole>();
+                            userRoles.Add(u.Id, userEntry);
                         }
                         
-                        user.Roles = new List<UserRole>();
-                        user.Roles.Add(r);
-                        return user;
-                    },
-                    splitOn: "id"
-                ).GroupBy(u => u.Id)
-                .Select(group =>
-                {
-                    AppUser user = group.First();
-                    user.Roles = group.Select(u => u.Roles.Single()).ToList();
-                    return user;
-                });
-            return Task.FromResult(users.ToList());
+                        userEntry.Roles.Add(r);
+                        return userEntry;
+                    });
+            return userRoles.Values.ToList();
         }
 
-        public Task<AppUser> GetUserByIdAsync(string id)
+        public async Task<AppUser> GetUserByIdAsync(string id)
         {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
@@ -54,31 +49,24 @@ namespace ProductAPI.Infrastructure.Repositories {
                         LEFT JOIN user_role ur ON u.id = ur.userId 
                         LEFT JOIN role r ON ur.roleId = r.id
                         where u.id = @id";
-
-            IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
-                    {
-                        var userRoles = new Dictionary<string, AppUser>();
-                        if (!userRoles.TryGetValue(u.Id, out var user))
-                        {
-                            userRoles.Add(u.Id, user = u);
-                        }
-                        
-                        user.Roles = new List<UserRole>();
-                        user.Roles.Add(r);
-                        return user;
-                    },
-                    new {Id = id}
-                ).GroupBy(u => u.Id)
-                .Select(group =>
+            
+            Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
+            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            {
+                if (!userRoles.TryGetValue(u.Id, out var userEntry))
                 {
-                    AppUser user = group.First();
-                    user.Roles = group.Select(u => u.Roles.Single()).ToList();
-                    return user;
-                });
-            return Task.FromResult(user.First());
+                    userEntry = u;
+                    userEntry.Roles = new List<UserRole>();
+                    userRoles.Add(u.Id, userEntry);
+                }
+                        
+                userEntry.Roles.Add(r);
+                return userEntry;
+            }, new {Id = id},splitOn:"Id");
+            return userRoles.Values.First();
         }
 
-        public Task<AppUser> GetAsyncByEmailAsync(string email)
+        public async Task<AppUser> GetAsyncByEmailAsync(string email)
         {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
@@ -87,27 +75,20 @@ namespace ProductAPI.Infrastructure.Repositories {
                         LEFT JOIN role r ON ur.roleId = r.id
                         where u.email = @email";
 
-            IEnumerable<AppUser> user = cnn.Query<AppUser, UserRole, AppUser>(sql, (u, r) =>
-                    {
-                        var userRoles = new Dictionary<string, AppUser>();
-                        if (!userRoles.TryGetValue(u.Id, out var user))
-                        {
-                            userRoles.Add(u.Id, user = u);
-                        }
-
-                        user.Roles.Add(r);
-                        return user;
-                    },
-                    new {Email = email}
-                ).GroupBy(u => u.Id)
-                .Select(group =>
+            Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
+            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            {
+                if (!userRoles.TryGetValue(u.Id, out var userEntry))
                 {
-                    AppUser user = @group.First();
-                    user.Roles = @group.Select(u => u.Roles.Single()).ToList();
-                    return user;
-                });
-            AppUser[] appUsers = user as AppUser[] ?? user.ToArray();
-            return Task.FromResult(appUsers.First());
+                    userEntry = u;
+                    userEntry.Roles = new List<UserRole>();
+                    userRoles.Add(u.Id, userEntry);
+                }
+                        
+                userEntry.Roles.Add(r);
+                return userEntry;
+            }, new {Email = email},splitOn:"Id");
+            return userRoles.Values.First();
         }
 
         public async Task<RefreshToken> FindByTokenAsync(string token)
