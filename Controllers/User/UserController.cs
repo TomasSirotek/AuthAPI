@@ -36,7 +36,7 @@ namespace ProductAPI.Controllers.User {
         public async Task<IActionResult> GetAsyncById(string id)
        {
            AppUser user = await _userService.GetUserByIdAsync(id);
-            if (user is null) 
+            if (user == null!) 
                 return BadRequest($"Could not find user with Id : {id}");
             return Ok (user);
         }
@@ -46,7 +46,7 @@ namespace ProductAPI.Controllers.User {
         #region POST
         [HttpPost()]
         [AllowAnonymous]
-        //[Authorize(Roles ="Administrator")]
+        [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request)
         {
             await _validator.ValidateAndThrowAsync(request);
@@ -61,9 +61,7 @@ namespace ProductAPI.Controllers.User {
                 IsActivated = request.IsActivated
             };
             AppUser resultUser = await _userService.CreateUserAsync(user,request.Roles, request.Password);
-        
-            if(resultUser is null) 
-                return BadRequest($"Could not create user with Email : {request.Email}");
+
             return Ok(resultUser);
         }
  
@@ -78,11 +76,11 @@ namespace ProductAPI.Controllers.User {
             await _validatorUpdate.ValidateAndThrowAsync(request);
             
             AppUser fetchedUser = await _userService.GetUserByIdAsync(request.Id);
-            if(fetchedUser == null) 
+            if(fetchedUser == null!) 
                 return BadRequest($"Could not find user with Id : {request.Id}");
             
             AppUser updatedUser = await _userService.UpdateUserAsync(request);
-            if(updatedUser == null) 
+            if(updatedUser == null!) 
                 return BadRequest($"Could not update user with Id : {request.Id}");
             return Ok(updatedUser);
         }
@@ -97,9 +95,9 @@ namespace ProductAPI.Controllers.User {
         public async Task<IActionResult> DeleteAsync(string id)
         {
             AppUser fetchedUser = await _userService.GetUserByIdAsync(id);
-            if(fetchedUser == null) 
+            if(fetchedUser == null!) 
                 BadRequest($"Could not find user with {id}");
-            bool result = await _userService.DeleteAsync(id);
+            var result = await _userService.DeleteAsync(id);
             if(!result) 
                 BadRequest($"Could not delete user with {id}");
             return Ok($"User with Id : {id} has been deleted !");

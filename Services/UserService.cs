@@ -84,6 +84,8 @@ namespace ProductAPI.Services {
                     throw new Exception($"Could now create role for user | Role does not exist {role.Name}");
                 await _userRepository.AddToRoleAsync(createdUser, fetchedRole);
             }
+            
+            // Add 
 
             if (user is {IsActivated: false})
             {

@@ -1,4 +1,7 @@
 using System.ComponentModel.DataAnnotations;
+using ProductAPI.Domain.BindingModels;
+using ProductAPI.Domain.Models;
+
 
 namespace ProductAPI.Identity.BindingModels; 
 
@@ -11,6 +14,8 @@ public class UserPostModel {
     [Required]
     public List<string> Roles { get; set; }
     public string Password { get; set; }
+    
+    public AddressPostModel Address { get; set; }
     [Required]
     public bool IsActivated { get; set; }
     

@@ -26,8 +26,7 @@ namespace ProductAPI.Identity.Models {
         
         public DateTime UpdatedAt { get; set; }
         
-       
-
+        
         public AppUser(string id, string firstName, string lastName, string email, string passwordHash, bool isActivated)
         {
             Id = id;

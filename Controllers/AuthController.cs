@@ -31,7 +31,7 @@ namespace ProductAPI.Controllers {
         {
             AppUser user = await _userService.GetAsyncByEmailAsync(request.Email);
             
-            if (!_cryptoEngine.HashCheck(user.PasswordHash, request.Password) || user == null)
+            if (user == null! || !_cryptoEngine.HashCheck(user.PasswordHash, request.Password))
                 return BadRequest("Email or password is incorrect");
 
             var token = _token.CreateToken(user.Roles.Select(role => role.Name).ToList(), user.Id);
