@@ -53,4 +53,20 @@ CREATE TABLE [dbo].[email_token]
 
 );
 
+CREATE TABLE [dbo].[address]
+(
+    [id] NVARCHAR(255)  NOT NULL,
+    [userId] NVARCHAR(255) NOT NULL,
+    [street] NVARCHAR(255) NOT NULL,
+    [number] INT  NOT NULL ,
+    [country] NVARCHAR(255) NOT NULL,
+    [zip] INT NOT NULL,
+
+    -- Specify keys
+    CONSTRAINT address_pkey PRIMARY KEY(id),
+    CONSTRAINT fk_address_user
+        FOREIGN KEY (userId) REFERENCES app_user(id),
+);
+
+
 

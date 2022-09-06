@@ -45,7 +45,8 @@ namespace ProductAPI.Controllers.User {
     
         #region POST
         [HttpPost()]
-        [Authorize(Roles ="Administrator")]
+        [AllowAnonymous]
+        //[Authorize(Roles ="Administrator")]
         public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request)
         {
             await _validator.ValidateAndThrowAsync(request);

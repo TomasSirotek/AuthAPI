@@ -1,5 +1,6 @@
 using System.Security.Principal;
 using Newtonsoft.Json;
+using ProductAPI.Domain.Models;
 
 namespace ProductAPI.Identity.Models {
     public class AppUser {
@@ -18,6 +19,8 @@ namespace ProductAPI.Identity.Models {
         public string PasswordHash { get; set; }
 
         public bool IsActivated { get; set; }
+        
+        public Address Address { get; set; }
         
         public DateTime CreatedAt { get; set; }
         

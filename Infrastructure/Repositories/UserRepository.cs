@@ -1,5 +1,5 @@
+using System.Collections;
 using Dapper;
-using Microsoft.EntityFrameworkCore;
 using ProductAPI.Domain.Models;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
@@ -19,14 +19,19 @@ namespace ProductAPI.Infrastructure.Repositories {
         public async Task<List<AppUser>> GetAllUsersAsync()
         {
             using var cnn = _connection.CreateConnection();
+            // var sql = @"SELECT *
+            //             FROM app_user u
+            //             LEFT JOIN user_role ur ON u.id = ur.userId 
+            //             LEFT JOIN role r ON ur.roleId = r.id";
+
             var sql = @"SELECT *
-                        FROM app_user u
-                        LEFT JOIN user_role ur ON u.id = ur.userId 
-                        LEFT JOIN role r ON ur.roleId = r.id";
+                            FROM app_user u
+                            INNER JOIN user_role ur ON u.id = ur.userId 
+                            INNER JOIN role r ON ur.roleId = r.id
+                            LEFT JOIN address a ON a.userId = u.id";
             
             Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-
-            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            await cnn.QueryAsync<AppUser, UserRole, Address, AppUser>(sql, (u, r,a) =>
                     {
                         if (!userRoles.TryGetValue(u.Id, out var userEntry))
                         {
@@ -34,8 +39,8 @@ namespace ProductAPI.Infrastructure.Repositories {
                             userEntry.Roles = new List<UserRole>();
                             userRoles.Add(u.Id, userEntry);
                         }
-                        
                         userEntry.Roles.Add(r);
+                        userEntry.Address = a;
                         return userEntry;
                     });
             return userRoles.Values.ToList();
@@ -46,12 +51,13 @@ namespace ProductAPI.Infrastructure.Repositories {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
                         FROM app_user u
-                        LEFT JOIN user_role ur ON u.id = ur.userId 
-                        LEFT JOIN role r ON ur.roleId = r.id
+                        INNER JOIN user_role ur ON u.id = ur.userId 
+                        INNER JOIN role r ON ur.roleId = r.id
+                        LEFT JOIN address a ON a.userId = u.id
                         where u.id = @id";
             
             Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            await cnn.QueryAsync<AppUser, UserRole, Address, AppUser>(sql, (u, r,a) =>
             {
                 if (!userRoles.TryGetValue(u.Id, out var userEntry))
                 {
@@ -59,10 +65,12 @@ namespace ProductAPI.Infrastructure.Repositories {
                     userEntry.Roles = new List<UserRole>();
                     userRoles.Add(u.Id, userEntry);
                 }
-                        
+                
                 userEntry.Roles.Add(r);
+                userEntry.Address = a;
                 return userEntry;
-            }, new {Id = id},splitOn:"Id");
+                
+            },new {Id = id}, splitOn:"Id");
             return userRoles.Values.First();
         }
 
@@ -71,12 +79,13 @@ namespace ProductAPI.Infrastructure.Repositories {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
                         FROM app_user u
-                        LEFT JOIN user_role ur ON u.id = ur.userId 
-                        LEFT JOIN role r ON ur.roleId = r.id
+                        INNER JOIN user_role ur ON u.id = ur.userId 
+                        INNER JOIN role r ON ur.roleId = r.id
+                        LEFT JOIN address a ON a.userId = u.id
                         where u.email = @email";
 
             Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            IEnumerable<AppUser> user = await cnn.QueryAsync<AppUser, UserRole, Address,AppUser>(sql, (u, r,a) =>
             {
                 if (!userRoles.TryGetValue(u.Id, out var userEntry))
                 {
@@ -86,9 +95,11 @@ namespace ProductAPI.Infrastructure.Repositories {
                 }
                         
                 userEntry.Roles.Add(r);
+                userEntry.Address = a;
                 return userEntry;
-            }, new {Email = email},splitOn:"Id");
-            return userRoles.Values.First();
+            }, new {Email = email });
+            
+            return !user.Any() ? null! : user.First();
         }
 
         public async Task<RefreshToken> FindByTokenAsync(string token)

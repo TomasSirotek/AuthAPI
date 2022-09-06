@@ -58,6 +58,7 @@ namespace ProductAPI.Services {
         {
             List<UserRole> appRoles = new();
             List<UserRole> userRoles = appRoles;
+            
             foreach (var role in roles)
             {
                 var roleList = new UserRole

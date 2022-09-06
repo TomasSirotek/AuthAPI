@@ -30,9 +30,8 @@ namespace ProductAPI.Controllers {
         public async Task<ActionResult> Authenticate([FromBody] AuthPostModel request)
         {
             AppUser user = await _userService.GetAsyncByEmailAsync(request.Email);
-            // return if user does not exist Bad request already exists 
             
-            if (!_cryptoEngine.HashCheck(user.PasswordHash, request.Password))
+            if (!_cryptoEngine.HashCheck(user.PasswordHash, request.Password) || user == null)
                 return BadRequest("Email or password is incorrect");
 
             var token = _token.CreateToken(user.Roles.Select(role => role.Name).ToList(), user.Id);
@@ -50,7 +49,7 @@ namespace ProductAPI.Controllers {
             await _validator.ValidateAsync(request);
             
             AppUser fetchedUser = await _userService.GetAsyncByEmailAsync(request.Email);
-            if (fetchedUser is not null)
+            if (fetchedUser != null)
                     return BadRequest($"User with email {request.Email} already exists");
 
             AppUser user = new AppUser()
