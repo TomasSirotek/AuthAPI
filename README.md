@@ -62,6 +62,7 @@ Learning objective was to learn SQL Database / code seperation / clean architect
     - [x] Admin
 - [x] User
   - [x] Basic crud
+  - [x] Address one to one relations
 - [x] Roles 
   - [x] Basic crud
 - [x] Passsword hashing
@@ -79,8 +80,7 @@ Learning objective was to learn SQL Database / code seperation / clean architect
 
 - [x] Refresh token needs better generation and testing
 - [x] Docker compose up has only mssql need to run api seperately
-- [x] Want to fix throwing exceptions for better formatting 
-- [x] Want to build some product end-points and one-to-one address 
+
 
 ## Licence 
 
