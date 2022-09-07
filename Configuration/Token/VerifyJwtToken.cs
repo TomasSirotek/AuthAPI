@@ -44,7 +44,7 @@ public class VerifyJwtToken : IVerifyJwtToken {
                     var result = jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha512Signature,
                         StringComparison.InvariantCultureIgnoreCase);
                     if (!result)
-                        Console.WriteLine("Could not validate token");
+                        throw new Exception("Could not validate token");
                 }
 
                 var jwtToken = (JwtSecurityToken) validatedToken;

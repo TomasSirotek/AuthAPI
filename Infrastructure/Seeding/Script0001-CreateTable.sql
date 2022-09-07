@@ -49,8 +49,40 @@ CREATE TABLE [dbo].[email_token]
     CONSTRAINT email_token_pkey PRIMARY KEY (id),
     
     CONSTRAINT uk_userEmailToken__User
-        FOREIGN KEY (userId) REFERENCES app_user(id)
+        FOREIGN KEY (userId) REFERENCES app_user(id) ON DELETE CASCADE
 
 );
+CREATE TABLE [dbo].[refresh_token]
+(
+    [id] NVARCHAR(255)  NOT NULL UNIQUE,
+    [userId] NVARCHAR(255) NOT NULL,
+    [token] NVARCHAR(255) NOT NULL,
+    [isUsed] BIGINT NOT NULL DEFAULT 0,
+    [isRevoked] BIGINT DEFAULT 0,
+    [addedDate] DATETIME NOT NULL,
+    [expDate] DATETIME
+    -- Specify keys
+        CONSTRAINT refresh_token_pkey PRIMARY KEY (id),
+
+    CONSTRAINT uk_userRefreshToken__User
+        FOREIGN KEY (userId) REFERENCES app_user(id) ON DELETE CASCADE
+
+);
+
+CREATE TABLE [dbo].[address]
+(
+    [id] NVARCHAR(255)  NOT NULL,
+    [userId] NVARCHAR(255) NOT NULL,
+    [street] NVARCHAR(255) NOT NULL,
+    [number] INT  NOT NULL ,
+    [country] NVARCHAR(255) NOT NULL,
+    [zip] INT NOT NULL,
+
+    -- Specify keys
+    CONSTRAINT address_pkey PRIMARY KEY(id),
+    CONSTRAINT fk_address_user
+        FOREIGN KEY (userId) REFERENCES app_user(id) ON DELETE CASCADE ,
+);
+
 
 

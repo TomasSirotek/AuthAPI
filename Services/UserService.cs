@@ -1,4 +1,5 @@
 using ProductAPI.Configuration.Token;
+using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Enum;
 using ProductAPI.Domain.Models;
 using ProductAPI.Engines.Cryptography;
@@ -49,15 +50,16 @@ namespace ProductAPI.Services {
         public async Task<AppUser> RegisterUserAsync(AppUser user, string password)
         {
             List<string> roles = new() {"User"};
-
+            
             AppUser newUser = await CreateUserAsync(user, roles, password);
             return newUser;
         }
 
-        public async Task<AppUser> CreateUserAsync(AppUser user, List<string> roles, string password)
-        {
+       public async Task<AppUser> CreateUserAsync(AppUser user, List<string> roles, string password)
+       {
             List<UserRole> appRoles = new();
             List<UserRole> userRoles = appRoles;
+            
             foreach (var role in roles)
             {
                 var roleList = new UserRole
@@ -80,9 +82,15 @@ namespace ProductAPI.Services {
             {
                 UserRole fetchedRole = await _roleRepository.GetRoleAsyncByName(role.Name);
                 if (fetchedRole == null)
-                    throw new Exception($"Could now create role for user | Role does not exist {role.Name}");
+                    throw new Exception($"Could not create role for user | Role does not exist {role.Name}");
                 await _userRepository.AddToRoleAsync(createdUser, fetchedRole);
             }
+            
+            
+            Address address = await _userRepository.AddAddressToUser(createdUser.Id, user.Address);
+
+            if (address == null)
+                throw new Exception($"Could not assign address to user {createdUser.Id}");
 
             if (user is {IsActivated: false})
             {
@@ -120,8 +128,7 @@ namespace ProductAPI.Services {
             AppUser fetchedNewUser = await _userRepository.GetUserByIdAsync(createdUser.Id);
             return fetchedNewUser;
         }
-
-
+       
         public async Task<AppUser> UpdateUserAsync(UserPutModel model)
         {
             AppUser requestUser = new AppUser()

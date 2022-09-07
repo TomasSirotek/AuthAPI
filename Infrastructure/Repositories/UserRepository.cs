@@ -1,5 +1,4 @@
 using Dapper;
-using Microsoft.EntityFrameworkCore;
 using ProductAPI.Domain.Models;
 using ProductAPI.Identity.Models;
 using ProductAPI.Infrastructure.Data;
@@ -19,15 +18,15 @@ namespace ProductAPI.Infrastructure.Repositories {
         public async Task<List<AppUser>> GetAllUsersAsync()
         {
             using var cnn = _connection.CreateConnection();
-            var sql = @"SELECT *
-                        FROM app_user u
-                        LEFT JOIN user_role ur ON u.id = ur.userId 
-                        LEFT JOIN role r ON ur.roleId = r.id";
+            var sql = @"SELECT DISTINCT *
+                            FROM app_user u
+                            INNER JOIN user_role ur ON u.id = ur.userId 
+                            INNER JOIN role r ON ur.roleId = r.id
+                            LEFT JOIN address a ON a.userId = u.id";
             
             Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-
-            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
-                    {
+            IEnumerable<AppUser> users = await cnn.QueryAsync<AppUser, UserRole, Address, AppUser>(sql, (u, r,a) =>
+                    { 
                         if (!userRoles.TryGetValue(u.Id, out var userEntry))
                         {
                             userEntry = u;
@@ -35,10 +34,16 @@ namespace ProductAPI.Infrastructure.Repositories {
                             userRoles.Add(u.Id, userEntry);
                         }
                         
-                        userEntry.Roles.Add(r);
+                        if (r == null)  userEntry.Roles = new List<UserRole>();
+                        if (a == null) userEntry.Address = new Address();
+                        if (r != null) userEntry.Roles.Add(r);
+                        if (a != null) userEntry.Address = a;
+
                         return userEntry;
-                    });
-            return userRoles.Values.ToList();
+                    },splitOn:"id");
+
+            List<AppUser> appUsers = users.Distinct().ToList();
+            return appUsers.Any() ? appUsers.ToList() : null!;
         }
 
         public async Task<AppUser> GetUserByIdAsync(string id)
@@ -46,12 +51,13 @@ namespace ProductAPI.Infrastructure.Repositories {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
                         FROM app_user u
-                        LEFT JOIN user_role ur ON u.id = ur.userId 
-                        LEFT JOIN role r ON ur.roleId = r.id
+                        INNER JOIN user_role ur ON u.id = ur.userId 
+                        INNER JOIN role r ON ur.roleId = r.id
+                        LEFT JOIN address a ON a.userId = u.id
                         where u.id = @id";
             
             Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            IEnumerable<AppUser> user = await cnn.QueryAsync<AppUser, UserRole, Address, AppUser>(sql, (u, r,a) =>
             {
                 if (!userRoles.TryGetValue(u.Id, out var userEntry))
                 {
@@ -59,11 +65,16 @@ namespace ProductAPI.Infrastructure.Repositories {
                     userEntry.Roles = new List<UserRole>();
                     userRoles.Add(u.Id, userEntry);
                 }
-                        
-                userEntry.Roles.Add(r);
+                
+                if (r == null)  userEntry.Roles = new List<UserRole>();
+                if (a == null) userEntry.Address = new Address();
+                if (r != null) userEntry.Roles.Add(r);
+                if (a != null) userEntry.Address = a;
                 return userEntry;
-            }, new {Id = id},splitOn:"Id");
-            return userRoles.Values.First();
+                
+            },new {Id = id}, splitOn:"id");
+            List<AppUser> appUsers = user.Distinct().ToList();
+            return appUsers.Any() ? appUsers.FirstOrDefault()! : null!;
         }
 
         public async Task<AppUser> GetAsyncByEmailAsync(string email)
@@ -71,12 +82,13 @@ namespace ProductAPI.Infrastructure.Repositories {
             using var cnn = _connection.CreateConnection();
             var sql = @"SELECT *
                         FROM app_user u
-                        LEFT JOIN user_role ur ON u.id = ur.userId 
-                        LEFT JOIN role r ON ur.roleId = r.id
+                        INNER JOIN user_role ur ON u.id = ur.userId 
+                        INNER JOIN role r ON ur.roleId = r.id
+                        LEFT JOIN address a ON a.userId = u.id
                         where u.email = @email";
 
             Dictionary<string, AppUser> userRoles = new Dictionary<string, AppUser>();
-            await cnn.QueryAsync<AppUser, UserRole, AppUser>(sql, (u, r) =>
+            IEnumerable<AppUser> user = await cnn.QueryAsync<AppUser, UserRole, Address,AppUser>(sql, (u, r,a) =>
             {
                 if (!userRoles.TryGetValue(u.Id, out var userEntry))
                 {
@@ -85,10 +97,15 @@ namespace ProductAPI.Infrastructure.Repositories {
                     userRoles.Add(u.Id, userEntry);
                 }
                         
-                userEntry.Roles.Add(r);
+                if (r == null)  userEntry.Roles = new List<UserRole>();
+                if (a == null) userEntry.Address = new Address();
+                if (r != null) userEntry.Roles.Add(r);
+                if (a != null) userEntry.Address = a;
                 return userEntry;
-            }, new {Email = email},splitOn:"Id");
-            return userRoles.Values.First();
+            }, new {Email = email });
+
+            List<AppUser> appUsers = user.Distinct().ToList();
+            return appUsers.Any() ? appUsers.FirstOrDefault()! : null!;
         }
 
         public async Task<RefreshToken> FindByTokenAsync(string token)
@@ -118,26 +135,45 @@ namespace ProductAPI.Infrastructure.Repositories {
                                         VALUES (@id,@firstName,@lastName,@email,@passwordHash,@isActivated,@createdAt)", user);
             if (newUser > 0)
                 return user;
-            throw new ArgumentNullException(nameof(user));
+            return null!;
         }
 
         public async Task<AppUser> AddToRoleAsync(AppUser user, UserRole role)
         {
-            using (var cnn = _connection.CreateConnection())
-            {
-                var sql = @"insert into user_role (userId,roleId) 
+            using var cnn = _connection.CreateConnection();
+            var sql = @"insert into user_role (userId,roleId) 
                         values (@userId,@roleId)";
 
-                var newUser = await cnn.ExecuteAsync(sql, new
-                {
-                    UserId = user.Id,
-                    RoleId = role.Id
-                });
-                if (newUser > 0)
-                    return user;
-            }
+            var newUser = await cnn.ExecuteAsync(sql, new
+            {
+                UserId = user.Id,
+                RoleId = role.Id
+            });
+            if (newUser > 0)
+                return user;
 
-            throw new ArgumentNullException(nameof(user));
+            return null!;
+        }
+        
+        public async Task<Address> AddAddressToUser(string userId,Address address)
+        {
+            using var cnn = _connection.CreateConnection();
+            var sql = @"insert into address (id,userId,street,number,country,zip) 
+                        values (@id,@userId,@street,@number,@country,@zip)";
+
+            var rowsAffected = await cnn.ExecuteAsync(sql, new
+            {
+                Id = address.Id,
+                UserId = userId,
+                Street = address.Street,
+                Number = address.Number,
+                Country = address.Country,
+                Zip = address.Zip
+            });
+            if (rowsAffected > 0)
+                return address;
+
+            return null!;
         }
 
         public async Task<EmailToken> CreateEmailToken(string userId,EmailToken newToken)
@@ -156,7 +192,7 @@ namespace ProductAPI.Infrastructure.Repositories {
             
             if (affectedRows > 0)
                 return newToken;
-            return null;
+            return null!;
         }
 
         #endregion
@@ -167,8 +203,8 @@ namespace ProductAPI.Infrastructure.Repositories {
         {
             using var cnn = _connection.CreateConnection();
             var affectedRows = await cnn.ExecuteAsync( 
-                $@"INSERT INTO refreshToken (id,userId,token,JwtId,isUsed,isRevoked,AddedDate,ExpDate) 
-                        values (@id,@userId,@token,@JwtId,@isUsed,@isRevoked,@addedDate,@expDate)", 
+                $@"INSERT INTO refresh_token (id,userId,token,isUsed,isRevoked,AddedDate,ExpDate) 
+                        values (@id,@userId,@token,@isUsed,@isRevoked,@addedDate,@expDate)", 
                 refreshToken);
             return affectedRows > 0;
         }
@@ -197,7 +233,7 @@ namespace ProductAPI.Infrastructure.Repositories {
             if (affectedRows > 0)
                 return user;
 
-            return null;
+            return null!;
         }
         
         public async Task<bool> ChangePasswordAsync(AppUser user, string newPasswordHash)
