@@ -24,6 +24,6 @@ namespace ProductAPI.Services.Interfaces {
 
         Task<bool> ConfirmEmailAsync(string userId, string token);
 
-        Task<bool> ChangePasswordAsync(AppUser user,string newPassword);
+        Task<bool> ChangePasswordAsync(string userId,string newPassword);
     }
 }

@@ -2,7 +2,9 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using ProductAPI.Domain.BindingModels;
 using ProductAPI.Domain.Models;
+using ProductAPI.Engines.Cryptography;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 using ProductAPI.Services.Interfaces;
@@ -12,12 +14,14 @@ namespace ProductAPI.Controllers.User {
         private readonly IUserService _userService;
         private readonly IValidator<UserPostModel> _validator;
         private readonly IValidator<UserPutModel> _validatorUpdate;
+        private readonly ICryptoEngine _cryptoEngine;
 
-        public UserController(IUserService userService, IValidator<UserPostModel> validator, IValidator<UserPutModel> validatorUpdate)
+        public UserController(IUserService userService, IValidator<UserPostModel> validator, IValidator<UserPutModel> validatorUpdate, ICryptoEngine cryptoEngine)
         {
             _userService = userService;
             _validator = validator;
             _validatorUpdate = validatorUpdate;
+            _cryptoEngine = cryptoEngine;
         }
 
         #region GET
@@ -95,6 +99,29 @@ namespace ProductAPI.Controllers.User {
             return Ok(updatedUser);
         }
         
+        [HttpPut("change-password")]
+        // [Authorize(Roles ="User")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ChangePassword([FromBody]PasswordPutModel request)
+        {
+            //await _validatorUpdate.ValidateAndThrowAsync(request);
+            AppUser fetchedUser = await _userService.GetUserByIdAsync(request.UserId);
+            if(fetchedUser == null!) 
+                return BadRequest($"Could not find user with Id : {request.UserId}");
+            // check if current psw == to stored
+            if(!_cryptoEngine.HashCheck(fetchedUser.PasswordHash, request.CurrentPassword)) // hashed - text
+                return BadRequest($"Current password does not match the original password {request.UserId}");
+
+            // check if newPsw  != storedPsw
+            if (_cryptoEngine.HashCheck(fetchedUser.PasswordHash, request.NewPassword))
+                return BadRequest($"New password cannot be same as your original password {request.UserId}");
+
+            var result = await _userService.ChangePasswordAsync(request.UserId,request.NewPassword);
+            if(!result) 
+                return BadRequest($"Could not update password for user with Id : {request.UserId}");
+            return Ok();
+        }
+
         #endregion
 
     

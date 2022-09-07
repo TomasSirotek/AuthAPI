@@ -24,7 +24,7 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
 
         Task<Address> AddAddressToUser(string userId, Address address);
 
-        Task<bool> ChangePasswordAsync(AppUser user, string newPasswordHash);
+        Task<bool> ChangePasswordAsync(string userId, string newPasswordHash);
 
         Task<AppUser> UpdateAsync(AppUser user);
 

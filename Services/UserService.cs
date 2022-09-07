@@ -185,10 +185,10 @@ namespace ProductAPI.Services {
             return true;
         }
 
-        public Task<bool> ChangePasswordAsync(AppUser user, string newPassword)
+        public async Task<bool> ChangePasswordAsync(string userId, string newPassword)
         {
-            // find user => compare if password matched the current password => if yes then generate and save new password
-            throw new NotImplementedException();
+            var hashedPsw = _cryptoEngine.Hash(newPassword);
+            return await _userRepository.ChangePasswordAsync(userId, hashedPsw);
         }
 
         public async Task<bool> DeleteAsync(string id)

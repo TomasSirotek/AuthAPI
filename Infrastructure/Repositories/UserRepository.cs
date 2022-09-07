@@ -236,9 +236,22 @@ namespace ProductAPI.Infrastructure.Repositories {
             return null!;
         }
         
-        public async Task<bool> ChangePasswordAsync(AppUser user, string newPasswordHash)
+        public async Task<bool> ChangePasswordAsync(string userId, string newPasswordHash)
         {
-            throw new NotImplementedException();
+            using var cnn = _connection.CreateConnection();
+            var affectedRows = await cnn.ExecuteAsync( 
+                $@"UPDATE
+                        app_user
+                        SET 
+                        passwordHash = @passwordHash
+                        WHERE id = @id;", new
+                {
+                    id = userId,
+                    passwordHash = newPasswordHash
+                });
+            if (affectedRows > 0)
+                return true;
+            return false;
         }
 
         public async Task<bool> SetActiveAsync(string id)
