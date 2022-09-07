@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using ProductAPI.Domain.Models;
 using ProductAPI.Identity.BindingModels;
 using ProductAPI.Identity.Models;
 using ProductAPI.Services.Interfaces;
@@ -50,6 +51,7 @@ namespace ProductAPI.Controllers.User {
         public async Task<IActionResult> CreateAsync([FromBody]UserPostModel request)
         {
             await _validator.ValidateAndThrowAsync(request);
+            
             AppUser user = new AppUser()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -60,12 +62,20 @@ namespace ProductAPI.Controllers.User {
                 CreatedAt = DateTime.Now,
                 IsActivated = request.IsActivated
             };
+            Address address = new Address()
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserId = user.Id,
+                Street = request.Address.Street,
+                Number = request.Address.Number,
+                Country = request.Address.Country,
+                Zip = request.Address.Zip
+                
+            };
+            user.Address = address;
             AppUser resultUser = await _userService.CreateUserAsync(user,request.Roles, request.Password);
-
             return Ok(resultUser);
         }
- 
-    
         #endregion
         
         #region PUT

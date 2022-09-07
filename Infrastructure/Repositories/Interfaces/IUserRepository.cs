@@ -22,6 +22,8 @@ namespace ProductAPI.Infrastructure.Repositories.Interfaces {
         
         Task<bool> RemoveUserRoleAsync(string roleId);
 
+        Task<Address> AddAddressToUser(string userId, Address address);
+
         Task<bool> ChangePasswordAsync(AppUser user, string newPasswordHash);
 
         Task<AppUser> UpdateAsync(AppUser user);

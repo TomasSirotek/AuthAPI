@@ -33,12 +33,12 @@ namespace ProductAPI.Infrastructure.Repositories {
                             userEntry.Roles = new List<UserRole>();
                             userRoles.Add(u.Id, userEntry);
                         }
-                        // roles 
+                        
                         if (r == null)  userEntry.Roles = new List<UserRole>();
                         if (a == null) userEntry.Address = new Address();
                         if (r != null) userEntry.Roles.Add(r);
+                        if (a != null) userEntry.Address = a;
 
-                        userEntry.Address = a;
                         return userEntry;
                     },splitOn:"id");
 
@@ -66,8 +66,10 @@ namespace ProductAPI.Infrastructure.Repositories {
                     userRoles.Add(u.Id, userEntry);
                 }
                 
-                userEntry.Roles.Add(r);
-                userEntry.Address = a;
+                if (r == null)  userEntry.Roles = new List<UserRole>();
+                if (a == null) userEntry.Address = new Address();
+                if (r != null) userEntry.Roles.Add(r);
+                if (a != null) userEntry.Address = a;
                 return userEntry;
                 
             },new {Id = id}, splitOn:"id");
@@ -95,18 +97,15 @@ namespace ProductAPI.Infrastructure.Repositories {
                     userRoles.Add(u.Id, userEntry);
                 }
                         
-                userEntry.Roles.Add(r);
-                userEntry.Address = a;
+                if (r == null)  userEntry.Roles = new List<UserRole>();
+                if (a == null) userEntry.Address = new Address();
+                if (r != null) userEntry.Roles.Add(r);
+                if (a != null) userEntry.Address = a;
                 return userEntry;
             }, new {Email = email });
 
             List<AppUser> appUsers = user.Distinct().ToList();
             return appUsers.Any() ? appUsers.FirstOrDefault()! : null!;
-        }
-        
-        public async Task<Address> AddAddressToUser()
-        {
-           return null;
         }
 
         public async Task<RefreshToken> FindByTokenAsync(string token)
@@ -152,6 +151,27 @@ namespace ProductAPI.Infrastructure.Repositories {
             });
             if (newUser > 0)
                 return user;
+
+            return null!;
+        }
+        
+        public async Task<Address> AddAddressToUser(string userId,Address address)
+        {
+            using var cnn = _connection.CreateConnection();
+            var sql = @"insert into address (id,userId,street,number,country,zip) 
+                        values (@id,@userId,@street,@number,@country,@zip)";
+
+            var rowsAffected = await cnn.ExecuteAsync(sql, new
+            {
+                Id = address.Id,
+                UserId = userId,
+                Street = address.Street,
+                Number = address.Number,
+                Country = address.Country,
+                Zip = address.Zip
+            });
+            if (rowsAffected > 0)
+                return address;
 
             return null!;
         }
