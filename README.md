@@ -79,7 +79,7 @@ Learning objective was to learn SQL Database / code seperation / clean architect
 
 <!-- GETTING STARTED -->
 
-## Under construction => 
+## Under construction 
 
 ## Features for updated 
 
