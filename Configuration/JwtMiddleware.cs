@@ -7,6 +7,7 @@ using ProductAPI.Services.Interfaces;
 
 namespace ProductAPI.Configuration; 
 
+// Currently not working 
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;

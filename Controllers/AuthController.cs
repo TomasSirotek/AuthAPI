@@ -27,6 +27,7 @@ namespace ProductAPI.Controllers {
         }
 
         [HttpPost()]
+        [AllowAnonymous]
         public async Task<ActionResult> Authenticate([FromBody] AuthPostModel request)
         {
             AppUser user = await _userService.GetAsyncByEmailAsync(request.Email);
@@ -44,6 +45,7 @@ namespace ProductAPI.Controllers {
         }
 
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<IActionResult> Register([FromBody] RegisterPostModel request)
         {
             await _validator.ValidateAsync(request);
@@ -73,20 +75,20 @@ namespace ProductAPI.Controllers {
         {
             if (string.IsNullOrWhiteSpace(tokenRequest.Token) || string.IsNullOrWhiteSpace(tokenRequest.RefreshToken))
                 return NotFound();
-            var result = await _validJwtHelper.VerifyAndGenerateToken(tokenRequest);
+            TokenResponse result = await _validJwtHelper.VerifyAndGenerateToken(tokenRequest);
             return Ok(result);
         }
         
         [HttpPost("confirm-email")]
         [AllowAnonymous]
-        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailPostModel request)
         {
-            if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrWhiteSpace(request.UserId) || string.IsNullOrWhiteSpace(request.Token))
                 return NotFound();
 
-            var result = await _userService.ConfirmEmailAsync(userId, token);
+            var result = await _userService.ConfirmEmailAsync(request.UserId, request.Token);
             if (!result) 
-                return BadRequest($"Could not confirm account for user with id {userId}");
+                return BadRequest($"Could not confirm account for user with id {request.UserId}");
             return Ok("Email confirmed");
         }
     }

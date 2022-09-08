@@ -25,7 +25,7 @@ public class VerifyJwtToken : IVerifyJwtToken {
         _token = token;
     }
 
-    public  async Task<string> VerifyAndGenerateToken(TokenRequest tokenRequest)
+    public  async Task<TokenResponse> VerifyAndGenerateToken(TokenRequest tokenRequest)
     {
        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 _config.GetSection("JwtConfig:Secret").Value));
@@ -63,12 +63,17 @@ public class VerifyJwtToken : IVerifyJwtToken {
                         throw new Exception("Token is expired");
                     }
                 }
-
-                // validate Roles
+                
                 RefreshToken storedToken = await _userService.FindTokenAsync(tokenRequest.RefreshToken);
                 AppUser user = await _userService.GetUserByIdAsync(storedToken.UserId);
                 var token = _token.CreateToken(user.Roles.Select(role => role.Name).ToList(), user.Id);
-                return token;
+                // generate new JWT for now with 15 min exp date // 
+                //TODO: Needs to be refactored and change to have longer life 
+                TokenResponse response = new TokenResponse()
+                {
+                    Token = token
+                };
+                return response;
             }
             catch (Exception e)
             {

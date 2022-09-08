@@ -100,7 +100,7 @@ namespace ProductAPI.Controllers.User {
         }
         
         [HttpPut("change-password")]
-        // [Authorize(Roles ="User")]
+        [Authorize(Roles ="User")]
         [AllowAnonymous]
         public async Task<IActionResult> ChangePassword([FromBody]PasswordPutModel request)
         {
@@ -108,18 +108,18 @@ namespace ProductAPI.Controllers.User {
             AppUser fetchedUser = await _userService.GetUserByIdAsync(request.UserId);
             if(fetchedUser == null!) 
                 return BadRequest($"Could not find user with Id : {request.UserId}");
-            // check if current psw == to stored
-            if(!_cryptoEngine.HashCheck(fetchedUser.PasswordHash, request.CurrentPassword)) // hashed - text
+          
+            if(!_cryptoEngine.HashCheck(fetchedUser.PasswordHash, request.CurrentPassword)) 
                 return BadRequest($"Current password does not match the original password {request.UserId}");
-
-            // check if newPsw  != storedPsw
+            
             if (_cryptoEngine.HashCheck(fetchedUser.PasswordHash, request.NewPassword))
                 return BadRequest($"New password cannot be same as your original password {request.UserId}");
 
             var result = await _userService.ChangePasswordAsync(request.UserId,request.NewPassword);
             if(!result) 
                 return BadRequest($"Could not update password for user with Id : {request.UserId}");
-            return Ok();
+            // Could use some email notification for user via email 
+            return Ok($"Password for user with {request.UserId} has been changed ");
         }
 
         #endregion

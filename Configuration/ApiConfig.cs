@@ -37,7 +37,7 @@ namespace ProductAPI.Configuration {
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
             
-            app.UseMiddleware<JwtMiddleware>();
+         //   app.UseMiddleware<JwtMiddleware>();
         
             app.MapControllers();
         

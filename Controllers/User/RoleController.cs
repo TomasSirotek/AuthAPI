@@ -97,7 +97,7 @@ namespace ProductAPI.Controllers.User {
 
         #region DELETE
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [Authorize(Roles ="Administrator")]
         public async Task<IActionResult> DeleteAsync(string id)
         {

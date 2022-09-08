@@ -112,7 +112,7 @@ namespace ProductAPI.Infrastructure.Repositories {
         {
             using var cnn = _connection.CreateConnection();
             return await cnn.QuerySingleOrDefaultAsync<RefreshToken>( 
-                @"SELECT * FROM refreshToken AS r WHERE r.token = @token", new {Token = token});
+                @"SELECT * FROM refresh_token AS r WHERE r.token = @token", new {Token = token});
         }
 
         public async Task<EmailToken> GetTokenByUserId(string id)

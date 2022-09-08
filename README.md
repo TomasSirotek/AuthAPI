@@ -65,22 +65,27 @@ Learning objective was to learn SQL Database / code seperation / clean architect
   - [x] Address one to one relations
 - [x] Roles 
   - [x] Basic crud
-- [x] Passsword hashing
+- [x] Password hashing
   - [x] CryptoHasher
+  - [x] Verification of current password and newly created password
+  - [x] Could use notification via email for better safety
 - [x] Docker 
   - [x] Docker compose up (db-mssql)
 - [x] Validation
   - [x] Fluent validation with custom validators 
+- [x] Contains postman collection
   
   
 
 <!-- GETTING STARTED -->
 
-## Under Constraction
+## Under construction => 
+
+## Features for updated 
 
 - [x] Refresh token needs better generation and testing
-- [x] Docker compose up has only mssql need to run api seperately
-
+- [x] Docker compose up has only mssql need to run api separately
+- [x] Date formatting is kinda yuk could use different format like unixTimeStamp or properer one
 
 ## Licence 
 
