@@ -1,6 +1,6 @@
-using ProductAPI.Identity.Models;
+using AuthAPI.Identity.Models;
 
-namespace ProductAPI.Infrastructure.Repositories.Interfaces {
+namespace AuthAPI.Infrastructure.Repositories.Interfaces {
     public interface IRoleRepository {
         Task<List<UserRole>> GetRoleAsync();
         

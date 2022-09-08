@@ -1,13 +1,13 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using AuthAPI.Domain.BindingModels;
+using AuthAPI.Domain.Models;
+using AuthAPI.Engines;
+using AuthAPI.Identity.Models;
+using AuthAPI.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Domain.BindingModels;
-using ProductAPI.Domain.Models;
-using ProductAPI.Engines;
-using ProductAPI.Identity.Models;
-using ProductAPI.Services.Interfaces;
 
-namespace ProductAPI.Configuration.Token; 
+namespace AuthAPI.Configuration.Token; 
 
 public class VerifyJwtToken : IVerifyJwtToken {
     

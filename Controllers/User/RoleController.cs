@@ -1,12 +1,12 @@
+using AuthAPI.Identity.BindingModels;
+using AuthAPI.Identity.Models;
+using AuthAPI.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Identity.BindingModels;
-using ProductAPI.Identity.Models;
-using ProductAPI.Services.Interfaces;
 
-namespace ProductAPI.Controllers.User {
+namespace AuthAPI.Controllers.User {
     public class RoleController : DefaultController {
         private readonly IRoleService _roleService;
         private readonly IValidator<RolePostModel> _validator;

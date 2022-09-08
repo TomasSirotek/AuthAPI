@@ -1,6 +1,6 @@
-using ProductAPI.Domain.Models;
+using AuthAPI.Domain.Models;
 
-namespace ProductAPI.Configuration.Token;
+namespace AuthAPI.Configuration.Token;
 
 public interface IJwtToken {
     public string CreateToken(List<string> roles, string userId);

@@ -1,9 +1,9 @@
 using System.Data;
 using System.Text.RegularExpressions;
+using AuthAPI.Identity.BindingModels;
 using FluentValidation;
-using ProductAPI.Identity.BindingModels;
 
-namespace ProductAPI.Validations; 
+namespace AuthAPI.Validations; 
 
 public class PutUserValidation : AbstractValidator<UserPutModel> {
     public PutUserValidation()

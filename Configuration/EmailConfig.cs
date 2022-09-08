@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Mail;
 using Microsoft.AspNetCore.Mvc;
-namespace ProductAPI.Configuration; 
+namespace AuthAPI.Configuration; 
 
 public static class EmailConfig {
     

@@ -1,15 +1,15 @@
-using ProductAPI.Configuration.Token;
-using ProductAPI.Domain.BindingModels;
-using ProductAPI.Domain.Enum;
-using ProductAPI.Domain.Models;
-using ProductAPI.Engines.Cryptography;
-using ProductAPI.ExternalServices;
-using ProductAPI.Identity.BindingModels;
-using ProductAPI.Identity.Models;
-using ProductAPI.Infrastructure.Repositories.Interfaces;
-using ProductAPI.Services.Interfaces;
+using AuthAPI.Configuration.Token;
+using AuthAPI.Domain.Enum;
+using AuthAPI.Domain.Models;
+using AuthAPI.Engines.Cryptography;
+using AuthAPI.ExternalServices;
+using AuthAPI.Identity.BindingModels;
+using AuthAPI.Identity.Models;
+using AuthAPI.Infrastructure.Repositories.Interfaces;
+using AuthAPI.Services.Interfaces;
+using AuthAPI.Domain.BindingModels;
 
-namespace ProductAPI.Services {
+namespace AuthAPI.Services {
     public class UserService : IUserService {
         private readonly IUserRepository _userRepository;
         private readonly IRoleRepository _roleRepository;

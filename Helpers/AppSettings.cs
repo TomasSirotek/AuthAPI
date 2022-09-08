@@ -1,4 +1,4 @@
-namespace ProductAPI.Helpers; 
+namespace AuthAPI.Helpers; 
 
 public class AppSettings
 {

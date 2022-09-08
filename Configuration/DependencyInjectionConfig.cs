@@ -1,19 +1,19 @@
+using AuthAPI.Configuration.Token;
+using AuthAPI.Engines;
+using AuthAPI.Engines.Cryptography;
+using AuthAPI.ExternalServices;
+using AuthAPI.Identity.BindingModels;
+using AuthAPI.Identity.BindingModels.Authentication;
+using AuthAPI.Infrastructure.Data;
+using AuthAPI.Infrastructure.Repositories;
+using AuthAPI.Infrastructure.Repositories.Interfaces;
+using AuthAPI.Services;
+using AuthAPI.Services.Interfaces;
+using AuthAPI.Validations;
 using FluentValidation;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Configuration.Token;
-using ProductAPI.Engines;
-using ProductAPI.Engines.Cryptography;
-using ProductAPI.ExternalServices;
-using ProductAPI.Identity.BindingModels;
-using ProductAPI.Identity.BindingModels.Authentication;
-using ProductAPI.Infrastructure.Data;
-using ProductAPI.Infrastructure.Repositories;
-using ProductAPI.Infrastructure.Repositories.Interfaces;
-using ProductAPI.Services;
-using ProductAPI.Services.Interfaces;
-using ProductAPI.Validations;
 
-namespace ProductAPI.Configuration {
+namespace AuthAPI.Configuration {
     public static class DependencyInjectionConfig {
         public static void RegisterServices(this IServiceCollection services)
         {

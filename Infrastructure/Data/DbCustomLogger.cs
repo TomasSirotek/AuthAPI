@@ -1,6 +1,6 @@
 using DbUp.Engine.Output;
 
-namespace ProductAPI.Infrastructure.Data; 
+namespace AuthAPI.Infrastructure.Data; 
 
     public class DbCustomLogger<T> : IUpgradeLog where T : class
     {

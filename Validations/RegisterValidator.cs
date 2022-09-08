@@ -1,8 +1,8 @@
 using System.Text.RegularExpressions;
+using AuthAPI.Identity.BindingModels.Authentication;
 using FluentValidation;
-using ProductAPI.Identity.BindingModels.Authentication;
 
-namespace ProductAPI.Validations; 
+namespace AuthAPI.Validations; 
 
 public class RegisterValidator :  AbstractValidator<RegisterPostModel> {
     public RegisterValidator()

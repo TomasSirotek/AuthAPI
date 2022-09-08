@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductAPI.Identity.BindingModels.Authentication; 
+namespace AuthAPI.Identity.BindingModels.Authentication; 
 
 public class AuthPostModel {
     [Required]

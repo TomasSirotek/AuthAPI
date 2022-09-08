@@ -1,27 +1,27 @@
 {
   "Version": 1,
-  "Hash": "1Lz7c12WXGlnst/ErHJbm5naF6WbKLtBP0ZnROPnxns=",
-  "Source": "ProductAPI",
-  "BasePath": "_content/ProductAPI",
+  "Hash": "uqefxaLr4RQU5jkff/JNn2uAyLgl1uz6LPS7mT03piU=",
+  "Source": "AuthAPI",
+  "BasePath": "_content/AuthAPI",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [
     {
-      "Name": "ProductAPI/wwwroot",
-      "Source": "ProductAPI",
-      "ContentRoot": "/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/wwwroot/",
-      "BasePath": "_content/ProductAPI",
+      "Name": "AuthAPI/wwwroot",
+      "Source": "AuthAPI",
+      "ContentRoot": "/Users/Tomas/Projects/Game_Store_Crud/AuthAPI/wwwroot/",
+      "BasePath": "_content/AuthAPI",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/wwwroot/EmailTemplates/ConfirmEmailTemplate.cshtml",
-      "SourceId": "ProductAPI",
+      "Identity": "/Users/Tomas/Projects/Game_Store_Crud/AuthAPI/wwwroot/EmailTemplates/ConfirmEmailTemplate.cshtml",
+      "SourceId": "AuthAPI",
       "SourceType": "Discovered",
-      "ContentRoot": "/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/wwwroot/",
-      "BasePath": "_content/ProductAPI",
+      "ContentRoot": "/Users/Tomas/Projects/Game_Store_Crud/AuthAPI/wwwroot/",
+      "BasePath": "_content/AuthAPI",
       "RelativePath": "EmailTemplates/ConfirmEmailTemplate.cshtml",
       "AssetKind": "Build",
       "AssetMode": "All",

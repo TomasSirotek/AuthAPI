@@ -1,9 +1,9 @@
 
+using AuthAPI.Domain.Models;
 using FluentEmail.Core;
-using ProductAPI.Domain.Models;
 
 
-namespace ProductAPI.ExternalServices {
+namespace AuthAPI.ExternalServices {
     
     public class EmailService : IEmailService{
         private readonly IConfiguration _config;

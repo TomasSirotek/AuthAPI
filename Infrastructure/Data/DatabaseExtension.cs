@@ -1,6 +1,6 @@
 using DbUp;
 
-namespace ProductAPI.Infrastructure.Data {
+namespace AuthAPI.Infrastructure.Data {
         public class DatabaseExtension : IStartupFilter
         {
             private readonly IConfiguration _configuration;

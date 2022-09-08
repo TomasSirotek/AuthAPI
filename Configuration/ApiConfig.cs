@@ -1,10 +1,10 @@
+using AuthAPI.Helpers;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
-using ProductAPI.Helpers;
-using ProductAPI.Identity;
-using ProductAPI.Identity.Models;
+using AuthAPI.Identity;
+using AuthAPI.Identity.Models;
 
-namespace ProductAPI.Configuration {
+namespace AuthAPI.Configuration {
     public static class ApiConfig {
     
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)

@@ -1,4 +1,4 @@
-namespace ProductAPI.Engines.Cryptography {
+namespace AuthAPI.Engines.Cryptography {
     public interface ICryptoEngine {
         /// <summary>
         /// Use Hash to hash a text. See <see href="https://github.com/henkmollema/CryptoHelper">CryptoHelper</see>

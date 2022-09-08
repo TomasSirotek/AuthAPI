@@ -1,4 +1,4 @@
-namespace ProductAPI.Helpers; 
+namespace AuthAPI.Helpers; 
 
 using System.Net;
 using System.Text.Json;

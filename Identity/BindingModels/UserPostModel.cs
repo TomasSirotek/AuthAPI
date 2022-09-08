@@ -1,9 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using ProductAPI.Domain.BindingModels;
-using ProductAPI.Domain.Models;
+using AuthAPI.Domain.BindingModels;
+using AuthAPI.Domain.Models;
 
 
-namespace ProductAPI.Identity.BindingModels; 
+namespace AuthAPI.Identity.BindingModels; 
 
 public class UserPostModel {
     public string FirstName { get; set; }

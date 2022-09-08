@@ -1,4 +1,4 @@
-namespace ProductAPI.Identity.Models {
+namespace AuthAPI.Identity.Models {
     public class UserRole {
     
         public string Id { get; set; }

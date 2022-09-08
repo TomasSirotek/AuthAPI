@@ -1,7 +1,7 @@
-using ProductAPI.Domain.Models;
-using ProductAPI.Identity.Models;
+using AuthAPI.Domain.Models;
+using AuthAPI.Identity.Models;
 
-namespace ProductAPI.Infrastructure.Repositories.Interfaces {
+namespace AuthAPI.Infrastructure.Repositories.Interfaces {
     public interface IUserRepository {
         
         Task<List<AppUser>> GetAllUsersAsync();

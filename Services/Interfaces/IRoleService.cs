@@ -1,6 +1,6 @@
-using ProductAPI.Identity.Models;
+using AuthAPI.Identity.Models;
 
-namespace ProductAPI.Services.Interfaces; 
+namespace AuthAPI.Services.Interfaces; 
 
 public interface IRoleService {
     

@@ -1,6 +1,6 @@
 using CryptoHelper;
 
-namespace ProductAPI.Engines.Cryptography {
+namespace AuthAPI.Engines.Cryptography {
     public class CryptoEngine : ICryptoEngine {
         public string Hash(string text)
         {

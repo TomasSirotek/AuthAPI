@@ -1,4 +1,4 @@
-namespace ProductAPI.Domain.BindingModels {
+namespace AuthAPI.Domain.BindingModels {
 
     public class ConfirmEmailPostModel {
         public string UserId { get; set; }

@@ -1,7 +1,7 @@
+using AuthAPI.Domain.Models;
 using FluentEmail.Core.Models;
-using ProductAPI.Domain.Models;
 
-namespace ProductAPI.ExternalServices; 
+namespace AuthAPI.ExternalServices; 
 
 public interface IEmailService {
     

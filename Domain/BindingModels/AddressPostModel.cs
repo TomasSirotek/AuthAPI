@@ -1,4 +1,4 @@
-namespace ProductAPI.Domain.BindingModels {
+namespace AuthAPI.Domain.BindingModels {
     public class AddressPostModel {
         public string Street { get; set; }
         public int Number { get; set; }

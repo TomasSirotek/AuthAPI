@@ -1,15 +1,15 @@
+using AuthAPI.Configuration.Token;
+using AuthAPI.Domain.BindingModels;
+using AuthAPI.Domain.Models;
+using AuthAPI.Engines.Cryptography;
+using AuthAPI.Identity.BindingModels.Authentication;
+using AuthAPI.Identity.Models;
+using AuthAPI.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ProductAPI.Configuration.Token;
-using ProductAPI.Domain.BindingModels;
-using ProductAPI.Domain.Models;
-using ProductAPI.Engines.Cryptography;
-using ProductAPI.Identity.BindingModels.Authentication;
-using ProductAPI.Identity.Models;
-using ProductAPI.Services.Interfaces;
 
-namespace ProductAPI.Controllers {
+namespace AuthAPI.Controllers {
     public class AuthController : DefaultController {
         private readonly IJwtToken _token;
         private readonly ICryptoEngine _cryptoEngine;

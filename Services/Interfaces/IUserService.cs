@@ -1,8 +1,8 @@
-using ProductAPI.Domain.Models;
-using ProductAPI.Identity.BindingModels;
-using ProductAPI.Identity.Models;
+using AuthAPI.Domain.Models;
+using AuthAPI.Identity.BindingModels;
+using AuthAPI.Identity.Models;
 
-namespace ProductAPI.Services.Interfaces {
+namespace AuthAPI.Services.Interfaces {
     public interface IUserService {
         
         Task<List<AppUser>> GetAllUsersAsync();

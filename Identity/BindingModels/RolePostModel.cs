@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductAPI.Identity.BindingModels {
+namespace AuthAPI.Identity.BindingModels {
     public class RolePostModel {
         [Required]
         public string Name { get; set; } 

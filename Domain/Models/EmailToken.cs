@@ -1,4 +1,4 @@
-namespace ProductAPI.Domain.Models; 
+namespace AuthAPI.Domain.Models; 
 
 public class EmailToken {
 

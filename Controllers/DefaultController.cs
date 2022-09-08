@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace ProductAPI.Controllers {
+namespace AuthAPI.Controllers {
     [Route("[controller]")]
     [ApiController]
     public class DefaultController : ControllerBase {

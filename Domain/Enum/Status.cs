@@ -1,4 +1,4 @@
-namespace ProductAPI.Domain.Enum; 
+namespace AuthAPI.Domain.Enum; 
 
 public enum Status {
     CONFIRM_EMAIL,

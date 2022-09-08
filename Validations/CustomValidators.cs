@@ -1,7 +1,7 @@
+using AuthAPI.Domain.Enum;
 using FluentValidation;
-using ProductAPI.Domain.Enum;
 
-namespace ProductAPI.Validations; 
+namespace AuthAPI.Validations; 
 
 public static class CustomValidators {
     public static IRuleBuilder<T, string> Password<T>(this IRuleBuilder<T, string> ruleBuilder, int minimumLength = 6)

@@ -1,7 +1,7 @@
 using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace ProductAPI.Infrastructure.Data {
+namespace AuthAPI.Infrastructure.Data {
     public class SqlServerConnection {
         private readonly string _connectionString;
 

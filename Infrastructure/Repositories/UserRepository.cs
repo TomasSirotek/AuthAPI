@@ -1,10 +1,10 @@
+using AuthAPI.Domain.Models;
+using AuthAPI.Identity.Models;
+using AuthAPI.Infrastructure.Data;
+using AuthAPI.Infrastructure.Repositories.Interfaces;
 using Dapper;
-using ProductAPI.Domain.Models;
-using ProductAPI.Identity.Models;
-using ProductAPI.Infrastructure.Data;
-using ProductAPI.Infrastructure.Repositories.Interfaces;
 
-namespace ProductAPI.Infrastructure.Repositories {
+namespace AuthAPI.Infrastructure.Repositories {
     public class UserRepository : IUserRepository {
         private readonly SqlServerConnection _connection;
 

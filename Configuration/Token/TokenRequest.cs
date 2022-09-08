@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace ProductAPI.Domain.BindingModels;
+namespace AuthAPI.Domain.BindingModels;
 
 public class TokenRequest {
     [Required] 

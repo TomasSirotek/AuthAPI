@@ -2,11 +2,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using AuthAPI.Domain.Models;
+using AuthAPI.Infrastructure.Repositories.Interfaces;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Domain.Models;
-using ProductAPI.Infrastructure.Repositories.Interfaces;
 
-namespace ProductAPI.Configuration.Token;
+namespace AuthAPI.Configuration.Token;
 
 public class JwtToken : IJwtToken {
     private readonly IConfiguration _config;

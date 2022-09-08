@@ -1,7 +1,7 @@
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 
-namespace ProductAPI.Configuration {
+namespace AuthAPI.Configuration {
     public static class SwaggerUiConfig {
     
         public static void AddSwaggerConfiguration(this IServiceCollection services)
@@ -31,7 +31,7 @@ namespace ProductAPI.Configuration {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProductAPI v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthAPIProductAPI v1");
             });
        
         }

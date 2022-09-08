@@ -1,4 +1,4 @@
-using ProductAPI.Configuration;
+using AuthAPI.Configuration;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

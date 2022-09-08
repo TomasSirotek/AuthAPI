@@ -1,7 +1,7 @@
+using AuthAPI.Identity.BindingModels;
 using FluentValidation;
-using ProductAPI.Identity.BindingModels;
 
-namespace ProductAPI.Validations; 
+namespace AuthAPI.Validations; 
 
 public class RolePostValidation : AbstractValidator<RolePostModel> {
     public RolePostValidation()

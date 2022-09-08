@@ -1,15 +1,15 @@
+using AuthAPI.Domain.BindingModels;
+using AuthAPI.Domain.Models;
+using AuthAPI.Engines.Cryptography;
+using AuthAPI.Identity.BindingModels;
+using AuthAPI.Identity.Models;
+using AuthAPI.Services.Interfaces;
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using ProductAPI.Domain.BindingModels;
-using ProductAPI.Domain.Models;
-using ProductAPI.Engines.Cryptography;
-using ProductAPI.Identity.BindingModels;
-using ProductAPI.Identity.Models;
-using ProductAPI.Services.Interfaces;
 
-namespace ProductAPI.Controllers.User {
+namespace AuthAPI.Controllers.User {
     public class UserController : DefaultController {
         private readonly IUserService _userService;
         private readonly IValidator<UserPostModel> _validator;

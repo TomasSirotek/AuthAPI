@@ -1,7 +1,7 @@
-using ProductAPI.Domain.BindingModels;
-using ProductAPI.Domain.Models;
+using AuthAPI.Domain.BindingModels;
+using AuthAPI.Domain.Models;
 
-namespace ProductAPI.Configuration.Token; 
+namespace AuthAPI.Configuration.Token; 
 
 public interface IVerifyJwtToken {
     Task<TokenResponse> VerifyAndGenerateToken(TokenRequest tokenRequest);

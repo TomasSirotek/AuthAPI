@@ -1,8 +1,8 @@
-using ProductAPI.Identity.Models;
-using ProductAPI.Infrastructure.Repositories.Interfaces;
-using ProductAPI.Services.Interfaces;
+using AuthAPI.Identity.Models;
+using AuthAPI.Infrastructure.Repositories.Interfaces;
+using AuthAPI.Services.Interfaces;
 
-namespace ProductAPI.Services; 
+namespace AuthAPI.Services; 
 
 public class RoleService : IRoleService {
 

@@ -9384,11 +9384,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/ProductAPI.csproj",
-      "projectName": "ProductAPI",
-      "projectPath": "/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/ProductAPI.csproj",
+      "projectUniqueName": "/Users/Tomas/Projects/Game_Store_Crud/AuthAPI/AuthAPI.csproj",
+      "projectName": "AuthAPI",
+      "projectPath": "/Users/Tomas/Projects/Game_Store_Crud/AuthAPI/AuthAPI.csproj",
       "packagesPath": "/Users/Tomas/.nuget/packages/",
-      "outputPath": "/Users/Tomas/Projects/Game_Store_Crud/ProductAPI/obj/",
+      "outputPath": "/Users/Tomas/Projects/Game_Store_Crud/AuthAPI/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/Tomas/.nuget/NuGet/NuGet.Config"

@@ -1,8 +1,8 @@
 using System.Security.Principal;
+using AuthAPI.Domain.Models;
 using Newtonsoft.Json;
-using ProductAPI.Domain.Models;
 
-namespace ProductAPI.Identity.Models {
+namespace AuthAPI.Identity.Models {
     public class AppUser {
         public string Id { get; set; }
         

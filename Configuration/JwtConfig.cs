@@ -2,7 +2,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ProductAPI.Configuration {
+namespace AuthAPI.Configuration {
     public static class JwtConfig {
         public static void AddJwtConfiguration(this IServiceCollection services,
             IConfiguration configuration)
