@@ -31,7 +31,7 @@ namespace AuthAPI.Configuration {
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthAPIProductAPI v1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "AuthAPI v1");
             });
        
         }
