@@ -8,16 +8,16 @@ USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal AS build
 WORKDIR /src
-COPY ["ProductAPI.csproj", "./"]
-RUN dotnet restore "ProductAPI.csproj"
+COPY ["AuthAPI.csproj", "./"]
+RUN dotnet restore "AuthAPI.csproj"
 COPY . .
 WORKDIR "/src/."
-RUN dotnet build "ProductAPI.csproj" -c Release -o /app/build
+RUN dotnet build "AuthAPI.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ProductAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "AuthAPI.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "ProductAPI.dll"]
+ENTRYPOINT ["dotnet", "AuthAPI.dll"]

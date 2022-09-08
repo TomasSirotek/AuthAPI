@@ -15,7 +15,7 @@ services:
 #      - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
 #    depends_on:
 #      - database
-     
+#     
   database:
     image: "mcr.microsoft.com/mssql/server:2019-latest"
     environment: 

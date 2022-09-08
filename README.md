@@ -9,10 +9,12 @@
 # Simple REST API 
 📚 Practice | Docker | .NET 6 | DAPPER  
 
-This project is my practice repository to get familiar with .net 6 and C# 
-Goal of this repo is to spend time on the code and lear how to write efficient code and how to work with variaty different databases. 
+<!-- GOAL -->
+
+This project is my practice repository to get use to working with .net 6 and C# 
+Goal of this repo is to spend time on the code and lear how to write efficient code and how to work with variety different databases. 
 I wanted to implement JWT token auth where generated token can be used as bearer token for role-based end-points.
-Learning objective was to learn SQL Database / code seperation / clean architecture. Seeding is automatickly from mocked data from script files CreateTable.sql | InserTable.sql. Project still need code reformating and major fixes in order to work properly.
+Learning objective was to learn SQL Database / code separation / clean architecture. Seeding is automatically from mocked data from script files CreateTable.sql | InserTable.sql. Project still need code reformating and major fixes in order to work properly.
 
 
 
@@ -79,9 +81,11 @@ Learning objective was to learn SQL Database / code seperation / clean architect
 
 <!-- GETTING STARTED -->
 
-## Features for updated 
 
-- [x] Refresh token needs better generation and testing
+
+## Features for updated
+
+- [x] Refresh token verifies token but return just another jwt token with the same time of 15:00 minutes
 - [x] Docker compose up has only mssql need to run api separately
 - [x] Date formatting is kinda yuk could use different format like unixTimeStamp or properer one
 
