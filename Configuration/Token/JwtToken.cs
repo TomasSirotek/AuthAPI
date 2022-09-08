@@ -43,34 +43,6 @@ public class JwtToken : IJwtToken {
 
         return jwt;
     }
-    public string? ValidateJwtToken(string? token)
-    {
-        if (token == null)
-            return null;
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_config["JwtConfig:RefreshTokenSecret"]);
-        try
-        {
-            tokenHandler.ValidateToken(token, new TokenValidationParameters
-            {
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(key),
-                ValidateIssuer = false,
-                ValidateAudience = false,
-                ClockSkew = TimeSpan.Zero
-            }, out SecurityToken validatedToken);
-
-            var jwtToken = (JwtSecurityToken)validatedToken;
-            var userId = jwtToken.Claims.First(x => x.Type == "id").Value;
-       
-            return userId;
-        }
-        catch(Exception e)
-        {
-            throw new Exception(e.Message);
-        }
-    }
 
     public async Task<RefreshToken> GenerateRefreshToken(string usedId)
     {

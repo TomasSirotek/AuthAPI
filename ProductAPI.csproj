@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <PreserveCompilationContext>true</PreserveCompilationContext>
     <RootNamespace>ProductAPI</RootNamespace>
@@ -44,5 +44,8 @@
     <EmbeddedResource Include="Infrastructure\Seeding\Script0001-CreateTable.sql" />
     <EmbeddedResource Include="Infrastructure\Seeding\Script0002-InsertTable.sql" />
     <None Remove="Infrastructure\Seeding\Script0003-CreateUserTable.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Postman" />
   </ItemGroup>
 </Project>

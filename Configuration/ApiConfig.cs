@@ -36,9 +36,7 @@ namespace ProductAPI.Configuration {
             app.UseCors("AllowOrigin");
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
-            
-         //   app.UseMiddleware<JwtMiddleware>();
-        
+
             app.MapControllers();
         
         }
