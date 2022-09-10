@@ -86,7 +86,7 @@ Learning objective was to learn SQL Database / code separation / clean architect
 ## Features for updated
 
 - [x] Refresh token verifies token but return just another jwt token with the same time of 15:00 minutes
-- [x] Docker compose up has only mssql need to run api separately
+- [x] Docker compose up has only mssql needs to run api and databse separately
 - [x] Date formatting is kinda yuk could use different format like unixTimeStamp or properer one
 
 ## Licence 
